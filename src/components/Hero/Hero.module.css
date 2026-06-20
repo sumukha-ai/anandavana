@@ -1,0 +1,210 @@
+.heroSection {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: #120b07;
+  isolation: isolate;
+}
+
+.bgContainer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  perspective: 1200px;
+}
+
+.bgImageWrapper {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform-origin: center center;
+}
+
+.bgImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  pointer-events: none;
+  transform: scale(1.05);
+}
+
+.activeBg {
+  z-index: 3;
+  animation: flipIn3D 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.leavingBg {
+  z-index: 2;
+  animation: flipOut3D 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.inactiveBg {
+  opacity: 0;
+  z-index: 1;
+  display: none;
+}
+
+@keyframes flipIn3D {
+  0% {
+    opacity: 0;
+    transform: rotateY(90deg) translateZ(100px);
+    filter: brightness(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateY(0deg) translateZ(0);
+    filter: brightness(1);
+  }
+}
+
+@keyframes flipOut3D {
+  0% {
+    opacity: 1;
+    transform: rotateY(0deg) translateZ(0);
+    filter: brightness(1);
+  }
+  100% {
+    opacity: 0;
+    transform: rotateY(-90deg) translateZ(100px);
+    filter: brightness(0.5);
+  }
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background: radial-gradient(
+    circle at center,
+    rgba(15, 9, 5, 0.25) 0%,
+    rgba(15, 9, 5, 0.6) 50%,
+    rgba(10, 5, 2, 0.9) 100%
+  );
+  pointer-events: none;
+}
+
+.texture {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.5) 0.6px, transparent 0.6px);
+  background-size: 6px 6px;
+  mix-blend-mode: soft-light;
+}
+
+.guruBadge {
+  position: absolute;
+  top: clamp(6rem, 2.5vw, 2rem);
+  left: clamp(1rem, 2.5vw, 2rem);
+  z-index: 12;
+}
+
+.guruCircle {
+  width: clamp(72px, 9vw, 128px);
+  height: clamp(72px, 9vw, 128px);
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(255, 230, 180, 0.55);
+  background: rgba(255, 248, 231, 0.08);
+  box-shadow:
+    0 14px 36px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.guruImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.contentShell {
+  position: relative;
+  z-index: 10;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 2rem;
+}
+
+.textBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+  animation: fadeUpScale 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.topLine {
+  font-family: var(--font-body, "Inter", sans-serif);
+  font-size: clamp(3rem, 2.5vw, 1.5rem);
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: #e0b24f;
+  margin-bottom: 0.5rem;
+  margin-right: -0.4em;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+}
+
+.bottomLine {
+  font-family: var(--font-display, "Playfair Display", serif);
+  font-size: clamp(2.5rem, 9.5vw, 6rem);
+  line-height: 1;
+  font-weight: 700;
+  color: #fffaf0;
+  letter-spacing: 0.02em;
+  text-shadow: 0 12px 32px rgba(0, 0, 0, 0.7);
+}
+
+@keyframes fadeUpScale {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+    filter: blur(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@media (max-width: 640px) {
+  .guruBadge {
+    top: 0.9rem;
+    left: 0.9rem;
+  }
+
+  .guruCircle {
+    width: 64px;
+    height: 64px;
+  }
+
+  .topLine {
+    letter-spacing: 0.25em;
+    margin-right: -0.25em;
+    margin-bottom: 0.75rem;
+    font-size: 0.92rem;
+  }
+
+  .bottomLine {
+    font-size: clamp(2.4rem, 12vw, 4rem);
+  }
+
+  .contentShell {
+    padding: 0 1rem;
+  }
+}

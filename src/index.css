@@ -1,0 +1,93 @@
+/* index.css - Global Reset & Variables */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Brand Colors - Warm, earthy, temple-like */
+  --bg-primary: #F9F6F0;    /* Warm ivory surface */
+  --bg-secondary: #FFF8E7;  /* Slightly lighter surface */
+  --text-main: #3E2723;     /* Deep brown for high contrast text */
+  --text-muted: #8B6B47;    /* Soft earthy brown for subtitles */
+  --accent-gold: #D4AF37;   /* Traditional muted gold */
+  --accent-brown: #8B5A2B;  /* Deep terracotta/brown accent */
+  
+  /* Layout & Spacing */
+  --max-width: 1200px;
+  --nav-height: 72px;
+  
+  /* Typography Variables */
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Playfair Display', Georgia, serif;
+}
+
+html, body, #root {
+  min-height: 100vh;
+  width: 100%;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--nav-height); /* For anchor links below fixed nav */
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Base Element Resets */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul[role="list"], ol[role="list"], ul, ol {
+  list-style: none;
+}
+
+button, input, textarea, select {
+  font: inherit;
+  color: inherit;
+  border: none;
+  background: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Remove mobile tap highlight */
+a, button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+/* --- REMOVE SCROLLBAR --- */
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+html, body {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}

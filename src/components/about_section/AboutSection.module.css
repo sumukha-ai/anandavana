@@ -1,0 +1,246 @@
+.aboutSection {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(5rem, 8vw, 8rem) 0;
+  background:
+    radial-gradient(circle at top left, rgba(226, 146, 52, 0.18), transparent 26%),
+    radial-gradient(circle at bottom right, rgba(255, 196, 118, 0.2), transparent 28%),
+    linear-gradient(180deg, #fff5e8 0%, #f8ead7 52%, #f3dfc2 100%);
+  color: #4d2d1f;
+}
+
+.pattern {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.06;
+  background-image:
+    radial-gradient(rgba(162, 96, 32, 0.5) 0.6px, transparent 0.6px);
+  background-size: 8px 8px;
+}
+
+.container {
+  position: relative;
+  z-index: 2;
+  width: min(1220px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.headerBlock {
+  max-width: 860px;
+  margin: 0 auto 4rem;
+  text-align: center;
+}
+
+.kicker {
+  display: inline-block;
+  margin-bottom: 1rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #b76522;
+}
+
+.title {
+  font-family: var(--font-display, "Playfair Display", serif);
+  font-size: clamp(2.2rem, 5vw, 4.8rem);
+  line-height: 1.08;
+  color: #6f3417;
+  margin-bottom: 1.2rem;
+  text-wrap: balance;
+}
+
+.lead {
+  max-width: 760px;
+  margin: 0 auto;
+  font-size: clamp(1rem, 1.5vw, 1.14rem);
+  line-height: 1.95;
+  color: rgba(77, 45, 31, 0.86);
+}
+
+.mainGrid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: start;
+}
+
+.leftPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.imageFrame {
+  position: relative;
+  min-height: 620px;
+  border-radius: 34px;
+  overflow: hidden;
+  background: #f8ecda;
+  border: 1px solid rgba(183, 101, 34, 0.14);
+  box-shadow:
+    0 24px 60px rgba(143, 91, 44, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.aboutImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.highlightCard {
+  padding: 1.35rem 1.4rem;
+  border-radius: 24px;
+  background: linear-gradient(180deg, #fff6ea 0%, #fbe7cb 100%);
+  border: 1px solid rgba(183, 101, 34, 0.12);
+  box-shadow: 0 18px 44px rgba(143, 91, 44, 0.12);
+}
+
+.highlightLabel {
+  display: inline-block;
+  margin-bottom: 0.55rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #b76522;
+}
+
+.highlightText {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: rgba(77, 45, 31, 0.86);
+}
+
+.rightPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.storyCard {
+  padding: 1.5rem 1.35rem;
+  border-radius: 24px;
+  background: rgba(255, 249, 240, 0.8);
+  border: 1px solid rgba(183, 101, 34, 0.12);
+  box-shadow:
+    0 16px 38px rgba(143, 91, 44, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  transition:
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 220ms ease,
+    border-color 220ms ease;
+}
+
+.storyCard:hover {
+  transform: translateY(-6px);
+  border-color: rgba(183, 101, 34, 0.24);
+  box-shadow:
+    0 24px 48px rgba(143, 91, 44, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+.cardIndex {
+  display: inline-block;
+  margin-bottom: 0.8rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #c46c26;
+}
+
+.cardTitle {
+  font-family: var(--font-display, "Playfair Display", serif);
+  font-size: clamp(1.35rem, 2vw, 1.85rem);
+  line-height: 1.2;
+  color: #6a3318;
+  margin-bottom: 0.75rem;
+}
+
+.cardText {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: rgba(77, 45, 31, 0.86);
+}
+
+.quoteStrip {
+  margin-top: clamp(3rem, 6vw, 5rem);
+  padding: 1.4rem 1.5rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #f8e4bf 0%, #f4d39b 50%, #f8e4bf 100%);
+  border: 1px solid rgba(183, 101, 34, 0.12);
+  box-shadow: 0 18px 42px rgba(143, 91, 44, 0.12);
+}
+
+.quote {
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-display, "Playfair Display", serif);
+  font-size: clamp(1.05rem, 2vw, 1.55rem);
+  line-height: 1.55;
+  color: #6a3318;
+}
+
+@media (max-width: 980px) {
+  .mainGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .imageFrame {
+    min-height: 460px;
+  }
+
+  .headerBlock {
+    margin-bottom: 3rem;
+  }
+
+  .quoteStrip {
+    border-radius: 28px;
+  }
+}
+
+@media (max-width: 640px) {
+  .aboutSection {
+    padding: 4.2rem 0;
+  }
+
+  .container {
+    width: min(100% - 1rem, 100%);
+  }
+
+  .title {
+    font-size: clamp(1.9rem, 8.5vw, 3rem);
+  }
+
+  .lead,
+  .cardText,
+  .highlightText {
+    font-size: 0.97rem;
+    line-height: 1.8;
+  }
+
+  .imageFrame {
+    min-height: 340px;
+    border-radius: 22px;
+  }
+
+  .highlightCard,
+  .storyCard {
+    padding: 1.15rem 1rem;
+    border-radius: 18px;
+  }
+
+  .quoteStrip {
+    margin-top: 2.4rem;
+    padding: 1rem 1.1rem;
+    border-radius: 20px;
+  }
+
+  .quote {
+    font-size: 1rem;
+  }
+}

@@ -1,0 +1,255 @@
+.header {
+  --nav-bg: transparent;
+  --nav-text: #ffffff;
+  --nav-subtitle: rgba(255, 255, 255, 0.8);
+  --nav-border: rgba(255, 255, 255, 0.15);
+  --logo-bg: #ffffff;
+  --logo-color: #ffffff;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: var(--nav-bg);
+  border-bottom: 1px solid var(--nav-border);
+  color: var(--nav-text);
+  z-index: 1000;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scrolled {
+  --nav-bg: rgba(249, 246, 240, 0.92);
+  --nav-text: #3e2723;
+  --nav-subtitle: #8b6b47;
+  --nav-border: rgba(139, 107, 71, 0.1);
+  --logo-bg: #ffffff;
+  --logo-color: #fff8e7;
+
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 20px rgba(92, 64, 51, 0.08);
+}
+
+.navContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: padding 0.3s ease;
+}
+
+.scrolled .navContainer {
+  padding: 0.75rem 2rem;
+}
+
+.brandWrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: opacity 0.2s ease;
+  text-decoration: none;
+}
+
+.logoMark {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--logo-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition:
+    background 0.4s ease,
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.logoImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  /* padding: 0.28rem; */
+}
+
+.brandWrapper:hover .logoMark {
+  transform: translateY(-1px) scale(1.03);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.2);
+}
+
+.brandText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.brandTitle {
+  font-family: "Playfair Display", serif;
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--nav-text);
+  transition: color 0.4s ease;
+}
+
+.brandSubtitle {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--nav-subtitle);
+  transition: color 0.4s ease;
+}
+
+.desktopNav {
+  display: flex;
+  gap: 2.5rem;
+}
+
+.navLink {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--nav-text);
+  text-decoration: none;
+  position: relative;
+  padding: 0.25rem 0;
+  transition: color 0.4s ease, opacity 0.3s ease;
+}
+
+.navLink::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #d4af37;
+  transition: width 0.3s ease;
+}
+
+.navLink:hover {
+  opacity: 0.8;
+}
+
+.navLink.active::after {
+  width: 100%;
+}
+
+.mobileMenuBtn {
+  display: none;
+  padding: 0.5rem;
+  z-index: 1001;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.hamburger,
+.hamburger::before,
+.hamburger::after {
+  background: var(--nav-text);
+  width: 24px;
+  height: 2px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.hamburger::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 0;
+}
+
+.hamburger::after {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 0;
+}
+
+.hamburger.open {
+  background: transparent;
+}
+
+.hamburger.open::before {
+  transform: rotate(45deg);
+  top: 0;
+}
+
+.hamburger.open::after {
+  transform: rotate(-45deg);
+  top: 0;
+}
+
+.mobileNav {
+  display: none;
+  flex-direction: column;
+  background: #f9f6f0;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.4s ease;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.mobileNavOpen {
+  max-height: 200px;
+  padding: 1rem 0 2rem 0;
+}
+
+.mobileNavLink {
+  color: #3e2723;
+  font-size: 1.1rem;
+  font-weight: 500;
+  padding: 1rem 2rem;
+  text-align: center;
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .desktopNav {
+    display: none;
+  }
+
+  .mobileMenuBtn {
+    display: block;
+  }
+
+  .mobileNav {
+    display: flex;
+  }
+
+  .navContainer {
+    padding: 0.9rem 1rem;
+  }
+
+  .scrolled .navContainer {
+    padding: 0.75rem 1rem;
+  }
+
+  .logoMark {
+    width: 42px;
+    height: 42px;
+  }
+
+  .brandTitle {
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+  }
+
+  .brandSubtitle {
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+  }
+}

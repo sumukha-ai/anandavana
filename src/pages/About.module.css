@@ -1,0 +1,17 @@
+.aboutContainer {
+  padding: 4rem 2rem;
+}
+
+.aboutTitle {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.aboutContent {
+  max-width: 800px;
+  margin: 0 auto;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #444;
+}

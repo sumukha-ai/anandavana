@@ -1,0 +1,30 @@
+/* App.css - Layout Structure */
+
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+  background-color: var(--bg-primary);
+}
+
+.main-content {
+  flex: 1 1 auto; /* Pushes the footer to the bottom of the screen */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Optional: Global section wrapper for consistent side padding */
+.section-container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+@media (max-width: 768px) {
+  .section-container {
+    padding: 3rem 1.5rem;
+  }
+}
