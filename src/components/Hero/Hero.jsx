@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Hero.module.css";
 import bg1 from "../../../assets/anandavana_full_view.jpg.jpeg";
-import bg2 from "../../../assets/bg4.jpg";
+import bg2 from "../../../assets/bg4.JPG";
 import bg3 from "../../../assets/bg3.JPG";
 import guruImg from "../../../assets/sheshachalaru_lingu.jpg.jpeg";
 

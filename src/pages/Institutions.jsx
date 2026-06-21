@@ -8,7 +8,7 @@ import bgImg from "../../assets/bg1.jpeg";
 import pata1 from "../../assets/pata1.jpg";
 import pata2 from "../../assets/bg2.jpg";
 import pata3 from "../../assets/bg2.jpg";
-import hiriya1 from "../../assets/hiriya1.jpg";
+import hiriya1 from "../../assets/hiriya1.JPG";
 import hiriya2 from "../../assets/bg2.jpg";
 
 const institutionsData = [

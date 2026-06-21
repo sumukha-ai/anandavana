@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styles from "./AboutSection.module.css";
-import aboutImg from "../../../assets/bg5.jpg";
+import aboutImg from "../../../assets/bg5.JPG";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { Sparkles, HeartHandshake, ShieldCheck } from "lucide-react";
