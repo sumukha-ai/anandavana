@@ -1,13 +1,16 @@
+import PageHero from '../components/PageHero/PageHero';
+import bgImg from '../../assets/bg1.jpeg';
 import appStyles from '../App.module.css';
 import styles from './Contact.module.css';
 
 export default function Contact() {
   return (
-    <div className={`${appStyles.container} ${styles.contactContainer}`}>
-      <h1 className={styles.contactTitle}>Contact Us</h1>
-      <p className={styles.contactSubtitle}>We would love to hear from you. Reach out to us for any queries or spiritual guidance.</p>
-      
-      <div className={styles.contentWrapper}>
+    <>
+      <PageHero title="Contact Us" bgImage={bgImg} />
+      <div className={`${appStyles.container} ${styles.contactContainer}`}>
+        <p className={styles.contactSubtitle}>We would love to hear from you. Reach out to us for any queries or spiritual guidance.</p>
+        
+        <div className={styles.contentWrapper}>
         <div className={styles.infoCard}>
           <h3>Get in Touch</h3>
           <div className={styles.infoList}>
@@ -42,6 +45,7 @@ export default function Contact() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import styles from "./Navbar.module.css";
-import logoImg from "../../assets/logo.jpeg";
+import logoImg from "../../assets/logo.png";
+
+const navItems = [
+    { to: "/guru-parampare", label: "Guru Parampare" },
+    { to: "/institutions", label: "Our Institutions" },
+  { to: "/events", label: "Events" },
+  { to: "/seva-booking", label: "Online Seva Booking" },
+  { to: "/publications", label: "Publications" },
+  { to: "/gallery", label: "Gallery" },
+];
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -23,58 +32,63 @@ export default function Navbar() {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
 
-  const toggleMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
+  const toggleMenu = () => setIsMobileMenuOpen((prev) => !prev);
 
   return (
     <header className={`${styles.header} ${isScrolled ? styles.scrolled : ""}`}>
       <div className={styles.navContainer}>
         <Link to="/" className={styles.brandWrapper}>
-          <div className={styles.logoMark} aria-hidden="true">
-            <img src={logoImg} alt="Agadi Anandavana logo" className={styles.logoImage} />
+          <div className={styles.logoMark}>
+            <img
+              src={logoImg}
+              alt="Sri Sheshachala Sadguru Samsthana logo"
+              className={styles.logoImage}
+            />
           </div>
 
           <div className={styles.brandText}>
-            <span className={styles.brandTitle}>Sri Sheshachala Sadguru Samsthana(R)</span>
+            <span className={styles.brandTitle}>
+              Sri Sheshachala Sadguru Samsthana (R)
+            </span>
             <span className={styles.brandSubtitle}>Anandavana, Agadi</span>
           </div>
         </Link>
 
-        <nav className={styles.desktopNav} aria-label="Main Navigation">
-          <NavLink
-            to="/events"
-            className={({ isActive }) =>
-              isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
-            }
-          >
-            Events
-          </NavLink>
-
-          <NavLink
-            to="/gallery"
-            className={({ isActive }) =>
-              isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
-            }
-          >
-            Gallery
-          </NavLink>
+        <nav className={styles.desktopNav} aria-label="Main navigation">
+          {navItems.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={({ isActive }) =>
+                isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+              }
+            >
+              {item.label}
+            </NavLink>
+          ))}
         </nav>
 
         <button
           className={styles.mobileMenuBtn}
           onClick={toggleMenu}
           aria-label="Toggle menu"
+          aria-expanded={isMobileMenuOpen}
+          aria-controls="mobile-navigation"
+          type="button"
         >
-          <div className={`${styles.hamburger} ${isMobileMenuOpen ? styles.open : ""}`} />
+          <span className={`${styles.hamburger} ${isMobileMenuOpen ? styles.open : ""}`} />
         </button>
       </div>
 
-      <div className={`${styles.mobileNav} ${isMobileMenuOpen ? styles.mobileNavOpen : ""}`}>
-        <NavLink to="/events" className={styles.mobileNavLink}>
-          Events
-        </NavLink>
-        <NavLink to="/gallery" className={styles.mobileNavLink}>
-          Gallery
-        </NavLink>
+      <div
+        id="mobile-navigation"
+        className={`${styles.mobileNav} ${isMobileMenuOpen ? styles.mobileNavOpen : ""}`}
+      >
+        {navItems.map((item) => (
+          <NavLink key={item.to} to={item.to} className={styles.mobileNavLink}>
+            {item.label}
+          </NavLink>
+        ))}
       </div>
     </header>
   );

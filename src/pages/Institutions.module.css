@@ -1,0 +1,203 @@
+.pageSection {
+  background: #ffffff;
+  padding: clamp(4rem, 7vw, 7rem) 0;
+  color: #2c140c;
+  overflow: hidden;
+}
+
+.container {
+  width: min(1200px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.introBlock {
+  max-width: 720px;
+  margin: 0 auto 4rem;
+  text-align: center;
+}
+
+.kicker {
+  display: inline-block;
+  margin-bottom: 0.8rem;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #b85c1e;
+}
+
+.pageTitle {
+  font-family: var(--font-display, "Playfair Display", serif);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.15;
+  color: #421b0d;
+  margin-bottom: 1rem;
+}
+
+.pageIntro {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: rgba(44, 20, 12, 0.72);
+}
+
+.institutionsWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4rem, 8vw, 6rem);
+}
+
+.institutionRow {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: clamp(2rem, 4vw, 4rem);
+  align-items: center;
+}
+
+.reverseRow {
+  grid-template-columns: 1.2fr 1fr;
+}
+
+.reverseRow .textContent {
+  order: 2;
+}
+
+.reverseRow .imageContent {
+  order: 1;
+}
+
+.textContent {
+  min-width: 0;
+}
+
+.textInner {
+  padding: 2rem;
+  background: #fffdfa;
+  border-radius: 24px;
+  border: 1px solid rgba(132, 72, 34, 0.08);
+  box-shadow: 0 12px 30px rgba(82, 43, 22, 0.04);
+}
+
+.instTitle {
+  font-family: var(--font-display, "Playfair Display", serif);
+  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  line-height: 1.2;
+  color: #3f180b;
+  margin: 0 0 0.5rem;
+}
+
+.instSubtitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #b85c1e;
+  margin: 0 0 1.5rem;
+}
+
+.instDescription p {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: rgba(44, 20, 12, 0.8);
+}
+
+.instDescription p:last-child {
+  margin-bottom: 0;
+}
+
+.imageContent {
+  min-width: 0;
+}
+
+/* 
+  Dynamic Grid for the images 
+  If 3 images: 1 large on top, 2 smaller below
+*/
+.imageGrid {
+  display: grid;
+  gap: 1rem;
+  height: 100%;
+}
+
+.gridThree {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1.5fr 1fr;
+}
+
+.gridThree .imgWrapper:first-child {
+  grid-column: 1 / -1;
+}
+
+/* If 2 images: side by side or stacked based on container */
+.gridTwo {
+  grid-template-columns: 1fr 1fr;
+}
+
+.imgWrapper {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(82, 43, 22, 0.08);
+  background: #f0e9df;
+}
+
+/* Force an aspect ratio so grids look balanced even with missing images */
+.gridThree .imgWrapper {
+  aspect-ratio: 16/10;
+}
+.gridThree .imgWrapper:first-child {
+  aspect-ratio: 16/8;
+}
+
+.gridTwo .imgWrapper {
+  aspect-ratio: 4/5;
+}
+
+.instImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.imgWrapper:hover .instImage {
+  transform: scale(1.05);
+}
+
+@media (max-width: 992px) {
+  .institutionRow,
+  .reverseRow {
+    grid-template-columns: 1fr;
+  }
+
+  .reverseRow .textContent {
+    order: initial;
+  }
+  
+  .reverseRow .imageContent {
+    order: initial;
+  }
+}
+
+@media (max-width: 640px) {
+  .pageSection {
+    padding: 3.5rem 0;
+  }
+  
+  .textInner {
+    padding: 1.5rem;
+  }
+  
+  .gridThree {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+  
+  .gridThree .imgWrapper,
+  .gridThree .imgWrapper:first-child,
+  .gridTwo .imgWrapper {
+    aspect-ratio: 16/10;
+    grid-column: 1 / -1;
+  }
+}

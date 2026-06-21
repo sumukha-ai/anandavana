@@ -1,0 +1,217 @@
+.pageSection {
+  background: #ffffff;
+  padding: clamp(4rem, 7vw, 7rem) 0;
+}
+
+.introWrap {
+  width: min(900px, calc(100% - 2rem));
+  margin: 0 auto 3.5rem;
+  text-align: center;
+}
+
+.kicker {
+  display: inline-block;
+  margin-bottom: 0.85rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: #b85c1e;
+}
+
+.pageTitle {
+  margin: 0 0 0.9rem;
+  font-family: var(--font-display, "Playfair Display", serif);
+  font-size: clamp(1.9rem, 4vw, 3.2rem);
+  line-height: 1.12;
+  color: #3f180b;
+}
+
+.pageIntro {
+  max-width: 700px;
+  margin: 0 auto;
+  font-size: 1rem;
+  line-height: 1.9;
+  color: rgba(44, 20, 12, 0.72);
+}
+
+.timeline {
+  width: min(1180px, calc(100% - 2rem));
+  margin: 0 auto;
+  display: grid;
+  gap: 2rem;
+}
+
+.guruRow {
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: clamp(1.2rem, 2.8vw, 2.8rem);
+  align-items: center;
+}
+
+.reverse .imageCol {
+  order: 2;
+}
+
+.reverse .contentCol {
+  order: 1;
+}
+
+.imageCol,
+.contentCol {
+  min-width: 0;
+}
+
+.imageFrame {
+  position: relative;
+  min-height: 420px;
+  max-height: 540px;
+  border-radius: 30px;
+  overflow: hidden;
+  background: #f7f1ea;
+  border: 1px solid rgba(132, 72, 34, 0.12);
+  box-shadow:
+    0 22px 50px rgba(82, 43, 22, 0.08),
+    0 8px 18px rgba(82, 43, 22, 0.04);
+}
+
+.guruImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.guruId {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 52px;
+  height: 52px;
+  padding: 0 0.85rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #6a3116;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  box-shadow: 0 10px 24px rgba(58, 27, 13, 0.12);
+}
+
+.contentCard {
+  padding: clamp(1.4rem, 2.8vw, 2.2rem);
+  border-radius: 28px;
+  background: #fffdfa;
+  border: 1px solid rgba(132, 72, 34, 0.1);
+  box-shadow:
+    0 18px 42px rgba(82, 43, 22, 0.06),
+    0 6px 14px rgba(82, 43, 22, 0.03);
+}
+
+.role {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #b85c1e;
+}
+
+.guruName {
+  margin: 0 0 0.8rem;
+  font-family: var(--font-display, "Playfair Display", serif);
+  font-size: clamp(1.5rem, 2.8vw, 2.3rem);
+  line-height: 1.15;
+  color: #421b0d;
+}
+
+.description {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  line-height: 1.9;
+  color: #2c140c;
+}
+
+.quote {
+  margin: 0;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(184, 92, 30, 0.22);
+  font-size: 0.98rem;
+  line-height: 1.8;
+  color: rgba(44, 20, 12, 0.72);
+  font-style: italic;
+}
+
+@media (max-width: 900px) {
+  .guruRow {
+    grid-template-columns: 1fr;
+  }
+
+  .reverse .imageCol,
+  .reverse .contentCol {
+    order: initial;
+  }
+
+  .imageFrame {
+    min-height: 320px;
+  }
+}
+
+@media (max-width: 640px) {
+  .pageSection {
+    padding: 3.5rem 0;
+  }
+
+  .introWrap,
+  .timeline {
+    width: min(100% - 1rem, 100%);
+  }
+
+  .pageTitle {
+    font-size: clamp(1.6rem, 7vw, 2.3rem);
+  }
+
+  .pageIntro {
+    font-size: 0.96rem;
+    line-height: 1.8;
+  }
+
+  .timeline {
+    gap: 1.5rem;
+  }
+
+  .imageFrame,
+  .contentCard {
+    border-radius: 22px;
+  }
+
+  .imageFrame {
+    min-height: 260px;
+  }
+
+  .guruId {
+    top: 0.85rem;
+    left: 0.85rem;
+    min-width: 46px;
+    height: 46px;
+    font-size: 0.82rem;
+  }
+
+  .contentCard {
+    padding: 1rem;
+  }
+
+  .guruName {
+    font-size: 1.35rem;
+  }
+
+  .description,
+  .quote {
+    font-size: 0.94rem;
+    line-height: 1.75;
+  }
+}

@@ -1,86 +1,124 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./AboutSection.module.css";
-import aboutImg from "../../../assets/bg2.jpg";
+import aboutImg from "../../../assets/bg5.jpg";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { Sparkles, HeartHandshake, ShieldCheck } from "lucide-react";
 
 export default function AboutSection() {
+  useEffect(() => {
+    AOS.init({
+      duration: 950,
+      once: true,
+      offset: 90,
+      easing: "ease-out-cubic",
+    });
+  }, []);
+
   return (
     <section className={styles.aboutSection}>
+      <div className={styles.bgGlow}></div>
       <div className={styles.pattern}></div>
 
       <div className={styles.container}>
-        <div className={styles.headerBlock}>
-          <span className={styles.kicker}>About Agadi</span>
-          <h2 className={styles.title}>
-            A radiant spiritual space rooted in devotion, silence, and grace.
-          </h2>
-          <p className={styles.lead}>
-            Sri Kshetra Agadi Anandavana is a sacred spiritual destination that
-            carries the warmth of devotion and the stillness of inner prayer. It
-            is a place where tradition is felt gently, where the atmosphere itself
-            invites reverence, and where every visitor is received by a sense of
-            calm sacred presence.
+        <div className={styles.sectionHeader} data-aos="fade-up">
+          <span className={styles.kicker}>About Section</span>
+          <h2 className={styles.title}>The spirit of Anandavana</h2>
+          <p className={styles.subtitle}>
+            A holy space where compassion, guidance, peace, and divine nearness
+            are deeply felt.
           </p>
         </div>
 
-        <div className={styles.mainGrid}>
-          <div className={styles.leftPanel}>
+        <div className={styles.splitLayout}>
+          <div className={styles.imageColumn} data-aos="fade-right">
             <div className={styles.imageFrame}>
               <img
                 src={aboutImg}
-                alt="Agadi Anandavana spiritual atmosphere"
+                alt="Anandavana sacred spiritual atmosphere"
                 className={styles.aboutImage}
               />
-            </div>
+              <div className={styles.imageOverlay}></div>
 
-            <div className={styles.highlightCard}>
-              <span className={styles.highlightLabel}>Sacred Essence</span>
-              <p className={styles.highlightText}>
-                A place where devotional feeling, peaceful surroundings, and
-                spiritual stillness come together in harmony.
-              </p>
+              {/* <div className={styles.imageBadge}>
+                <span className={styles.badgeDot}></span>
+                Sacred Presence
+              </div> */}
             </div>
           </div>
 
-          <div className={styles.rightPanel}>
-            <div className={styles.storyCard}>
-              <span className={styles.cardIndex}>01</span>
-              <h3 className={styles.cardTitle}>A Space of Inner Quiet</h3>
-              <p className={styles.cardText}>
-                Agadi Anandavana offers more than physical beauty — it offers an
-                atmosphere of stillness. The experience of the place is gentle,
-                reflective, and inward, allowing the mind to slow down and the
-                heart to feel anchored.
-              </p>
-            </div>
+          <div className={styles.contentColumn} data-aos="fade-left">
+            <div className={styles.textCard}>
+              <div className={styles.contentIntro}>
+                <span className={styles.contentLabel}>Divine Abode</span>
+                <p className={styles.mainText}>
+                  Anandavana, the sacred abode of Sri Sheshachala Sadguru, is a
+                  unique and holy place. It is known for offering Annadana and
+                  spiritual wisdom to all. It is a place where spiritual seekers
+                  find guidance and progress, and where thousands of devotees are
+                  inspired to move closer to God and Divinity. The Gurus of this
+                  land provide comfort and protection to those in distress,
+                  helping weak and troubled people become strong and confident.
+                  Loved and respected by the public, Anandavana is a place where
+                  people burdened by the struggles and sorrows of life find peace,
+                  hope, and the comforting guidance of the Sadguru.
+                </p>
+              </div>
 
-            <div className={styles.storyCard}>
-              <span className={styles.cardIndex}>02</span>
-              <h3 className={styles.cardTitle}>Rooted in Devotion</h3>
-              <p className={styles.cardText}>
-                Every sacred space carries its own spiritual vibration, and here
-                that feeling is expressed through reverence, prayer, tradition,
-                and simplicity. The environment naturally invites humility and
-                devotion without excess.
-              </p>
-            </div>
+              <div className={styles.pointsGrid}>
+                <div
+                  className={styles.pointCard}
+                  data-aos="fade-up"
+                  data-aos-delay="80"
+                >
+                  <div className={styles.iconWrap}>
+                    <Sparkles size={20} strokeWidth={1.8} />
+                  </div>
+                  <div>
+                    <h3 className={styles.pointTitle}>Spiritual Guidance</h3>
+                    <p className={styles.pointText}>
+                      Seekers find direction, progress, and a deeper path toward
+                      divine awareness.
+                    </p>
+                  </div>
+                </div>
 
-            <div className={styles.storyCard}>
-              <span className={styles.cardIndex}>03</span>
-              <h3 className={styles.cardTitle}>A Place to Feel, Not Rush</h3>
-              <p className={styles.cardText}>
-                Anandavana is best experienced with presence. It is a place to
-                pause, absorb, and quietly connect — where spiritual depth is not
-                announced loudly, but revealed through atmosphere and feeling.
-              </p>
+                <div
+                  className={styles.pointCard}
+                  data-aos="fade-up"
+                  data-aos-delay="160"
+                >
+                  <div className={styles.iconWrap}>
+                    <HeartHandshake size={20} strokeWidth={1.8} />
+                  </div>
+                  <div>
+                    <h3 className={styles.pointTitle}>Annadana & Compassion</h3>
+                    <p className={styles.pointText}>
+                      Service, nourishment, and care are offered with humility and
+                      devotion to all.
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  className={styles.pointCard}
+                  data-aos="fade-up"
+                  data-aos-delay="240"
+                >
+                  <div className={styles.iconWrap}>
+                    <ShieldCheck size={20} strokeWidth={1.8} />
+                  </div>
+                  <div>
+                    <h3 className={styles.pointTitle}>Hope & Protection</h3>
+                    <p className={styles.pointText}>
+                      Those carrying sorrow and struggle find reassurance,
+                      strength, and peace in the Sadguru’s presence.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-
-        <div className={styles.quoteStrip}>
-          <p className={styles.quote}>
-            “In Agadi Anandavana, devotion is not only practiced — it is quietly
-            present in the very air.”
-          </p>
         </div>
       </div>
     </section>

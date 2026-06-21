@@ -1,3 +1,5 @@
+import PageHero from '../components/PageHero/PageHero';
+import bgImg from '../../assets/bg1.jpeg';
 import styles from './Gallery.module.css';
 
 export default function Gallery() {
@@ -10,13 +12,14 @@ export default function Gallery() {
   ];
 
   return (
-    <div className={styles['gallery-container']}>
-      <div className={styles['gallery-header']}>
-        <h1>Photo Gallery</h1>
-        <p>Glimpses of divine moments, celebrations, and serenity at SriKshetra Anandavana Agadi.</p>
-      </div>
-      
-      <div className={styles['masonry-grid']}>
+    <>
+      <PageHero title="Photo Gallery" bgImage={bgImg} />
+      <div className={styles['gallery-container']}>
+        <div className={styles['gallery-header']}>
+          <p>Glimpses of divine moments, celebrations, and serenity at SriKshetra Anandavana Agadi.</p>
+        </div>
+        
+        <div className={styles['masonry-grid']}>
         {images.map((img) => (
           <div key={img.id} className={styles['masonry-item']}>
             <div className={styles['image-wrapper']}>
@@ -27,7 +30,8 @@ export default function Gallery() {
             </div>
           </div>
         ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
