@@ -7,7 +7,7 @@ import styles from "./GuruParampare.module.css";
 import guru1 from "../../assets/sheshachalaru_lingu.jpg.jpeg";
 import guru2 from "../../assets/narayana_bhagawan.jpeg";
 import guru3 from "../../assets/Shankara_bhagavanaru.jpg.jpeg";
-import guru4 from "../../assets/sheshachalaru_lingu.jpg.jpeg";
+import guru4 from "../../assets/lingo bhagavan.jpeg";
 import guru5 from "../../assets/sheshachalaru_lingu.jpg.jpeg";
 import guru6 from "../../assets/sheshachalaru_lingu.jpg.jpeg";
 import guru7 from "../../assets/sheshachalaru_lingu.jpg.jpeg";
