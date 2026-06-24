@@ -313,3 +313,24 @@
     height: 38px;
   }
 }
+.langToggle,
+.mobileLangToggle {
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  padding: 0.55rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: inherit;
+  background: transparent;
+  transition: all 0.25s ease;
+}
+
+.langToggle:hover,
+.mobileLangToggle:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.mobileLangToggle {
+  margin-top: 1rem;
+  width: 100%;
+}
