@@ -4,16 +4,16 @@ import PageHero from "../components/PageHero/PageHero";
 import bgImg from "../../assets/pancyatana.jpg.jpeg";
 import styles from "./GuruParampare.module.css";
 
-import guru1 from "../../assets/sheshachalaru_lingu.jpg.jpeg";
-import guru2 from "../../assets/narayana_bhagawan.jpeg";
+import guru1 from "../../assets/sheshachala_maharajaru.jpg.jpeg";
+import guru2 from "../../assets/N.bhavan2.jpg.jpeg";
 import guru3 from "../../assets/Shankara_bhagavanaru.jpg.jpeg";
-import guru4 from "../../assets/lingo bhagavan.jpeg";
-import guru5 from "../../assets/sheshachalaru_lingu.jpg.jpeg";
-import guru6 from "../../assets/sheshachalaru_lingu.jpg.jpeg";
-import guru7 from "../../assets/sheshachalaru_lingu.jpg.jpeg";
-import guru8 from "../../assets/sheshachalaru_lingu.jpg.jpeg";
-import guru9 from "../../assets/sheshachalaru_lingu.jpg.jpeg";
-import guru10 from "../../assets/sheshachalaru_lingu.jpg.jpeg";
+import guru4 from "../../assets/pancyatana12.jpeg";
+import guru5 from "../../assets/brahmanandaru_maharajaru.jpg.jpeg";
+// import guru6 from "../../assets/sheshachalaru_lingu.jpg.jpeg";
+// import guru7 from "../../assets/sheshachalaru_lingu.jpg.jpeg";
+// import guru8 from "../../assets/sheshachalaru_lingu.jpg.jpeg";
+// import guru9 from "../../assets/sheshachalaru_lingu.jpg.jpeg";
+// import guru10 from "../../assets/sheshachalaru_lingu.jpg.jpeg";
 
 const EN_PAGE_CONTENT = {
   heroTitle: "Guru Parampare",
@@ -70,58 +70,58 @@ const EN_GURUS = [
   },
   {
     id: "05",
-    name: "Sri Guru Name Five (1900 - 2000)",
+    name: "Shri Brahmananda Swamy",
     role: "Spiritual Reformer",
     image: guru5,
     description:
       "A saintly presence who guided people toward spiritual steadiness, ethical living, and reverence for the Sadguru tradition.",
     quote: "Faith grows where ego becomes quiet.",
   },
-  {
-    id: "06",
-    name: "Sri Guru Name Six (1900 - 2000)",
-    role: "Path of Compassion",
-    image: guru6,
-    description:
-      "He brought solace to the distressed and reminded devotees that divine love is expressed through care and service.",
-    quote: "Compassion is worship in action.",
-  },
-  {
-    id: "07",
-    name: "Sri Guru Name Seven (1900 - 2000)",
-    role: "Voice of Inner Peace",
-    image: guru7,
-    description:
-      "His life reflected inward stillness, wisdom, and the power of spiritual discipline in transforming ordinary lives.",
-    quote: "Peace is the first blessing of wisdom.",
-  },
-  {
-    id: "08",
-    name: "Sri Guru Name Eight (1900 - 2000)",
-    role: "Guide of Seekers",
-    image: guru8,
-    description:
-      "Through guidance and grace, he helped seekers move from confusion toward clarity, devotion, and strength.",
-    quote: "Guidance is grace made visible.",
-  },
-  {
-    id: "09",
-    name: "Sri Guru Name Nine (1900 - 2000)",
-    role: "Living Tradition",
-    image: guru9,
-    description:
-      "He nurtured the lineage with humility and ensured that the sacred teachings remained alive in the hearts of devotees.",
-    quote: "Tradition lives through lived truth.",
-  },
-  {
-    id: "10",
-    name: "Sri Sheshachala Sadguru (1900 - 2000)",
-    role: "Sacred Presence of Anandavana",
-    image: guru10,
-    description:
-      "A deeply revered spiritual presence whose grace, wisdom, and compassionate guidance continue to inspire devotees toward divine nearness.",
-    quote: "In the Sadguru, many hearts find home.",
-  },
+  // {
+  //   id: "06",
+  //   name: "Sri Guru Name Six (1900 - 2000)",
+  //   role: "Path of Compassion",
+  //   image: guru6,
+  //   description:
+  //     "He brought solace to the distressed and reminded devotees that divine love is expressed through care and service.",
+  //   quote: "Compassion is worship in action.",
+  // },
+  // {
+  //   id: "07",
+  //   name: "Sri Guru Name Seven (1900 - 2000)",
+  //   role: "Voice of Inner Peace",
+  //   image: guru7,
+  //   description:
+  //     "His life reflected inward stillness, wisdom, and the power of spiritual discipline in transforming ordinary lives.",
+  //   quote: "Peace is the first blessing of wisdom.",
+  // },
+  // {
+  //   id: "08",
+  //   name: "Sri Guru Name Eight (1900 - 2000)",
+  //   role: "Guide of Seekers",
+  //   image: guru8,
+  //   description:
+  //     "Through guidance and grace, he helped seekers move from confusion toward clarity, devotion, and strength.",
+  //   quote: "Guidance is grace made visible.",
+  // },
+  // {
+  //   id: "09",
+  //   name: "Sri Guru Name Nine (1900 - 2000)",
+  //   role: "Living Tradition",
+  //   image: guru9,
+  //   description:
+  //     "He nurtured the lineage with humility and ensured that the sacred teachings remained alive in the hearts of devotees.",
+  //   quote: "Tradition lives through lived truth.",
+  // },
+  // {
+  //   id: "10",
+  //   name: "Sri Sheshachala Sadguru (1900 - 2000)",
+  //   role: "Sacred Presence of Anandavana",
+  //   image: guru10,
+  //   description:
+  //     "A deeply revered spiritual presence whose grace, wisdom, and compassionate guidance continue to inspire devotees toward divine nearness.",
+  //   quote: "In the Sadguru, many hearts find home.",
+  // },
 ];
 
 const KN_GURUS = [
@@ -170,51 +170,51 @@ const KN_GURUS = [
       "ಸದ್ಗುರು ಪರಂಪರೆಯ ಭಕ್ತಿ ಮತ್ತು ಗೌರವದ ಜೊತೆಗೆ ಜನರನ್ನು ಆತ್ಮಸ್ಥೈರ್ಯ ಮತ್ತು ಸತ್ಚರಿತ್ರೆಯತ್ತ ನಡೆಸಿದ ಸಂತಸ್ವರೂಪರು.",
     quote: "ಅಹಂಕಾರ ಮೌನವಾದಲ್ಲಿ ಭಕ್ತಿ ಬೆಳೆಯುತ್ತದೆ.",
   },
-  {
-    id: "06",
-    name: "ಶ್ರೀ ಗುರು ಹೆಸರು ಆರು (1900 - 2000)",
-    role: "ಕರುಣೆಯ ಮಾರ್ಗ",
-    image: guru6,
-    description:
-      "ಅವರು ದುಃಖಿತರಿಗೆ ಸಾಂತ್ವನ ನೀಡಿದರು ಮತ್ತು ದೈವಿಕ ಪ್ರೀತಿ ಸೇವೆ ಹಾಗೂ ಕಾಳಜಿಯ ರೂಪದಲ್ಲಿ ವ್ಯಕ್ತವಾಗುತ್ತದೆ ಎಂದು ಭಕ್ತರಿಗೆ ನೆನಪಿಸಿದರು.",
-    quote: "ಕರುಣೆ ಕ್ರಿಯೆಯಲ್ಲಿ ವ್ಯಕ್ತವಾಗುವ ಪೂಜೆಯಾಗಿದೆ.",
-  },
-  {
-    id: "07",
-    name: "ಶ್ರೀ ಗುರು ಹೆಸರು ಏಳು (1900 - 2000)",
-    role: "ಆಂತರಿಕ ಶಾಂತಿಯ ಧ್ವನಿ",
-    image: guru7,
-    description:
-      "ಅವರ ಜೀವನವು ಆಂತರಿಕ ನಿಶ್ಶಬ್ದತೆ, ಜ್ಞಾನ ಮತ್ತು ಆಧ್ಯಾತ್ಮಿಕ ಶಿಸ್ತಿನ ಪರಿವರ್ತನಾ ಶಕ್ತಿಯನ್ನು ಪ್ರತಿಬಿಂಬಿಸಿತು.",
-    quote: "ಶಾಂತಿಯೇ ಜ್ಞಾನದ ಮೊದಲ ಆಶೀರ್ವಾದ.",
-  },
-  {
-    id: "08",
-    name: "ಶ್ರೀ ಗುರು ಹೆಸರು ಎಂಟು (1900 - 2000)",
-    role: "ಸಾಧಕರ ಮಾರ್ಗದರ್ಶಕ",
-    image: guru8,
-    description:
-      "ತಮ್ಮ ಮಾರ್ಗದರ್ಶನ ಮತ್ತು ಕೃಪೆಯಿಂದ ಅವರು ಸಾಧಕರನ್ನು ಗೊಂದಲದಿಂದ ಸ್ಪಷ್ಟತೆ, ಭಕ್ತಿ ಮತ್ತು ಶಕ್ತಿಯತ್ತ ಕರೆದೊಯ್ದರು.",
-    quote: "ಮಾರ್ಗದರ್ಶನವೆಂದರೆ ಗೋಚರವಾಗುವ ಕೃಪೆ.",
-  },
-  {
-    id: "09",
-    name: "ಶ್ರೀ ಗುರು ಹೆಸರು ಒಂಬತ್ತು (1900 - 2000)",
-    role: "ಜೀವಂತ ಪರಂಪರೆ",
-    image: guru9,
-    description:
-      "ಅವರು ವಿನಯದಿಂದ ಪರಂಪರೆಯನ್ನು ಪೋಷಿಸಿ, ಪವಿತ್ರ ಬೋಧನೆಗಳು ಭಕ್ತರ ಹೃದಯಗಳಲ್ಲಿ ಜೀವಂತವಾಗಿರಲು ಕಾರಣರಾದರು.",
-    quote: "ಜೀವನದಲ್ಲಿ ಆಚಾರವಾದ ಸತ್ಯದಿಂದಲೇ ಪರಂಪರೆ ಜೀವಂತವಾಗಿರುತ್ತದೆ.",
-  },
-  {
-    id: "10",
-    name: "ಶ್ರೀ ಶೇಷಾಚಲ ಸದ್ಗುರು (1900 - 2000)",
-    role: "ಆನಂದವನದ ಪವಿತ್ರ ಸಾನ್ನಿಧ್ಯ",
-    image: guru10,
-    description:
-      "ಅವರ ಕೃಪೆ, ಜ್ಞಾನ ಮತ್ತು ಕರುಣಾಮಯ ಮಾರ್ಗದರ್ಶನದಿಂದ ಭಕ್ತರು ದೈವಿಕ ಸಮೀಪತೆಯತ್ತ ಇಂದಿಗೂ ಪ್ರೇರಿತರಾಗುತ್ತಿದ್ದಾರೆ.",
-    quote: "ಸದ್ಗುರುವಿನಲ್ಲಿ ಅನೇಕ ಹೃದಯಗಳು ತಮ್ಮ ಮನೆ ಕಂಡುಕೊಳ್ಳುತ್ತವೆ.",
-  },
+  // {
+  //   id: "06",
+  //   name: "ಶ್ರೀ ಗುರು ಹೆಸರು ಆರು (1900 - 2000)",
+  //   role: "ಕರುಣೆಯ ಮಾರ್ಗ",
+  //   image: guru6,
+  //   description:
+  //     "ಅವರು ದುಃಖಿತರಿಗೆ ಸಾಂತ್ವನ ನೀಡಿದರು ಮತ್ತು ದೈವಿಕ ಪ್ರೀತಿ ಸೇವೆ ಹಾಗೂ ಕಾಳಜಿಯ ರೂಪದಲ್ಲಿ ವ್ಯಕ್ತವಾಗುತ್ತದೆ ಎಂದು ಭಕ್ತರಿಗೆ ನೆನಪಿಸಿದರು.",
+  //   quote: "ಕರುಣೆ ಕ್ರಿಯೆಯಲ್ಲಿ ವ್ಯಕ್ತವಾಗುವ ಪೂಜೆಯಾಗಿದೆ.",
+  // },
+  // {
+  //   id: "07",
+  //   name: "ಶ್ರೀ ಗುರು ಹೆಸರು ಏಳು (1900 - 2000)",
+  //   role: "ಆಂತರಿಕ ಶಾಂತಿಯ ಧ್ವನಿ",
+  //   image: guru7,
+  //   description:
+  //     "ಅವರ ಜೀವನವು ಆಂತರಿಕ ನಿಶ್ಶಬ್ದತೆ, ಜ್ಞಾನ ಮತ್ತು ಆಧ್ಯಾತ್ಮಿಕ ಶಿಸ್ತಿನ ಪರಿವರ್ತನಾ ಶಕ್ತಿಯನ್ನು ಪ್ರತಿಬಿಂಬಿಸಿತು.",
+  //   quote: "ಶಾಂತಿಯೇ ಜ್ಞಾನದ ಮೊದಲ ಆಶೀರ್ವಾದ.",
+  // },
+  // {
+  //   id: "08",
+  //   name: "ಶ್ರೀ ಗುರು ಹೆಸರು ಎಂಟು (1900 - 2000)",
+  //   role: "ಸಾಧಕರ ಮಾರ್ಗದರ್ಶಕ",
+  //   image: guru8,
+  //   description:
+  //     "ತಮ್ಮ ಮಾರ್ಗದರ್ಶನ ಮತ್ತು ಕೃಪೆಯಿಂದ ಅವರು ಸಾಧಕರನ್ನು ಗೊಂದಲದಿಂದ ಸ್ಪಷ್ಟತೆ, ಭಕ್ತಿ ಮತ್ತು ಶಕ್ತಿಯತ್ತ ಕರೆದೊಯ್ದರು.",
+  //   quote: "ಮಾರ್ಗದರ್ಶನವೆಂದರೆ ಗೋಚರವಾಗುವ ಕೃಪೆ.",
+  // },
+  // {
+  //   id: "09",
+  //   name: "ಶ್ರೀ ಗುರು ಹೆಸರು ಒಂಬತ್ತು (1900 - 2000)",
+  //   role: "ಜೀವಂತ ಪರಂಪರೆ",
+  //   image: guru9,
+  //   description:
+  //     "ಅವರು ವಿನಯದಿಂದ ಪರಂಪರೆಯನ್ನು ಪೋಷಿಸಿ, ಪವಿತ್ರ ಬೋಧನೆಗಳು ಭಕ್ತರ ಹೃದಯಗಳಲ್ಲಿ ಜೀವಂತವಾಗಿರಲು ಕಾರಣರಾದರು.",
+  //   quote: "ಜೀವನದಲ್ಲಿ ಆಚಾರವಾದ ಸತ್ಯದಿಂದಲೇ ಪರಂಪರೆ ಜೀವಂತವಾಗಿರುತ್ತದೆ.",
+  // },
+  // {
+  //   id: "10",
+  //   name: "ಶ್ರೀ ಶೇಷಾಚಲ ಸದ್ಗುರು (1900 - 2000)",
+  //   role: "ಆನಂದವನದ ಪವಿತ್ರ ಸಾನ್ನಿಧ್ಯ",
+  //   image: guru10,
+  //   description:
+  //     "ಅವರ ಕೃಪೆ, ಜ್ಞಾನ ಮತ್ತು ಕರುಣಾಮಯ ಮಾರ್ಗದರ್ಶನದಿಂದ ಭಕ್ತರು ದೈವಿಕ ಸಮೀಪತೆಯತ್ತ ಇಂದಿಗೂ ಪ್ರೇರಿತರಾಗುತ್ತಿದ್ದಾರೆ.",
+  //   quote: "ಸದ್ಗುರುವಿನಲ್ಲಿ ಅನೇಕ ಹೃದಯಗಳು ತಮ್ಮ ಮನೆ ಕಂಡುಕೊಳ್ಳುತ್ತವೆ.",
+  // },
 ];
 
 export default function GuruParampare() {
