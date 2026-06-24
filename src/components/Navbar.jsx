@@ -84,14 +84,14 @@ export default function Navbar() {
             </NavLink>
           ))}
 
-          <button
+          {/* <button
             type="button"
             className={styles.langToggle}
             onClick={switchLanguage}
             aria-label={`Switch language to ${otherLang}`}
           >
             {t("languageToggle")}
-          </button>
+          </button> */}
         </nav>
 
         <button
@@ -116,13 +116,13 @@ export default function Navbar() {
           </NavLink>
         ))}
 
-        <button
+        {/* <button
           type="button"
           className={styles.mobileLangToggle}
           onClick={switchLanguage}
         >
           {t("languageToggle")}
-        </button>
+        </button> */}
       </div>
     </header>
   );
