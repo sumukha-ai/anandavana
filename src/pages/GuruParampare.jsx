@@ -34,11 +34,11 @@ const KN_PAGE_CONTENT = {
 const EN_GURUS = [
   {
     id: "01",
-    name: "Shri Sheshachala Swamy (1848–1918)",
+    name: "Shri Sheshachala Sadguru (1848–1918)",
     role: "Founding Sadguru",
     image: guru1,
     description:
-      "Revered as a sadguru and spiritual luminary, Shri Sheshachala Swamy was born in 1848 in Agadi near Haveri and is remembered for his deep devotion, austere life, and spiritual leadership. He traveled widely across South India, practiced meditation and bhiksha, and established Anandavana in 1904 as a peaceful center for prayer, Vedic study, japa, and discipleship. He guided seekers with truth, devotion, and detachment until his mahasamadhi in 1918.",
+      "Revered as a sadguru and spiritual luminary, Shri Sheshachala Sadguru was born in 1848 in Agadi near Haveri and is remembered for his deep devotion, austere life, and spiritual leadership. He traveled widely across South India, practiced meditation and bhiksha, and established Anandavana in 1904 as a peaceful center for prayer, Vedic study, japa, and discipleship. He guided seekers with truth, devotion, and detachment until his mahasamadhi in 1918.",
     quote: "Truth, devotion, and detachment lead the seeker home.",
   },
   {
