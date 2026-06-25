@@ -9,6 +9,7 @@ export const translations = {
       sevaBooking: "Online Seva Booking",
       publications: "Publications",
       gallery: "Gallery",
+      sadguruVamshaVruksha: "Sadguru Vamsha Vruksha",
       languageToggle: "ಕನ್ನಡ",
     },
     footer: {
@@ -32,6 +33,7 @@ export const translations = {
       sevaBooking: "ಆನ್‌ಲೈನ್ ಸೇವಾ ಬುಕ್ಕಿಂಗ್",
       publications: "ಪ್ರಕಾಶನಗಳು",
       gallery: "ಗ್ಯಾಲರಿ",
+      sadguruVamshaVruksha: "ಸದ್ಗುರು ವಂಶ ವೃಕ್ಷ",
       languageToggle: "English",
     },
     footer: {

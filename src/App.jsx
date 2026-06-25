@@ -10,6 +10,7 @@ import GuruParampare from "./pages/GuruParampare";
 import Institutions from "./pages/Institutions";
 import SevaBooking from "./pages/SevaBooking";
 import Publications from "./pages/Publications";
+import SadguruVamshaVruksha from "./pages/SadguruVamshaVruksha/SadguruVamshaVruksha";
 import styles from "./App.module.css";
 
 function AppLayout() {
@@ -24,6 +25,7 @@ function AppLayout() {
           <Route path="events" element={<Events />} />
           <Route path="gallery" element={<Gallery />} />
           <Route path="guru-parampare" element={<GuruParampare />} />
+          <Route path="sadguru-vamsha-vruksha" element={<SadguruVamshaVruksha />} />
           <Route path="institutions" element={<Institutions />} />
           <Route path="seva-booking" element={<SevaBooking />} />
           <Route path="publications" element={<Publications />} />

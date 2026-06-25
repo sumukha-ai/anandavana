@@ -19,6 +19,7 @@ export default function Navbar() {
   const navItems = useMemo(
     () => [
       { to: `/${lang}/guru-parampare`, label: t("guruParampare") },
+      { to: `/${lang}/sadguru-vamsha-vruksha`, label: t("sadguruVamshaVruksha") },
       { to: `/${lang}/institutions`, label: t("institutions") },
       { to: `/${lang}/events`, label: t("events") },
       { to: `/${lang}/seva-booking`, label: t("sevaBooking") },
