@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styles from "./AboutSection.module.css";
 import aboutImg from "../../../assets/bg5.JPG";

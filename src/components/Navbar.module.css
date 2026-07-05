@@ -334,3 +334,41 @@
   margin-top: 1rem;
   width: 100%;
 }
+.authButton {
+  min-height: 2.45rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 8px;
+  color: var(--nav-text);
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 0.86rem;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
+.scrolled .authButton {
+  border-color: rgba(139, 107, 71, 0.22);
+  background: rgba(212, 175, 55, 0.12);
+}
+
+.authButton:hover,
+.authButtonActive {
+  border-color: #d4af37;
+  background: #d4af37;
+  color: #3e2723;
+}
+
+.mobileAuthButton {
+  width: calc(100% - 2.4rem);
+  min-height: 2.85rem;
+  margin: 0.8rem 1.2rem 0;
+  border-radius: 8px;
+  background: #3e2723;
+  color: #fff8e7;
+  font-weight: 800;
+}

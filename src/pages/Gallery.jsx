@@ -4,11 +4,11 @@ import styles from './Gallery.module.css';
 
 export default function Gallery() {
   const images = [
-    { id: 1, src: "https://images.unsplash.com/photo-1545620986-e2a1491cf2d6?auto=format&fit=crop&q=80&w=800", title: "Temple View" },
-    { id: 2, src: "https://images.unsplash.com/photo-1514395462725-fb4566210144?auto=format&fit=crop&q=80&w=800", title: "Rituals & Ceremonies" },
-    { id: 3, src: "https://images.unsplash.com/photo-1542385151-efd9000785a0?auto=format&fit=crop&q=80&w=800", title: "Devotee Gatherings" },
-    { id: 4, src: "https://images.unsplash.com/photo-1582260655648-52fb58f6ec0e?auto=format&fit=crop&q=80&w=800", title: "Evening Lamps" },
-    { id: 5, src: "https://images.unsplash.com/photo-1601614213425-45ea0553bb89?auto=format&fit=crop&q=80&w=800", title: "Tranquil Surroundings" }
+    { id: 1, src: "https://i.ibb.co/ynzXxDnY/AGADI-PH-CAM-15-1.jpg", title: "Temple View" },
+    { id: 2, src: "https://i.ibb.co/SDj1pf9c/AGADI-PH-CAM-13-1.jpg", title: "Paatashaale" },
+    { id: 3, src: "https://i.ibb.co/x87ryg06/AGADI-PH-CAM-9.jpg", title: "Devotee Gatherings" },
+    { id: 4, src: "https://i.ibb.co/23mNPgvk/Copy-of-DSC08814.jpg", title: "Shri Chidambara Murthy Chakravarthi" },
+    { id: 5, src: "https://i.ibb.co/chw2XQcX/DSC-1359.jpg", title: "Entrance" }
   ];
 
   return (

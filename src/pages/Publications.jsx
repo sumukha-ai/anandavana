@@ -1,4 +1,3 @@
-import React from "react";
 import PageHero from "../components/PageHero/PageHero";
 import bgImg from "../../assets/bg1.jpeg";
 import styles from "./Publications.module.css";

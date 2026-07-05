@@ -1,20 +1,20 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { Link, NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect, useMemo } from "react";
+import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
 import styles from "./Navbar.module.css";
 import logoImg from "../../assets/logo.png";
+import { getRoleHomePath } from "../auth/access";
+import { useAuth } from "../auth/AuthContext";
 import { normalizeLang } from "../i18n/config";
 import { useI18n } from "../i18n/useI18n";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const location = useLocation();
   const navigate = useNavigate();
   const { lang: rawLang } = useParams();
   const lang = normalizeLang(rawLang);
   const { t } = useI18n("navbar");
-
-  const otherLang = lang === "en" ? "kn" : "en";
+  const { isAuthenticated, user, logout } = useAuth();
 
   const navItems = useMemo(
     () => [
@@ -29,6 +29,14 @@ export default function Navbar() {
     [lang, t]
   );
 
+  const roleNavItem = useMemo(() => {
+    if (!isAuthenticated) return null;
+    return {
+      to: getRoleHomePath(user?.role, lang),
+      label: user?.role || "Dashboard",
+    };
+  }, [isAuthenticated, lang, user?.role]);
+
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
@@ -36,23 +44,13 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [location.pathname]);
-
+  const closeMenu = () => setIsMobileMenuOpen(false);
   const toggleMenu = () => setIsMobileMenuOpen((prev) => !prev);
 
-  const switchLanguage = () => {
-    const currentPath = location.pathname;
-    const segments = currentPath.split("/").filter(Boolean);
-
-    if (segments.length === 0) {
-      navigate(`/${otherLang}`);
-      return;
-    }
-
-    segments[0] = otherLang;
-    navigate(`/${segments.join("/")}${location.search}${location.hash}`);
+  const handleLogout = () => {
+    closeMenu();
+    logout();
+    navigate(`/${lang}`);
   };
 
   return (
@@ -85,14 +83,31 @@ export default function Navbar() {
             </NavLink>
           ))}
 
-          {/* <button
-            type="button"
-            className={styles.langToggle}
-            onClick={switchLanguage}
-            aria-label={`Switch language to ${otherLang}`}
-          >
-            {t("languageToggle")}
-          </button> */}
+          {roleNavItem ? (
+            <NavLink
+              to={roleNavItem.to}
+              className={({ isActive }) =>
+                isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+              }
+            >
+              {roleNavItem.label}
+            </NavLink>
+          ) : null}
+
+          {isAuthenticated ? (
+            <button type="button" className={styles.authButton} onClick={handleLogout}>
+              Logout
+            </button>
+          ) : (
+            <NavLink
+              to={`/${lang}/login`}
+              className={({ isActive }) =>
+                isActive ? `${styles.authButton} ${styles.authButtonActive}` : styles.authButton
+              }
+            >
+              Login
+            </NavLink>
+          )}
         </nav>
 
         <button
@@ -112,18 +127,26 @@ export default function Navbar() {
         className={`${styles.mobileNav} ${isMobileMenuOpen ? styles.mobileNavOpen : ""}`}
       >
         {navItems.map((item) => (
-          <NavLink key={item.to} to={item.to} className={styles.mobileNavLink}>
+          <NavLink key={item.to} to={item.to} className={styles.mobileNavLink} onClick={closeMenu}>
             {item.label}
           </NavLink>
         ))}
 
-        {/* <button
-          type="button"
-          className={styles.mobileLangToggle}
-          onClick={switchLanguage}
-        >
-          {t("languageToggle")}
-        </button> */}
+        {roleNavItem ? (
+          <NavLink to={roleNavItem.to} className={styles.mobileNavLink} onClick={closeMenu}>
+            {roleNavItem.label}
+          </NavLink>
+        ) : null}
+
+        {isAuthenticated ? (
+          <button type="button" className={styles.mobileAuthButton} onClick={handleLogout}>
+            Logout
+          </button>
+        ) : (
+          <NavLink to={`/${lang}/login`} className={styles.mobileNavLink} onClick={closeMenu}>
+            Login
+          </NavLink>
+        )}
       </div>
     </header>
   );

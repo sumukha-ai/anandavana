@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styles from "./Hero.module.css";
 import bg1 from "../../../assets/anandavana_full_view.jpg.jpeg";

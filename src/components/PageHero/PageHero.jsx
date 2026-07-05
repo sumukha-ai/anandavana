@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./PageHero.module.css";
 import { useI18n } from "../../i18n/useI18n";
 

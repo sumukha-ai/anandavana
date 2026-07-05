@@ -1,4 +1,3 @@
-import React from "react";
 import { useParams } from "react-router-dom";
 import PageHero from "../../components/PageHero/PageHero";
 import bgImg from "../../../assets/pancyatana.jpg.jpeg";

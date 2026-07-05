@@ -1,4 +1,3 @@
-import React from "react";
 import { useParams } from "react-router-dom";
 import styles from "./ContactSection.module.css";
 import { MapPin, Phone, Mail } from "lucide-react";

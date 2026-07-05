@@ -1,0 +1,155 @@
+.loginPage {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 8rem 1.25rem 4rem;
+  background:
+    linear-gradient(rgba(62, 39, 35, 0.34), rgba(62, 39, 35, 0.18)),
+    url("../../assets/bg4.JPG") center / cover no-repeat;
+}
+
+.loginPanel {
+  width: min(960px, 100%);
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1fr);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 8px;
+  background: rgba(249, 246, 240, 0.94);
+  box-shadow: 0 28px 70px rgba(35, 24, 20, 0.24);
+  backdrop-filter: blur(18px);
+}
+
+.copyBlock {
+  padding: 3rem;
+  color: #fff8e7;
+  background: linear-gradient(145deg, rgba(62, 39, 35, 0.94), rgba(139, 90, 43, 0.88));
+}
+
+.kicker {
+  display: inline-flex;
+  margin-bottom: 1rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #d4af37;
+}
+
+.copyBlock h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.3rem, 6vw, 4.2rem);
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.copyBlock p {
+  max-width: 27rem;
+  color: rgba(255, 248, 231, 0.84);
+  font-size: 1rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 3rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  color: var(--text-main);
+  font-weight: 700;
+}
+
+.inputWrap {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 3.2rem;
+  padding: 0 0.95rem;
+  border: 1px solid rgba(139, 107, 71, 0.28);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--text-muted);
+}
+
+.inputWrap:focus-within {
+  border-color: #d4af37;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+}
+
+.inputWrap input {
+  width: 100%;
+  min-width: 0;
+  outline: none;
+  color: var(--text-main);
+  background: transparent;
+}
+
+.error {
+  padding: 0.8rem 0.9rem;
+  border: 1px solid rgba(176, 42, 42, 0.22);
+  border-radius: 8px;
+  background: rgba(176, 42, 42, 0.08);
+  color: #9f2323;
+  font-weight: 700;
+}
+
+.submitButton {
+  min-height: 3.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  border-radius: 8px;
+  background: #3e2723;
+  color: #fff8e7;
+  font-weight: 800;
+  transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+}
+
+.submitButton:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(62, 39, 35, 0.2);
+}
+
+.submitButton:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+@media (max-width: 760px) {
+  .loginPage {
+    padding-top: 6.5rem;
+  }
+
+  .loginPanel {
+    grid-template-columns: 1fr;
+  }
+
+  .copyBlock,
+  .form {
+    padding: 2rem;
+  }
+}
+
+.switchText {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.switchText a {
+  color: #8b5a2b;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.18em;
+}
+
+.switchText a:hover {
+  color: #3e2723;
+}
