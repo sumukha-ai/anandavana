@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
-import { Sparkles, HeartHandshake, ShieldCheck } from "lucide-react";
 import styles from "./JourneyHero.module.css";
 import guruImg from "../../../assets/sheshachalaru_lingu.jpg.jpeg";
 
@@ -209,74 +208,25 @@ const FRAME_IMAGES = [
   frame0171, frame0172, frame0173, frame0174, frame0175, frame0176, frame0177, frame0178, frame0179,
 ];
 
+
 const CONTENT = {
   en: {
     topLine: "SRI KSHETRA",
     bottomLine: "ANANDAVANA",
     guruAlt: "Guru of Sri Kshetra Anandavana",
-    kicker: "About Section",
-    title: "The spirit of Anandavana",
-    subtitle:
-      "A holy space where compassion, guidance, peace, and divine nearness are deeply felt.",
-    contentLabel: "Divine Abode",
-    mainText:
-      "Anandavana, the sacred abode of Sri Sheshachala Sadguru, is a unique and holy place. It is known for offering Annadana and spiritual wisdom to all. It is a place where spiritual seekers find guidance and progress, and where thousands of devotees are inspired to move closer to God and Divinity. The Gurus of this land provide comfort and protection to those in distress, helping weak and troubled people become strong and confident.",
-    points: [
-      {
-        title: "Spiritual Guidance",
-        text: "Seekers find direction, progress, and a deeper path toward divine awareness.",
-        icon: Sparkles,
-      },
-      {
-        title: "Annadana & Compassion",
-        text: "Service, nourishment, and care are offered with humility and devotion to all.",
-        icon: HeartHandshake,
-      },
-      {
-        title: "Hope & Protection",
-        text: "Those carrying sorrow and struggle find reassurance, strength, and peace in the Sadguru’s presence.",
-        icon: ShieldCheck,
-      },
-    ],
-    outro: "Welcome inside Anandavana",
+    outro: "Welcome To Anandavana",
   },
   kn: {
     topLine: "ಶ್ರೀ ಕ್ಷೇತ್ರ",
     bottomLine: "ಆನಂದವನ",
     guruAlt: "ಶ್ರೀ ಕ್ಷೇತ್ರ ಆನಂದವನದ ಗುರು",
-    kicker: "ಸಂಸ್ಥಾನದ ಬಗ್ಗೆ",
-    title: "ಆನಂದವನದ ಆತ್ಮಸ್ಪರ್ಶಿ ಮಹಿಮೆ",
-    subtitle:
-      "ಕರುಣೆ, ಮಾರ್ಗದರ್ಶನ, ಶಾಂತಿ ಮತ್ತು ದೈವಿಕ ಸಾನ್ನಿಧ್ಯವು ಆಳವಾಗಿ ಅನುಭವವಾಗುವ ಪವಿತ್ರ ತಾಣ.",
-    contentLabel: "ದಿವ್ಯ ನಿವಾಸ",
-    mainText:
-      "ಶ್ರೀ ಶೇಷಾಚಲ ಸದ್ಗುರುಗಳ ಪವಿತ್ರ ನಿವಾಸವಾದ ಆನಂದವನವು ವಿಶಿಷ್ಟವಾದ ದೈವಿಕ ಕ್ಷೇತ್ರವಾಗಿದೆ. ಇಲ್ಲಿ ಎಲ್ಲರಿಗೂ ಅನ್ನದಾನ ಮತ್ತು ಆಧ್ಯಾತ್ಮಿಕ ಜ್ಞಾನವನ್ನು ದಾನ ಮಾಡಲಾಗುತ್ತದೆ. ಇದು ಆಧ್ಯಾತ್ಮಿಕ ಸಾಧಕರು ಮಾರ್ಗದರ್ಶನ ಮತ್ತು ಆತ್ಮೋನ್ನತಿಯನ್ನು ಪಡೆಯುವ ಸ್ಥಳವಾಗಿದ್ದು, ಸಾವಿರಾರು ಭಕ್ತರು ದೇವತ್ವದತ್ತ ಇನ್ನಷ್ಟು ಸಮೀಪಗೊಳ್ಳಲು ಪ್ರೇರಣೆಯನ್ನು ಪಡೆಯುವ ಪವಿತ್ರ ನೆಲೆಯಾಗಿದೆ.",
-    points: [
-      {
-        title: "ಆಧ್ಯಾತ್ಮಿಕ ಮಾರ್ಗದರ್ಶನ",
-        text: "ಸಾಧಕರು ದೈವಿಕ ಚೇತನದತ್ತ ಸಾಗಲು ದಿಕ್ಕು, ಬೆಳವಣಿಗೆ ಮತ್ತು ಗಂಭೀರವಾದ ಮಾರ್ಗವನ್ನು ಇಲ್ಲಿ ಕಂಡುಕೊಳ್ಳುತ್ತಾರೆ.",
-        icon: Sparkles,
-      },
-      {
-        title: "ಅನ್ನದಾನ ಮತ್ತು ಕರುಣೆ",
-        text: "ಸೇವೆ, ಆಹಾರ ಮತ್ತು ಕಾಳಜಿಯನ್ನು ವಿನಯಭಾವದಿಂದ ಹಾಗೂ ಭಕ್ತಿಯಿಂದ ಎಲ್ಲರಿಗೂ ಅರ್ಪಿಸಲಾಗುತ್ತದೆ.",
-        icon: HeartHandshake,
-      },
-      {
-        title: "ಆಶೆ ಮತ್ತು ರಕ್ಷಣೆ",
-        text: "ದುಃಖ ಮತ್ತು ಹೋರಾಟವನ್ನು ಹೊತ್ತುಕೊಂಡವರು ಸದ್ಗುರುವಿನ ಸಾನ್ನಿಧ್ಯದಲ್ಲಿ ಧೈರ್ಯ, ಶಕ್ತಿ ಮತ್ತು ಶಾಂತಿಯನ್ನು ಪಡೆಯುತ್ತಾರೆ.",
-        icon: ShieldCheck,
-      },
-    ],
     outro: "ಆನಂದವನದ ಒಳಗಡೆಗೆ ಸ್ವಾಗತ",
   },
 };
 
 const STAGES = [
-  { key: "hero", start: 0, end: 0.18 },
-  { key: "intro", start: 0.18, end: 0.43 },
-  { key: "points", start: 0.43, end: 0.84 },
-  { key: "outro", start: 0.84, end: 1 },
+  { key: "hero", start: 0, end: 0.5 },
+  { key: "outro", start: 0.5, end: 1 },
 ];
 
 export default function JourneyHero() {
@@ -438,7 +388,7 @@ export default function JourneyHero() {
         scrollTrigger: {
           trigger: wrapper,
           start: "top top",
-          end: isMobile ? "+=1800" : "bottom bottom",
+          end: "bottom bottom", /* FIXED: Removed the isMobile ? '+=1000' gap generator */
           pin: pinTarget,
           scrub: isMobile ? 0.35 : 0.55,
           anticipatePin: 1,
@@ -478,28 +428,15 @@ export default function JourneyHero() {
   }, [isReducedMotion]);
 
   return (
-    <section
-      ref={wrapperRef}
-      className={styles.scrollWrapper}
-      aria-label="Journey through Anandavana"
-    >
+    <section ref={wrapperRef} className={styles.scrollWrapper} aria-label="Journey through Anandavana">
       <div className={styles.guruBadge} aria-hidden="true">
         <div className={styles.guruCircle}>
-          <img
-            src={guruImg}
-            alt={content.guruAlt}
-            className={styles.guruImage}
-          />
+          <img src={guruImg} alt={content.guruAlt} className={styles.guruImage} />
         </div>
       </div>
 
       <div ref={pinRef} className={styles.pinStage}>
-        <canvas
-          ref={canvasRef}
-          className={styles.bgCanvas}
-          aria-hidden="true"
-        />
-
+        <canvas ref={canvasRef} className={styles.bgCanvas} aria-hidden="true" />
         <div className={styles.overlay} />
         <div className={styles.texture} />
 
@@ -528,50 +465,6 @@ export default function JourneyHero() {
           <div className={styles.heroContent}>
             <h2 className={styles.topLine}>{content.topLine}</h2>
             <h1 className={styles.bottomLine}>{content.bottomLine}</h1>
-          </div>
-        </div>
-
-        <div
-          className={`${styles.contentBlock} ${styles.introBlock} ${
-            activeStage === "intro" ? styles.visible : styles.hidden
-          }`}
-          lang={language}
-        >
-          <div className={styles.introContent}>
-            <span className={styles.kicker}>{content.kicker}</span>
-            <h2 className={styles.aboutTitle}>{content.title}</h2>
-            <p className={styles.subtitle}>{content.subtitle}</p>
-          </div>
-        </div>
-
-        <div
-          className={`${styles.contentBlock} ${styles.pointsBlock} ${
-            activeStage === "points" ? styles.visible : styles.hidden
-          }`}
-          lang={language}
-        >
-          <div className={styles.textCard}>
-            <div className={styles.contentIntro}>
-              <span className={styles.contentLabel}>{content.contentLabel}</span>
-              <p className={styles.mainText}>{content.mainText}</p>
-            </div>
-
-            <div className={styles.pointsGrid}>
-              {content.points.map((point, index) => {
-                const Icon = point.icon;
-                return (
-                  <article className={styles.pointCard} key={index}>
-                    <div className={styles.iconWrap}>
-                      <Icon size={20} strokeWidth={1.8} />
-                    </div>
-                    <div className={styles.pointBody}>
-                      <h3 className={styles.pointTitle}>{point.title}</h3>
-                      <p className={styles.pointText}>{point.text}</p>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
           </div>
         </div>
 

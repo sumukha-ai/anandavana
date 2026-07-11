@@ -16,7 +16,7 @@ export default function Gallery() {
       <PageHero title="Photo Gallery" bgImage={bgImg} />
       <div className={styles['gallery-container']}>
         <div className={styles['gallery-header']}>
-          <p>Glimpses of divine moments, celebrations, and serenity at SriKshetra Anandavana Agadi.</p>
+          <p>Glimpses of divine moments, celebrations, and serenity at Sri Kshetra Anandavana Agadi.</p>
         </div>
         
         <div className={styles['masonry-grid']}>

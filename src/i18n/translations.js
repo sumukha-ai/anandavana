@@ -13,7 +13,7 @@ export const translations = {
       languageToggle: "ಕನ್ನಡ",
     },
     footer: {
-      copyright: "SriKshetra Anandavana Agadi. All rights reserved.",
+      copyright: "Sri Kshetra Anandavana Agadi. All rights reserved.",
     },
     pageHero: {
       kicker: "Sri Sheshachala Sadguru Samsthana",
@@ -37,7 +37,7 @@ export const translations = {
       languageToggle: "English",
     },
     footer: {
-      copyright: "ಶ್ರೀಕ್ಷೇತ್ರ ಆನಂದವನ ಅಗಡಿ. ಎಲ್ಲ ಹಕ್ಕುಗಳು ಕಾಯ್ದಿರಿಸಲಾಗಿದೆ.",
+      copyright: "ಶ್ರೀ ಕ್ಷೇತ್ರ ಆನಂದವನ ಅಗಡಿ. ಎಲ್ಲ ಹಕ್ಕುಗಳು ಕಾಯ್ದಿರಿಸಲಾಗಿದೆ.",
     },
     pageHero: {
       kicker: "ಶ್ರೀ ಶೇಷಾಚಲ ಸದ್ಗುರು ಸಂಸ್ಥಾನ",
