@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
@@ -188,26 +188,25 @@ import frame0179 from "../../../assets/frames/frame-0179.webp";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// PUT ALL IMPORTED FRAMES HERE IN ORDER
 const FRAME_IMAGES = [
-  frame0001,frame0002,frame0003,frame0004,frame0005,frame0006,frame0007,frame0008,frame0009,frame0010,
-  frame0011,frame0012,frame0013,frame0014,frame0015,frame0016,frame0017,frame0018,frame0019,frame0020,
-  frame0021,frame0022,frame0023,frame0024,frame0025,frame0026,frame0027,frame0028,frame0029,frame0030,
-  frame0031,frame0032,frame0033,frame0034,frame0035,frame0036,frame0037,frame0038,frame0039,frame0040,
-  frame0041,frame0042,frame0043,frame0044,frame0045,frame0046,frame0047,frame0048,frame0049,frame0050,
-  frame0051,frame0052,frame0053,frame0054,frame0055,frame0056,frame0057,frame0058,frame0059,frame0060,
-  frame0061,frame0062,frame0063,frame0064,frame0065,frame0066,frame0067,frame0068,frame0069,frame0070,
-  frame0071,frame0072,frame0073,frame0074,frame0075,frame0076,frame0077,frame0078,frame0079,frame0080,
-  frame0081,frame0082,frame0083,frame0084,frame0085,frame0086,frame0087,frame0088,frame0089,frame0090,
-  frame0091,frame0092,frame0093,frame0094,frame0095,frame0096,frame0097,frame0098,frame0099,frame0100,
-  frame0101,frame0102,frame0103,frame0104,frame0105,frame0106,frame0107,frame0108,frame0109,frame0110,
-  frame0111,frame0112,frame0113,frame0114,frame0115,frame0116,frame0117,frame0118,frame0119,frame0120,
-  frame0121,frame0122,frame0123,frame0124,frame0125,frame0126,frame0127,frame0128,frame0129,frame0130,
-  frame0131,frame0132,frame0133,frame0134,frame0135,frame0136,frame0137,frame0138,frame0139,frame0140,
-  frame0141,frame0142,frame0143,frame0144,frame0145,frame0146,frame0147,frame0148,frame0149,frame0150,
-  frame0151,frame0152,frame0153,frame0154,frame0155,frame0156,frame0157,frame0158,frame0159,frame0160,
-  frame0161,frame0162,frame0163,frame0164,frame0165,frame0166,frame0167,frame0168,frame0169,frame0170,
-  frame0171,frame0172,frame0173,frame0174,frame0175,frame0176,frame0177,frame0178,frame0179
+  frame0001, frame0002, frame0003, frame0004, frame0005, frame0006, frame0007, frame0008, frame0009, frame0010,
+  frame0011, frame0012, frame0013, frame0014, frame0015, frame0016, frame0017, frame0018, frame0019, frame0020,
+  frame0021, frame0022, frame0023, frame0024, frame0025, frame0026, frame0027, frame0028, frame0029, frame0030,
+  frame0031, frame0032, frame0033, frame0034, frame0035, frame0036, frame0037, frame0038, frame0039, frame0040,
+  frame0041, frame0042, frame0043, frame0044, frame0045, frame0046, frame0047, frame0048, frame0049, frame0050,
+  frame0051, frame0052, frame0053, frame0054, frame0055, frame0056, frame0057, frame0058, frame0059, frame0060,
+  frame0061, frame0062, frame0063, frame0064, frame0065, frame0066, frame0067, frame0068, frame0069, frame0070,
+  frame0071, frame0072, frame0073, frame0074, frame0075, frame0076, frame0077, frame0078, frame0079, frame0080,
+  frame0081, frame0082, frame0083, frame0084, frame0085, frame0086, frame0087, frame0088, frame0089, frame0090,
+  frame0091, frame0092, frame0093, frame0094, frame0095, frame0096, frame0097, frame0098, frame0099, frame0100,
+  frame0101, frame0102, frame0103, frame0104, frame0105, frame0106, frame0107, frame0108, frame0109, frame0110,
+  frame0111, frame0112, frame0113, frame0114, frame0115, frame0116, frame0117, frame0118, frame0119, frame0120,
+  frame0121, frame0122, frame0123, frame0124, frame0125, frame0126, frame0127, frame0128, frame0129, frame0130,
+  frame0131, frame0132, frame0133, frame0134, frame0135, frame0136, frame0137, frame0138, frame0139, frame0140,
+  frame0141, frame0142, frame0143, frame0144, frame0145, frame0146, frame0147, frame0148, frame0149, frame0150,
+  frame0151, frame0152, frame0153, frame0154, frame0155, frame0156, frame0157, frame0158, frame0159, frame0160,
+  frame0161, frame0162, frame0163, frame0164, frame0165, frame0166, frame0167, frame0168, frame0169, frame0170,
+  frame0171, frame0172, frame0173, frame0174, frame0175, frame0176, frame0177, frame0178, frame0179,
 ];
 
 const CONTENT = {
@@ -293,12 +292,26 @@ export default function JourneyHero() {
   const [sequenceReady, setSequenceReady] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
 
+  const isReducedMotion = useMemo(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    []
+  );
+
   useEffect(() => {
     const wrapper = wrapperRef.current;
     const pinTarget = pinRef.current;
     const canvas = canvasRef.current;
 
     if (!wrapper || !pinTarget || !canvas || FRAME_IMAGES.length === 0) return;
+    if (isReducedMotion) {
+      const readyTimer = setTimeout(() => {
+        setSequenceReady(true);
+        setActiveStage("hero");
+      }, 0);
+      return () => clearTimeout(readyTimer);
+    }
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
@@ -311,6 +324,7 @@ export default function JourneyHero() {
 
     const images = new Array(FRAME_IMAGES.length);
     const playhead = { frame: 0 };
+    const isMobile = window.innerWidth < 768;
 
     const setStageSafely = (progress) => {
       const nextStage =
@@ -322,8 +336,13 @@ export default function JourneyHero() {
         clearTimeout(stageTimer);
         stageTimer = setTimeout(() => {
           if (!destroyed) setActiveStage(nextStage);
-        }, 30);
+        }, 24);
       }
+    };
+
+    const getDpr = () => {
+      const base = window.devicePixelRatio || 1;
+      return Math.min(base, window.innerWidth < 768 ? 1.35 : 2);
     };
 
     const drawCoverFrame = (img) => {
@@ -338,8 +357,8 @@ export default function JourneyHero() {
       const imageAspect = img.naturalWidth / img.naturalHeight;
       const canvasAspect = canvasWidth / canvasHeight;
 
-      let drawWidth = 0;
-      let drawHeight = 0;
+      let drawWidth;
+      let drawHeight;
       let offsetX = 0;
       let offsetY = 0;
 
@@ -356,29 +375,6 @@ export default function JourneyHero() {
       ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
     };
 
-    const drawContainFrame = (img) => {
-      if (!img) return;
-
-      const rect = canvas.getBoundingClientRect();
-      const canvasWidth = rect.width;
-      const canvasHeight = rect.height;
-
-      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-
-      const scale = Math.min(
-        canvasWidth / img.naturalWidth,
-        canvasHeight / img.naturalHeight
-      );
-
-  const drawWidth = img.naturalWidth * scale;
-  const drawHeight = img.naturalHeight * scale;
-
-  const offsetX = (canvasWidth - drawWidth) / 2;
-  const offsetY = (canvasHeight - drawHeight) / 2;
-
-  ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
-};
-
     const drawFrame = (index) => {
       const img = images[Math.round(index)];
       if (!img) return;
@@ -387,7 +383,7 @@ export default function JourneyHero() {
 
     const resizeCanvas = () => {
       const rect = canvas.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = getDpr();
 
       canvas.width = Math.round(rect.width * dpr);
       canvas.height = Math.round(rect.height * dpr);
@@ -406,6 +402,7 @@ export default function JourneyHero() {
           return new Promise((resolve, reject) => {
             const img = new Image();
             img.src = src;
+            img.decoding = "async";
 
             img.onload = () => {
               images[index] = img;
@@ -441,9 +438,9 @@ export default function JourneyHero() {
         scrollTrigger: {
           trigger: wrapper,
           start: "top top",
-          end: "bottom bottom",
+          end: isMobile ? "+=1800" : "bottom bottom",
           pin: pinTarget,
-          scrub: 0.55,
+          scrub: isMobile ? 0.35 : 0.55,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },
@@ -464,6 +461,7 @@ export default function JourneyHero() {
       if (resizeRaf) cancelAnimationFrame(resizeRaf);
       resizeRaf = requestAnimationFrame(() => {
         resizeCanvas();
+        ScrollTrigger.refresh();
       });
     };
 
@@ -477,7 +475,7 @@ export default function JourneyHero() {
       tween?.scrollTrigger?.kill();
       tween?.kill();
     };
-  }, []);
+  }, [isReducedMotion]);
 
   return (
     <section
@@ -485,6 +483,16 @@ export default function JourneyHero() {
       className={styles.scrollWrapper}
       aria-label="Journey through Anandavana"
     >
+      <div className={styles.guruBadge} aria-hidden="true">
+        <div className={styles.guruCircle}>
+          <img
+            src={guruImg}
+            alt={content.guruAlt}
+            className={styles.guruImage}
+          />
+        </div>
+      </div>
+
       <div ref={pinRef} className={styles.pinStage}>
         <canvas
           ref={canvasRef}
@@ -492,18 +500,8 @@ export default function JourneyHero() {
           aria-hidden="true"
         />
 
-        <div className={styles.overlay}></div>
-        <div className={styles.texture}></div>
-
-        <div className={styles.guruBadge}>
-          <div className={styles.guruCircle}>
-            <img
-              src={guruImg}
-              alt={content.guruAlt}
-              className={styles.guruImage}
-            />
-          </div>
-        </div>
+        <div className={styles.overlay} />
+        <div className={styles.texture} />
 
         {!sequenceReady && (
           <div className={styles.loadingState}>
@@ -552,7 +550,7 @@ export default function JourneyHero() {
           }`}
           lang={language}
         >
-          {/* <div className={styles.textCard}>
+          <div className={styles.textCard}>
             <div className={styles.contentIntro}>
               <span className={styles.contentLabel}>{content.contentLabel}</span>
               <p className={styles.mainText}>{content.mainText}</p>
@@ -562,19 +560,19 @@ export default function JourneyHero() {
               {content.points.map((point, index) => {
                 const Icon = point.icon;
                 return (
-                  <div className={styles.pointCard} key={index}>
+                  <article className={styles.pointCard} key={index}>
                     <div className={styles.iconWrap}>
                       <Icon size={20} strokeWidth={1.8} />
                     </div>
-                    <div>
+                    <div className={styles.pointBody}>
                       <h3 className={styles.pointTitle}>{point.title}</h3>
                       <p className={styles.pointText}>{point.text}</p>
                     </div>
-                  </div>
+                  </article>
                 );
               })}
             </div>
-          </div> */}
+          </div>
         </div>
 
         <div

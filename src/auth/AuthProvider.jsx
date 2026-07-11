@@ -1,8 +1,8 @@
 import { useCallback, useMemo, useState } from "react";
 import { AuthContext } from "./AuthContext";
+import { apiRequest } from "../api/client";
 
 const AUTH_STORAGE_KEY = "agadi_auth";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:5000/api";
 
 function loadStoredAuth() {
   try {
@@ -15,21 +15,24 @@ function loadStoredAuth() {
 }
 
 async function postAuthRequest(path, body, fallbackMessage) {
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
+  try {
+    const data = await apiRequest(path, {
+      method: "POST",
+      body,
+    });
 
-  const payload = await response.json().catch(() => null);
-  if (!response.ok || !payload?.success) {
-    throw new Error(payload?.error || payload?.message || fallbackMessage);
+    if (data?.requires_otp) {
+      return data;
+    }
+
+    return {
+      token: data.access_token,
+      user: data.user,
+      profile: data.profile,
+    };
+  } catch (error) {
+    throw new Error(error.message || fallbackMessage, { cause: error });
   }
-
-  return {
-    token: payload.data.access_token,
-    user: payload.data.user,
-  };
 }
 
 export default function AuthProvider({ children }) {
@@ -54,14 +57,16 @@ export default function AuthProvider({ children }) {
     return nextAuth;
   }, [persistAuth]);
 
-  const register = useCallback(async ({ username, email, password }) => {
-    const nextAuth = await postAuthRequest(
+  const register = useCallback(async (registrationPayload) => {
+    const result = await postAuthRequest(
       "/auth/register",
-      { username, email, password },
+      registrationPayload,
       "Unable to register"
     );
-    persistAuth(nextAuth);
-    return nextAuth;
+    if (result.token) {
+      persistAuth(result);
+    }
+    return result;
   }, [persistAuth]);
 
   const logout = useCallback(() => {

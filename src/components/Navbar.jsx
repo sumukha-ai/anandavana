@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
 import styles from "./Navbar.module.css";
 import logoImg from "../../assets/logo.png";
-import { getRoleHomePath } from "../auth/access";
+import { getRoleHomePath, normalizeRole } from "../auth/access";
 import { useAuth } from "../auth/AuthContext";
 import { normalizeLang } from "../i18n/config";
 import { useI18n } from "../i18n/useI18n";
@@ -16,8 +16,22 @@ export default function Navbar() {
   const { t } = useI18n("navbar");
   const { isAuthenticated, user, logout } = useAuth();
 
-  const navItems = useMemo(
-    () => [
+  const role = normalizeRole(user?.role);
+  const isBhakta = isAuthenticated && role === "bhakta";
+
+  const navItems = useMemo(() => {
+    if (isBhakta) {
+      return [
+        { to: `/${lang}/dashboard`, label: "Dashboard" },
+        { to: `/${lang}/dashboard/profile`, label: "Profile" },
+        { to: `/${lang}/dashboard/book-seva`, label: "Book Seva" },
+        { to: `/${lang}/dashboard/bookings`, label: "Booked Sevas" },
+      ];
+    }
+
+    if (isAuthenticated) return [];
+
+    return [
       { to: `/${lang}/guru-parampare`, label: t("guruParampare") },
       { to: `/${lang}/sadguru-vamsha-vruksha`, label: t("sadguruVamshaVruksha") },
       { to: `/${lang}/institutions`, label: t("institutions") },
@@ -25,17 +39,10 @@ export default function Navbar() {
       { to: `/${lang}/seva-booking`, label: t("sevaBooking") },
       { to: `/${lang}/publications`, label: t("publications") },
       { to: `/${lang}/gallery`, label: t("gallery") },
-    ],
-    [lang, t]
-  );
+    ];
+  }, [isAuthenticated, isBhakta, lang, t]);
 
-  const roleNavItem = useMemo(() => {
-    if (!isAuthenticated) return null;
-    return {
-      to: getRoleHomePath(user?.role, lang),
-      label: user?.role || "Dashboard",
-    };
-  }, [isAuthenticated, lang, user?.role]);
+  const brandPath = isAuthenticated ? getRoleHomePath(user?.role, lang) : `/${lang}`;
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -54,9 +61,13 @@ export default function Navbar() {
   };
 
   return (
-    <header className={`${styles.header} ${isScrolled ? styles.scrolled : ""}`}>
+    <header
+      className={`${styles.header} ${isScrolled ? styles.scrolled : ""} ${
+        isAuthenticated ? styles.authenticated : ""
+      }`}
+    >
       <div className={styles.navContainer}>
-        <Link to={`/${lang}`} className={styles.brandWrapper}>
+        <Link to={brandPath} className={styles.brandWrapper}>
           <div className={styles.logoMark}>
             <img
               src={logoImg}
@@ -82,17 +93,6 @@ export default function Navbar() {
               {item.label}
             </NavLink>
           ))}
-
-          {roleNavItem ? (
-            <NavLink
-              to={roleNavItem.to}
-              className={({ isActive }) =>
-                isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
-              }
-            >
-              {roleNavItem.label}
-            </NavLink>
-          ) : null}
 
           {isAuthenticated ? (
             <button type="button" className={styles.authButton} onClick={handleLogout}>
@@ -131,12 +131,6 @@ export default function Navbar() {
             {item.label}
           </NavLink>
         ))}
-
-        {roleNavItem ? (
-          <NavLink to={roleNavItem.to} className={styles.mobileNavLink} onClick={closeMenu}>
-            {roleNavItem.label}
-          </NavLink>
-        ) : null}
 
         {isAuthenticated ? (
           <button type="button" className={styles.mobileAuthButton} onClick={handleLogout}>

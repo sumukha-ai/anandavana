@@ -1,16 +1,20 @@
 .pageShell {
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   padding: 8rem 1.25rem 4rem;
   background:
     linear-gradient(rgba(249, 246, 240, 0.9), rgba(249, 246, 240, 0.96)),
     url("../../assets/bg2.jpg") center / cover no-repeat;
 }
 
+.workspace {
+  width: min(1180px, 100%);
+  display: grid;
+  gap: 1rem;
+  margin: 0 auto;
+}
+
 .panel {
-  width: min(920px, 100%);
+  width: 100%;
   padding: clamp(2rem, 5vw, 4rem);
   border: 1px solid rgba(139, 107, 71, 0.18);
   border-radius: 8px;
@@ -43,6 +47,23 @@
   font-size: 1.05rem;
 }
 
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1.25rem;
+}
+
+.sectionTitle svg {
+  color: #0f6f78;
+}
+
+.sectionTitle h2 {
+  color: var(--text-main);
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+}
+
 .actions {
   display: flex;
   flex-wrap: wrap;
@@ -61,6 +82,173 @@
   background: #3e2723;
   color: #fff8e7;
   font-weight: 800;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.field,
+.checkField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  min-width: 0;
+  color: var(--text-main);
+  font-weight: 800;
+}
+
+.fieldWide {
+  grid-column: 1 / -1;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  min-height: 2.9rem;
+  min-width: 0;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid rgba(22, 94, 104, 0.18);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--text-main);
+  font: inherit;
+  outline: none;
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: #0f6f78;
+  box-shadow: 0 0 0 3px rgba(15, 111, 120, 0.15);
+}
+
+.checkField {
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+}
+
+.checkField input {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.primaryButton,
+.linkButton {
+  min-height: 2.8rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 8px;
+  font-weight: 900;
+}
+
+.primaryButton {
+  padding: 0 1rem;
+  background: #0f6f78;
+  color: #fffdf4;
+}
+
+.linkButton {
+  min-height: 2.2rem;
+  padding: 0 0.75rem;
+  background: rgba(15, 111, 120, 0.1);
+  color: #0f6f78;
+}
+
+.inlineFilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tableWrap {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+.tableWrap table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+}
+
+.tableWrap th,
+.tableWrap td {
+  padding: 0.8rem;
+  border-bottom: 1px solid rgba(139, 107, 71, 0.16);
+  text-align: left;
+  vertical-align: top;
+}
+
+.tableWrap th {
+  color: var(--text-main);
+  background: rgba(15, 111, 120, 0.08);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+}
+
+.tableWrap td {
+  color: var(--text-muted);
+  overflow-wrap: anywhere;
+}
+
+.lookupGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.miniPanel {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1rem;
+  border: 1px solid rgba(139, 107, 71, 0.16);
+  border-radius: 8px;
+  background: #fff8e7;
+}
+
+.miniPanel h3 {
+  color: var(--text-main);
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+}
+
+.miniPanel span {
+  color: var(--text-muted);
+  overflow-wrap: anywhere;
+}
+
+.success,
+.error {
+  padding: 0.9rem 1rem;
+  border-radius: 8px;
+  font-weight: 800;
+}
+
+.success {
+  border: 1px solid rgba(15, 111, 120, 0.2);
+  background: rgba(15, 111, 120, 0.1);
+  color: #0f6f78;
+}
+
+.error {
+  border: 1px solid rgba(176, 42, 42, 0.22);
+  background: rgba(176, 42, 42, 0.08);
+  color: #9f2323;
 }
 
 .metaGrid {
@@ -100,7 +288,13 @@
     padding-top: 6.5rem;
   }
 
-  .metaGrid {
+  .metaGrid,
+  .formGrid,
+  .lookupGrid {
     grid-template-columns: 1fr;
+  }
+
+  .fieldWide {
+    grid-column: auto;
   }
 }

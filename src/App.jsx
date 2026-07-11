@@ -42,16 +42,37 @@ function AppLayout() {
           <Route path="unauthorized" element={<Unauthorized />} />
 
           <Route element={<ProtectedRoute allowedRoles={USER_ROLES} />}>
-            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="dashboard" element={<Dashboard section="overview" />} />
+            <Route path="dashboard/profile" element={<Dashboard section="profile" />} />
+            <Route path="dashboard/book-seva" element={<Dashboard section="book-seva" />} />
+            <Route path="dashboard/bookings" element={<Dashboard section="bookings" />} />
           </Route>
-          <Route element={<ProtectedRoute allowedRoles={["Admin"]} />}>
-            <Route path="admin" element={<RolePortal role="Admin" />} />
+          <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+            <Route path="admin" element={<RolePortal role="admin" section="overview" />} />
+            <Route path="admin/staff" element={<RolePortal role="admin" section="staff" />} />
+            <Route path="admin/seva-editor" element={<RolePortal role="admin" section="seva-editor" />} />
+            <Route path="admin/seva-editor/:sevaId" element={<RolePortal role="admin" section="seva-editor" />} />
+            <Route path="admin/sevas" element={<RolePortal role="admin" section="sevas" />} />
+            <Route path="admin/bookings" element={<RolePortal role="admin" section="bookings" />} />
+            <Route path="admin/calendar" element={<RolePortal role="admin" section="calendar" />} />
+            <Route path="admin/calendar/:bookingDate" element={<RolePortal role="admin" section="calendar-detail" />} />
+            <Route path="admin/users" element={<RolePortal role="admin" section="users" />} />
+            <Route path="admin/lookups" element={<RolePortal role="admin" section="lookups" />} />
           </Route>
-          <Route element={<ProtectedRoute allowedRoles={["Admin", "Manager"]} />}>
-            <Route path="manager" element={<RolePortal role="Manager" />} />
+          <Route element={<ProtectedRoute allowedRoles={["admin", "manager"]} />}>
+            <Route path="manager" element={<RolePortal role="manager" section="overview" />} />
+            <Route path="manager/sevas" element={<RolePortal role="manager" section="sevas" />} />
+            <Route path="manager/bookings" element={<RolePortal role="manager" section="bookings" />} />
+            <Route path="manager/calendar" element={<RolePortal role="manager" section="calendar" />} />
+            <Route path="manager/calendar/:bookingDate" element={<RolePortal role="manager" section="calendar-detail" />} />
+            <Route path="manager/users" element={<RolePortal role="manager" section="users" />} />
           </Route>
-          <Route element={<ProtectedRoute allowedRoles={["Admin", "Manager", "Priest"]} />}>
-            <Route path="priest" element={<RolePortal role="Priest" />} />
+          <Route element={<ProtectedRoute allowedRoles={["admin", "manager", "priest"]} />}>
+            <Route path="priest" element={<RolePortal role="priest" section="overview" />} />
+            <Route path="priest/sevas" element={<RolePortal role="priest" section="sevas" />} />
+            <Route path="priest/bookings" element={<RolePortal role="priest" section="bookings" />} />
+            <Route path="priest/calendar" element={<RolePortal role="priest" section="calendar" />} />
+            <Route path="priest/calendar/:bookingDate" element={<RolePortal role="priest" section="calendar-detail" />} />
           </Route>
 
           <Route path="*" element={<Navigate to="." replace />} />

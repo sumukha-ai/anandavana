@@ -2,28 +2,30 @@
   min-height: 100vh;
   display: grid;
   place-items: center;
-  padding: 8rem 1.25rem 4rem;
+  padding: 7rem 1.25rem 4rem;
   background:
-    linear-gradient(rgba(62, 39, 35, 0.34), rgba(62, 39, 35, 0.18)),
+    linear-gradient(110deg, rgba(11, 48, 55, 0.82), rgba(116, 52, 28, 0.5) 48%, rgba(242, 192, 84, 0.22)),
     url("../../assets/bg4.JPG") center / cover no-repeat;
 }
 
 .loginPanel {
-  width: min(960px, 100%);
+  width: min(1120px, 100%);
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1fr);
+  grid-template-columns: minmax(300px, 0.82fr) minmax(340px, 1.18fr);
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 8px;
-  background: rgba(249, 246, 240, 0.94);
-  box-shadow: 0 28px 70px rgba(35, 24, 20, 0.24);
-  backdrop-filter: blur(18px);
+  background: rgba(255, 252, 244, 0.95);
+  box-shadow: 0 30px 80px rgba(6, 30, 35, 0.32);
+  backdrop-filter: blur(20px);
 }
 
 .copyBlock {
   padding: 3rem;
-  color: #fff8e7;
-  background: linear-gradient(145deg, rgba(62, 39, 35, 0.94), rgba(139, 90, 43, 0.88));
+  color: #fffdf4;
+  background:
+    linear-gradient(160deg, rgba(8, 47, 53, 0.96), rgba(112, 52, 28, 0.92)),
+    url("../../assets/bg5.JPG") center / cover no-repeat;
 }
 
 .kicker {
@@ -33,7 +35,7 @@
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #d4af37;
+  color: #f6c95f;
 }
 
 .copyBlock h1 {
@@ -45,15 +47,44 @@
 
 .copyBlock p {
   max-width: 27rem;
-  color: rgba(255, 248, 231, 0.84);
+  color: rgba(255, 253, 244, 0.84);
   font-size: 1rem;
+}
+
+.promiseList {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 2rem;
+}
+
+.promiseList span {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 2.5rem;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 253, 244, 0.92);
+  font-weight: 800;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1rem;
   padding: 3rem;
+}
+
+.fieldGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.fieldWide {
+  grid-column: 1 / -1;
 }
 
 .field {
@@ -70,23 +101,42 @@
   gap: 0.7rem;
   min-height: 3.2rem;
   padding: 0 0.95rem;
-  border: 1px solid rgba(139, 107, 71, 0.28);
+  border: 1px solid rgba(22, 94, 104, 0.18);
   border-radius: 8px;
   background: #ffffff;
-  color: var(--text-muted);
+  color: #60777a;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .inputWrap:focus-within {
-  border-color: #d4af37;
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+  border-color: #0f6f78;
+  box-shadow: 0 0 0 3px rgba(15, 111, 120, 0.15);
+  background: #fbfffd;
 }
 
-.inputWrap input {
+.inputWrap input,
+.inputWrap select,
+.inputWrap textarea {
   width: 100%;
   min-width: 0;
   outline: none;
   color: var(--text-main);
   background: transparent;
+  font: inherit;
+}
+
+.textAreaWrap {
+  align-items: flex-start;
+  padding-top: 0.9rem;
+  padding-bottom: 0.9rem;
+}
+
+.textAreaWrap svg {
+  margin-top: 0.15rem;
+}
+
+.inputWrap textarea {
+  resize: vertical;
 }
 
 .error {
@@ -98,6 +148,37 @@
   font-weight: 700;
 }
 
+.otpPanel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(15, 111, 120, 0.2);
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(15, 111, 120, 0.1), rgba(246, 201, 95, 0.18));
+}
+
+.otpPanel div,
+.otpPanel strong,
+.otpPanel span {
+  display: block;
+}
+
+.otpPanel span {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.otpPanel code {
+  padding: 0.55rem 0.8rem;
+  border-radius: 8px;
+  background: #082f35;
+  color: #fffdf4;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
 .submitButton {
   min-height: 3.25rem;
   display: inline-flex;
@@ -105,15 +186,15 @@
   justify-content: center;
   gap: 0.55rem;
   border-radius: 8px;
-  background: #3e2723;
-  color: #fff8e7;
+  background: linear-gradient(135deg, #082f35, #0f6f78 55%, #b56a2c);
+  color: #fffdf4;
   font-weight: 800;
   transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
 }
 
 .submitButton:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 12px 24px rgba(62, 39, 35, 0.2);
+  box-shadow: 0 14px 30px rgba(8, 47, 53, 0.24);
 }
 
 .submitButton:disabled {
@@ -127,6 +208,10 @@
   }
 
   .loginPanel {
+    grid-template-columns: 1fr;
+  }
+
+  .fieldGrid {
     grid-template-columns: 1fr;
   }
 
@@ -144,12 +229,12 @@
 }
 
 .switchText a {
-  color: #8b5a2b;
+  color: #0f6f78;
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-underline-offset: 0.18em;
 }
 
 .switchText a:hover {
-  color: #3e2723;
+  color: #74341c;
 }

@@ -30,6 +30,18 @@
   box-shadow: 0 4px 20px rgba(92, 64, 51, 0.08);
 }
 
+.authenticated,
+.authenticated.scrolled {
+  --nav-bg: linear-gradient(90deg, #1b1833 0%, #2b203f 52%, #4a2b31 100%);
+  --nav-text: #ffffff;
+  --nav-subtitle: rgba(255, 255, 255, 0.84);
+  --nav-border: rgba(255, 255, 255, 0.16);
+
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 10px 28px rgba(27, 24, 51, 0.26);
+}
+
 .navContainer {
   max-width: 1320px;
   margin: 0 auto;
@@ -103,13 +115,12 @@
 }
 
 .brandSubtitle {
-  
   font-size: 0.8rem;
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: 0.14em;
   /* text-transform: uppercase; */
-  color: #FFF;
+  color: var(--nav-subtitle);
   transition: color 0.4s ease;
 }
 
@@ -149,6 +160,14 @@
 
 .navLink.active::after {
   width: 100%;
+}
+
+.authenticated .navLink.active {
+  color: #ffffff;
+}
+
+.authenticated .navLink.active::after {
+  background-color: #c47a4a;
 }
 
 .mobileMenuBtn {
@@ -217,6 +236,12 @@
     padding 0.35s ease;
 }
 
+.authenticated .mobileNav {
+  background: #1b1833;
+  border-top-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 16px 32px rgba(27, 24, 51, 0.28);
+}
+
 .mobileNavOpen {
   max-height: 80vh;
   overflow-y: auto;
@@ -232,6 +257,11 @@
   padding: 0.95rem 1.2rem;
   text-align: left;
   border-bottom: 1px solid rgba(139, 107, 71, 0.08);
+}
+
+.authenticated .mobileNavLink {
+  color: #ffffff;
+  border-bottom-color: rgba(255, 255, 255, 0.1);
 }
 
 .mobileNavLink:last-child {
@@ -356,11 +386,25 @@
   background: rgba(212, 175, 55, 0.12);
 }
 
+.authenticated .authButton,
+.authenticated.scrolled .authButton {
+  border-color: rgba(255, 255, 255, 0.32);
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
 .authButton:hover,
 .authButtonActive {
   border-color: #d4af37;
   background: #d4af37;
   color: #3e2723;
+}
+
+.authenticated .authButton:hover,
+.authenticated .authButtonActive {
+  border-color: #c47a4a;
+  background: #c47a4a;
+  color: #1b1833;
 }
 
 .mobileAuthButton {
@@ -371,4 +415,9 @@
   background: #3e2723;
   color: #fff8e7;
   font-weight: 800;
+}
+
+.authenticated .mobileAuthButton {
+  background: #c47a4a;
+  color: #1b1833;
 }

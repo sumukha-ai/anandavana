@@ -1,4 +1,5 @@
 import { Navigate, Outlet, useLocation, useParams } from "react-router-dom";
+import { normalizeRole } from "../auth/access";
 import { useAuth } from "../auth/AuthContext";
 import { normalizeLang } from "../i18n/config";
 
@@ -12,7 +13,7 @@ export default function ProtectedRoute({ allowedRoles }) {
     return <Navigate to={`/${lang}/login`} replace state={{ from: location }} />;
   }
 
-  if (allowedRoles?.length && !allowedRoles.includes(user?.role)) {
+  if (allowedRoles?.length && !allowedRoles.includes(normalizeRole(user?.role))) {
     return <Navigate to={`/${lang}/unauthorized`} replace />;
   }
 
