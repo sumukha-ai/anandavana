@@ -1,4 +1,4 @@
-import { Save } from "lucide-react";
+import { ImagePlus, Save } from "lucide-react";
 import styles from "./RolePortal.module.css";
 
 export default function SevaEditorPage({ sevaForm, onSevaChange, onSaveSeva }) {
@@ -26,8 +26,17 @@ export default function SevaEditorPage({ sevaForm, onSevaChange, onSaveSeva }) {
           <input name="name_kn" value={sevaForm.name_kn} onChange={onSevaChange} />
         </label>
         <label className={styles.field}>
-          <span>Photo URL</span>
-          <input name="photo_url" value={sevaForm.photo_url} onChange={onSevaChange} />
+          <span>Image</span>
+          <input type="file" name="photo" accept="image/*" onChange={onSevaChange} />
+          <span className={styles.fileMeta}>
+            <ImagePlus size={15} aria-hidden="true" />
+            {sevaForm.photo?.name || (sevaForm.photo_url ? "Saved image" : "No image selected")}
+          </span>
+          {sevaForm.photo_url ? (
+            <a className={styles.inlineLink} href={sevaForm.photo_url} target="_blank" rel="noreferrer">
+              View current image
+            </a>
+          ) : null}
         </label>
         <label className={`${styles.field} ${styles.fieldWide}`}>
           <span>Kannada description</span>

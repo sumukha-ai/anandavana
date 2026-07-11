@@ -15,7 +15,7 @@ import StaffPage from "./rolePortal/StaffPage";
 import UsersPage from "./rolePortal/UsersPage";
 import { getMenuItems } from "./rolePortal/rolePortalConfig";
 
-const emptyStaff = { username: "", email: "", password: "", role: "priest" };
+const emptyStaff = { username: "", email: "", password: "", role: "" };
 const emptySeva = {
   id: "",
   name: "",
@@ -24,6 +24,7 @@ const emptySeva = {
   description_kn: "",
   amount: "",
   photo_url: "",
+  photo: null,
   enabled: true,
 };
 const emptyLookup = { id: "", kind: "rashi", name: "", name_kn: "" };
@@ -38,6 +39,7 @@ function toSevaForm(seva) {
     description_kn: seva.description_kn || "",
     amount: seva.amount ?? "",
     photo_url: seva.photo_url || "",
+    photo: null,
     enabled: Boolean(seva.enabled),
   };
 }
@@ -132,8 +134,11 @@ export default function RolePortal({ role, section = "overview" }) {
   };
 
   const handleSevaChange = (event) => {
-    const { name, value, type, checked } = event.target;
-    setSevaForm((current) => ({ ...current, [name]: type === "checkbox" ? checked : value }));
+    const { name, value, type, checked, files } = event.target;
+    setSevaForm((current) => ({
+      ...current,
+      [name]: type === "checkbox" ? checked : type === "file" ? files?.[0] || null : value,
+    }));
   };
 
   const handleLookupChange = (event) => {
@@ -164,17 +169,33 @@ export default function RolePortal({ role, section = "overview" }) {
     event.preventDefault();
     setStatus("");
     setError("");
-    const payload = {
+    const payload = sevaForm.photo ? new FormData() : {
       name: sevaForm.name,
       description: sevaForm.description,
       amount: sevaForm.amount === "" ? null : Number(sevaForm.amount),
       photo_url: sevaForm.photo_url || null,
       enabled: sevaForm.enabled,
     };
-    if (sevaForm.id) payload.id = Number(sevaForm.id);
+    if (payload instanceof FormData) {
+      payload.append("name", sevaForm.name);
+      payload.append("description", sevaForm.description);
+      if (sevaForm.amount !== "") payload.append("amount", String(Number(sevaForm.amount)));
+      payload.append("enabled", String(sevaForm.enabled));
+      payload.append("photo", sevaForm.photo);
+      if (sevaForm.photo_url) payload.append("photo_url", sevaForm.photo_url);
+    }
+    if (sevaForm.id) {
+      if (payload instanceof FormData) payload.append("id", String(Number(sevaForm.id)));
+      else payload.id = Number(sevaForm.id);
+    }
     if (sevaForm.name_kn || sevaForm.description_kn) {
-      payload.name_kn = sevaForm.name_kn;
-      payload.description_kn = sevaForm.description_kn;
+      if (payload instanceof FormData) {
+        payload.append("name_kn", sevaForm.name_kn);
+        payload.append("description_kn", sevaForm.description_kn);
+      } else {
+        payload.name_kn = sevaForm.name_kn;
+        payload.description_kn = sevaForm.description_kn;
+      }
     }
     try {
       await apiRequest("/seva", { method: "POST", token, body: payload });

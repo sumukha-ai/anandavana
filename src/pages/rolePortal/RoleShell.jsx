@@ -85,12 +85,15 @@ export default function RoleShell({ role, lang, section, user, status, error, ti
         sx={{
           width: { md: drawerWidth },
           flexShrink: 0,
+          zIndex: { xs: 1300, md: 900 },
           "& .MuiDrawer-paper": {
             width: drawerWidth,
             border: 0,
             boxSizing: "border-box",
-            mt: { xs: 0, md: "73px" },
-            height: { xs: "100%", md: "calc(100% - 73px)" },
+            height: "100%",
+            pt: { xs: 0, md: "73px" },
+            bgcolor: "#18243a",
+            zIndex: { xs: 1300, md: 900 },
           },
         }}
       >

@@ -23,7 +23,8 @@ export default function StaffPage({ staffForm, onStaffChange, onCreateStaff }) {
         </label>
         <label className={styles.field}>
           <span>Role</span>
-          <select name="role" value={staffForm.role} onChange={onStaffChange}>
+          <select name="role" value={staffForm.role} onChange={onStaffChange} required>
+            <option value="">Select role</option>
             <option value="priest">Priest</option>
             <option value="manager">Manager</option>
           </select>
