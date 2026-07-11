@@ -10,6 +10,8 @@ import {
   Star,
   User,
   UserPlus,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import { Link, Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 import { apiRequest } from "../api/client";
@@ -25,7 +27,6 @@ export default function Register() {
   const { lang: rawLang } = useParams();
   const lang = normalizeLang(rawLang);
   const [form, setForm] = useState({
-    username: "",
     name: "",
     email: "",
     phone_number: "",
@@ -42,6 +43,10 @@ export default function Register() {
   const [lookups, setLookups] = useState({ rashis: [], nakshatras: [] });
   const [mockEmail, setMockEmail] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // New states for password visibility toggles
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const redirectTo = location.state?.from?.pathname || getRoleHomePath(user?.role, lang);
 
@@ -87,6 +92,7 @@ export default function Register() {
     try {
       const payload = {
         name: form.name,
+        username: form.name.trim(),
         email: form.email,
         phone_number: form.phone_number,
         address: form.address,
@@ -96,9 +102,6 @@ export default function Register() {
         charana: form.charana,
         password: form.password,
       };
-      if (form.username.trim()) {
-        payload.username = form.username.trim();
-      }
       if (form.otp) {
         payload.otp = form.otp;
       }
@@ -124,11 +127,11 @@ export default function Register() {
           <span className={styles.kicker}>Bhakta onboarding</span>
           <h1>Register</h1>
           <p>Create your bhakta account, verify your email, and save the profile details needed for seva bookings.</p>
-          <div className={styles.promiseList} aria-label="Registration highlights">
+          {/* <div className={styles.promiseList} aria-label="Registration highlights">
             <span><BadgeCheck size={16} aria-hidden="true" /> Email OTP verification</span>
             <span><Sparkles size={16} aria-hidden="true" /> Self profile created instantly</span>
             <span><Fingerprint size={16} aria-hidden="true" /> JWT includes role and user id</span>
-          </div>
+          </div> */}
         </div>
 
         <form className={styles.form} onSubmit={handleSubmit}>
@@ -138,14 +141,6 @@ export default function Register() {
               <div className={styles.inputWrap}>
                 <User size={18} aria-hidden="true" />
                 <input type="text" name="name" value={form.name} onChange={handleChange} autoComplete="name" required />
-              </div>
-            </label>
-
-            <label className={styles.field}>
-              <span>Username</span>
-              <div className={styles.inputWrap}>
-                <Fingerprint size={18} aria-hidden="true" />
-                <input type="text" name="username" value={form.username} onChange={handleChange} autoComplete="username" minLength={3} maxLength={80} required />
               </div>
             </label>
 
@@ -223,7 +218,23 @@ export default function Register() {
               <span>Password</span>
               <div className={styles.inputWrap}>
                 <LockKeyhole size={18} aria-hidden="true" />
-                <input type="password" name="password" value={form.password} onChange={handleChange} autoComplete="new-password" minLength={8} required />
+                <input 
+                  type={showPassword ? "text" : "password"} 
+                  name="password" 
+                  value={form.password} 
+                  onChange={handleChange} 
+                  autoComplete="new-password" 
+                  minLength={8} 
+                  required 
+                />
+                <button
+                  type="button"
+                  className={styles.eyeButton}
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <EyeOff size={18} aria-hidden="true" /> : <Eye size={18} aria-hidden="true" />}
+                </button>
               </div>
             </label>
 
@@ -231,7 +242,23 @@ export default function Register() {
               <span>Confirm password</span>
               <div className={styles.inputWrap}>
                 <LockKeyhole size={18} aria-hidden="true" />
-                <input type="password" name="confirmPassword" value={form.confirmPassword} onChange={handleChange} autoComplete="new-password" minLength={8} required />
+                <input 
+                  type={showConfirmPassword ? "text" : "password"} 
+                  name="confirmPassword" 
+                  value={form.confirmPassword} 
+                  onChange={handleChange} 
+                  autoComplete="new-password" 
+                  minLength={8} 
+                  required 
+                />
+                <button
+                  type="button"
+                  className={styles.eyeButton}
+                  onClick={() => setShowConfirmPassword((prev) => !prev)}
+                  aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                >
+                  {showConfirmPassword ? <EyeOff size={18} aria-hidden="true" /> : <Eye size={18} aria-hidden="true" />}
+                </button>
               </div>
             </label>
           </div>

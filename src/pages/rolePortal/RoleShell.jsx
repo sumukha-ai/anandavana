@@ -92,7 +92,8 @@ export default function RoleShell({ role, lang, section, user, status, error, ti
             boxSizing: "border-box",
             height: "100%",
             pt: { xs: 0, md: "73px" },
-            bgcolor: "#18243a",
+            bgcolor: "#ffffff",
+            borderRight: "1px solid rgba(24, 36, 58, 0.1)",
             zIndex: { xs: 1300, md: 900 },
           },
         }}
@@ -111,12 +112,12 @@ export default function RoleShell({ role, lang, section, user, status, error, ti
                   </button>
                 ) : null}
                 <div>
-                  <div className={styles.breadcrumb} aria-label="Breadcrumb">
+                  {/* <div className={styles.breadcrumb} aria-label="Breadcrumb">
                     <span>{role}</span>
                     <span>/</span>
                     <span className={styles.breadcrumbCurrent}>{meta.label}</span>
-                  </div>
-                  <span className={styles.sectionEyebrow}>{meta.eyebrow}</span>
+                  </div> */}
+                  {/* <span className={styles.sectionEyebrow}>{meta.eyebrow}</span> */}
                   <h1 className={styles.heroTitle}>{titleOverride || (section === "overview" ? copy.title : meta.label)}</h1>
                   <p className={styles.heroText}>
                     {textOverride || (section === "overview" ? copy.text : `Manage ${meta.label.toLowerCase()} from its own focused page.`)}
@@ -124,10 +125,10 @@ export default function RoleShell({ role, lang, section, user, status, error, ti
                 </div>
               </div>
 
-              <div className={styles.userPills}>
+              {/* <div className={styles.userPills}>
                 <span className={styles.userPill}>{user?.username || "User"}</span>
                 <span className={styles.userPill}>{user?.email || "No email"}</span>
-              </div>
+              </div> */}
             </div>
           </header>
 

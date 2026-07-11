@@ -8,8 +8,8 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: #18243a;
-  color: #f8f4ec;
+  background: #ffffff;
+  color: #111111;
 }
 
 .drawerHeader {
@@ -43,8 +43,8 @@
 }
 
 .rolePill {
-  background: rgba(255, 255, 255, 0.12);
-  color: #fffaf0;
+  background: #f5f1ea;
+  color: #111111;
 }
 
 .closeButton,
@@ -61,9 +61,9 @@
 }
 
 .closeButton {
-  border-color: rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.1);
-  color: #fffaf0;
+  border-color: rgba(17, 17, 17, 0.14);
+  background: #ffffff;
+  color: #111111;
 }
 
 .drawerTitle {
@@ -74,13 +74,13 @@
 
 .drawerText {
   margin-top: 0.45rem;
-  color: rgba(248, 244, 236, 0.68);
+  color: #5d6775;
   font-size: 0.92rem;
 }
 
 .drawerDivider {
   height: 1px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(17, 17, 17, 0.08);
 }
 
 .drawerNav {
@@ -96,7 +96,7 @@
 
 .navGroupLabel {
   padding: 0 0.75rem;
-  color: rgba(248, 244, 236, 0.54);
+  color: #67717e;
   font-size: 0.72rem;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -110,15 +110,15 @@
   gap: 0.65rem;
   padding: 0 0.85rem;
   border-radius: 8px;
-  color: rgba(248, 244, 236, 0.78);
+  color: #303949;
   font-weight: 850;
   transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .navLink:hover,
 .navLinkActive {
-  background: rgba(255, 255, 255, 0.12);
-  color: #ffffff;
+  background: #f5f1ea;
+  color: #111111;
 }
 
 .navLinkActive {
@@ -133,7 +133,7 @@
 .currentPage {
   padding: 0.9rem;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.08);
+  background: #f5f1ea;
 }
 
 .currentPage span,
@@ -146,7 +146,7 @@
 }
 
 .currentPage span {
-  color: rgba(248, 244, 236, 0.62);
+  color: #67717e;
   font-size: 0.74rem;
   font-weight: 850;
 }
@@ -154,7 +154,7 @@
 .currentPage strong {
   display: block;
   margin-top: 0.1rem;
-  color: #fffaf0;
+  color: #111111;
   font-size: 0.92rem;
 }
 
