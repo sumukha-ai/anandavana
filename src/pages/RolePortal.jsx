@@ -128,6 +128,13 @@ export default function RolePortal({ role, section = "overview" }) {
     navigate(location.pathname, { replace: true, state: null });
   }, [location.pathname, location.state, navigate]);
 
+  useEffect(() => {
+    if (activeSection !== "seva-editor" || sevaId) return;
+    setSevaForm(emptySeva);
+    setStatus("");
+    setError("");
+  }, [activeSection, sevaId, location.pathname]);
+
   const handleStaffChange = (event) => {
     const { name, value } = event.target;
     setStaffForm((current) => ({ ...current, [name]: value }));
@@ -239,7 +246,14 @@ export default function RolePortal({ role, section = "overview" }) {
       return <StaffPage staffForm={staffForm} onStaffChange={handleStaffChange} onCreateStaff={createStaff} />;
     }
     if (activeSection === "seva-editor" && canManage) {
-      return <SevaEditorPage sevaForm={sevaForm} onSevaChange={handleSevaChange} onSaveSeva={saveSeva} />;
+      return (
+        <SevaEditorPage
+          key={sevaId || "new-seva"}
+          sevaForm={sevaForm}
+          onSevaChange={handleSevaChange}
+          onSaveSeva={saveSeva}
+        />
+      );
     }
     if (activeSection === "sevas") {
       return <SevaCatalogPage sevas={sevas} canManage={canManage} onEditSeva={editSeva} onAddSeva={canManage ? addSeva : null} />;

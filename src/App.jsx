@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import AuthProvider from "./auth/AuthProvider";
 import { USER_ROLES } from "./auth/access";
 import ProtectedRoute from "./routes/ProtectedRoute";
@@ -21,6 +22,16 @@ import Dashboard from "./pages/Dashboard";
 import RolePortal from "./pages/RolePortal";
 import Unauthorized from "./pages/Unauthorized";
 import styles from "./App.module.css";
+
+function ScrollToTop() {
+  const { pathname, search } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [pathname, search]);
+
+  return null;
+}
 
 function AppLayout() {
   return (
@@ -89,6 +100,7 @@ export default function App() {
   return (
     <AuthProvider>
       <Router>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Navigate to="/en" replace />} />
           <Route path="/:lang/*" element={<AppLayout />} />

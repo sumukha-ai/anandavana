@@ -1,0 +1,188 @@
+/* =========================================
+   Layout Containers
+   ========================================= */
+.stackList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.panel {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid rgba(24, 36, 58, 0.08);
+  box-shadow: 0 12px 32px rgba(24, 36, 58, 0.04);
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  width: 100%;
+}
+
+/* =========================================
+   Headers & Typography
+   ========================================= */
+.panelHeader {
+  margin-bottom: 1.5rem;
+}
+
+.sectionEyebrow {
+  display: block;
+  color: #b16038;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.panelTitle {
+  color: #18243a;
+  font-size: clamp(1.35rem, 3vw, 1.6rem);
+  font-weight: 950;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* =========================================
+   Form Elements
+   ========================================= */
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.field span {
+  color: #303949;
+  font-size: 0.85rem;
+  font-weight: 850;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(24, 36, 58, 0.15);
+  border-radius: 8px;
+  background: #ffffff;
+  color: #18243a;
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  /* Appearance fix for iOS selects */
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Add custom arrow for select */
+.field select {
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2318243A%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat, repeat;
+  background-position: right 1rem top 50%, 0 0;
+  background-size: 0.65em auto, 100%;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: #b16038;
+  box-shadow: 0 0 0 3px rgba(177, 96, 56, 0.15);
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(24, 36, 58, 0.08);
+}
+
+.primaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0 1.5rem;
+  border-radius: 8px;
+  background: #b16038;
+  color: #fffaf0;
+  font-size: 0.95rem;
+  font-weight: 850;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.primaryButton:hover {
+  background: #9c5330;
+}
+
+.primaryButton:active {
+  transform: scale(0.98);
+}
+
+/* =========================================
+   Lookups Display Grid
+   ========================================= */
+.lookupGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.lookupChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.softPill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.9rem;
+  background: #f5f1ea;
+  color: #303949;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  border: 1px solid rgba(24, 36, 58, 0.05);
+  transition: background 0.2s ease;
+}
+
+.softPill:hover {
+  background: #ebe5dc;
+}
+
+/* =========================================
+   MOBILE RESPONSIVE
+   ========================================= */
+@media (max-width: 768px) {
+  /* Stack the inputs vertically */
+  .formGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  /* Make button full width on mobile */
+  .formActions {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+  }
+
+  .primaryButton {
+    width: 100%;
+    min-height: 3.2rem;
+  }
+
+  /* Stack the lookup panels vertically */
+  .lookupGrid {
+    grid-template-columns: 1fr;
+  }
+}

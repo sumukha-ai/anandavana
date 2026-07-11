@@ -496,6 +496,7 @@
   gap: 0.55rem;
   border-radius: 8px;
   font-weight: 950;
+  max-height: 3.2rem;
 }
 
 .primaryButton {

@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { groupBookings } from "./rolePortalConfig";
-import styles from "./RolePortal.module.css";
+import styles from "./CalendarPage.module.css";
 
 const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -48,30 +48,33 @@ export default function CalendarPage({ bookings, role, lang }) {
   return (
     <section className={styles.panel}>
       <div className={styles.calendarToolbar}>
-        <div>
+        <div className={styles.titleBlock}>
           <span className={styles.sectionEyebrow}>Schedule</span>
           <h2 className={styles.panelTitle}>{monthLabel(currentMonth)}</h2>
         </div>
         <div className={styles.calendarActions}>
-          <button type="button" className={styles.secondaryButton} onClick={() => moveMonth(-1)} aria-label="Previous month">
-            <ChevronLeft size={17} aria-hidden="true" />
+          <button type="button" className={styles.iconButton} onClick={() => moveMonth(-1)} aria-label="Previous month">
+            <ChevronLeft size={18} strokeWidth={2.5} aria-hidden="true" />
           </button>
-          <button type="button" className={styles.secondaryButton} onClick={() => setCurrentMonth(new Date())}>
+          <button type="button" className={styles.todayButton} onClick={() => setCurrentMonth(new Date())}>
             Today
           </button>
-          <button type="button" className={styles.secondaryButton} onClick={() => moveMonth(1)} aria-label="Next month">
-            <ChevronRight size={17} aria-hidden="true" />
+          <button type="button" className={styles.iconButton} onClick={() => moveMonth(1)} aria-label="Next month">
+            <ChevronRight size={18} strokeWidth={2.5} aria-hidden="true" />
           </button>
         </div>
       </div>
 
-      <div className={styles.calendarScroller}>
+      <div className={styles.calendarWrapper}>
         <div className={styles.monthCalendar} role="grid" aria-label="Seva booking calendar">
+          {/* Weekday Headers */}
           {weekdays.map((weekday) => (
             <div key={weekday} className={styles.weekdayCell} role="columnheader">
               {weekday}
             </div>
           ))}
+
+          {/* Days Grid */}
           {days.map((day, index) => {
             if (!day) {
               return <div key={`blank-${index}`} className={`${styles.dayCell} ${styles.dayCellMuted}`} />;
@@ -80,25 +83,38 @@ export default function CalendarPage({ bookings, role, lang }) {
             const key = dateKey(day);
             const count = groupedBookings[key]?.length || 0;
             const isToday = key === dateKey(new Date());
+
             const content = (
-              <>
-                <span className={styles.dayNumber}>{day.getDate()}</span>
-                <strong className={styles.bookingCount}>{count}</strong>
-                <span className={styles.bookingCountLabel}>{count === 1 ? "booking" : "bookings"}</span>
-              </>
+              <div className={styles.dayInner}>
+                <div className={styles.dayTop}>
+                  <span className={`${styles.dayNumber} ${isToday ? styles.todayNumber : ""}`}>
+                    {day.getDate()}
+                  </span>
+                </div>
+                <div className={styles.dayBottom}>
+                  {count > 0 ? (
+                    <div className={styles.bookingBadge}>
+                      <strong className={styles.bookingCount}>{count}</strong>
+                      <span className={styles.bookingLabel}>{count === 1 ? "booking" : "bookings"}</span>
+                    </div>
+                  ) : (
+                    <div className={styles.emptyBadge}>No bookings</div>
+                  )}
+                </div>
+              </div>
             );
 
-            return count ? (
+            return count > 0 ? (
               <NavLink
                 key={key}
                 to={`/${lang}/${role}/calendar/${key}`}
-                className={`${styles.dayCell} ${styles.dayCellClickable} ${isToday ? styles.dayCellToday : ""}`}
+                className={`${styles.dayCell} ${styles.dayCellClickable}`}
                 role="gridcell"
               >
                 {content}
               </NavLink>
             ) : (
-              <div key={key} className={`${styles.dayCell} ${isToday ? styles.dayCellToday : ""}`} role="gridcell">
+              <div key={key} className={styles.dayCell} role="gridcell">
                 {content}
               </div>
             );

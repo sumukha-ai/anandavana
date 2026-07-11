@@ -1,0 +1,293 @@
+/* =========================================
+   Container & Header Layout
+   ========================================= */
+.panel {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid rgba(24, 36, 58, 0.08);
+  box-shadow: 0 12px 32px rgba(24, 36, 58, 0.04);
+  padding: clamp(1rem, 3vw, 2.5rem);
+  width: 100%;
+}
+
+.calendarToolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.titleBlock {
+  display: flex;
+  flex-direction: column;
+}
+
+.sectionEyebrow {
+  color: #b16038;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.panelTitle {
+  color: #18243a;
+  font-size: clamp(1.4rem, 3vw, 1.8rem);
+  font-weight: 950;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* =========================================
+   Navigation Buttons
+   ========================================= */
+.calendarActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f5f1ea;
+  padding: 0.35rem;
+  border-radius: 10px;
+}
+
+.iconButton,
+.todayButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #18243a;
+  font-weight: 850;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.iconButton {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.todayButton {
+  height: 2.5rem;
+  padding: 0 1rem;
+  font-size: 0.9rem;
+}
+
+.iconButton:hover,
+.todayButton:hover {
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(24, 36, 58, 0.06);
+}
+
+.iconButton:active,
+.todayButton:active {
+  transform: scale(0.96);
+}
+
+/* =========================================
+   Calendar Grid System (Responsive Core)
+   ========================================= */
+.calendarWrapper {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(24, 36, 58, 0.1);
+  box-shadow: 0 4px 12px rgba(24, 36, 58, 0.02);
+  overflow: hidden;
+}
+
+.monthCalendar {
+  display: grid;
+  /* minmax(0, 1fr) is the secret to stopping grid columns from blowing out on mobile */
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 1px;
+  background: rgba(24, 36, 58, 0.08);
+  width: 100%;
+}
+
+.weekdayCell {
+  background: #f9f8f6;
+  padding: 1rem 0.25rem;
+  text-align: center;
+  color: #67717e;
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* =========================================
+   Day Cells
+   ========================================= */
+.dayCell {
+  background: #ffffff;
+  min-height: 110px;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.2s ease;
+}
+
+.dayInner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0.75rem;
+}
+
+.dayCellMuted {
+  background: #fcfbf9;
+}
+
+.dayCellClickable {
+  cursor: pointer;
+  position: relative;
+}
+
+.dayCellClickable:hover {
+  background: #fff7f2;
+}
+
+.dayCellClickable:hover .bookingBadge {
+  background: #b16038;
+  color: #ffffff;
+  border-color: #b16038;
+}
+
+/* =========================================
+   Cell Internals (Date & Badges)
+   ========================================= */
+.dayTop {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.dayNumber {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  font-weight: 850;
+  color: #303949;
+}
+
+.todayNumber {
+  background: #18243a;
+  color: #ffffff;
+}
+
+.dayBottom {
+  margin-top: auto;
+}
+
+.bookingBadge {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  background: #fdf5f0;
+  border: 1px solid rgba(177, 96, 56, 0.2);
+  color: #b16038;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.bookingCount {
+  font-size: 1.1rem;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.bookingLabel {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.emptyBadge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #9aa2ae;
+  padding: 0.2rem 0;
+  opacity: 0.6;
+}
+
+/* =========================================
+   MOBILE RESPONSIVE (The Magic)
+   ========================================= */
+@media (max-width: 768px) {
+  .calendarToolbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .calendarActions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .todayButton {
+    flex: 1;
+  }
+
+  /* Shrink headers so text fits in 7 columns */
+  .weekdayCell {
+    font-size: 0.6rem;
+    padding: 0.6rem 0.1rem;
+    letter-spacing: 0;
+  }
+
+  /* Make cells squarish and compact */
+  .dayCell {
+    min-height: 70px;
+  }
+
+  .dayInner {
+    padding: 0.35rem 0.15rem;
+    align-items: center; /* Center everything horizontally on mobile */
+  }
+
+  /* Center the day number */
+  .dayTop {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .dayNumber {
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 0.8rem;
+  }
+
+  /* Transform the badge into a sleek circular dot */
+  .dayBottom {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 0.3rem;
+  }
+
+  .bookingBadge {
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .bookingCount {
+    font-size: 0.75rem;
+  }
+
+  /* Drop text labels completely on small screens */
+  .bookingLabel, 
+  .emptyBadge {
+    display: none;
+  }
+}

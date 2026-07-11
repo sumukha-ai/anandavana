@@ -1,0 +1,255 @@
+/* Container & Header */
+.panel {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid rgba(24, 36, 58, 0.08);
+  box-shadow: 0 12px 32px rgba(24, 36, 58, 0.04);
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  width: 100%;
+}
+
+.panelHeaderSplit {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.titleBlock {
+  display: flex;
+  flex-direction: column;
+}
+
+.sectionEyebrow {
+  color: #b16038;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.panelTitle {
+  color: #18243a;
+  font-size: clamp(1.5rem, 3vw, 1.8rem);
+  font-weight: 950;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Buttons */
+.primaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 2.75rem;
+  padding: 0 1.25rem;
+  border-radius: 8px;
+  background: #b16038;
+  color: #fffaf0;
+  font-size: 0.9rem;
+  font-weight: 850;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.primaryButton:hover {
+  background: #9c5330;
+}
+
+.primaryButton:active {
+  transform: scale(0.98);
+}
+
+.linkButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.25rem;
+  padding: 0 1rem;
+  border-radius: 6px;
+  background: #f0ece4;
+  color: #18243a;
+  font-size: 0.85rem;
+  font-weight: 850;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.linkButton:hover {
+  background: #e6dfd3;
+  color: #b16038;
+}
+
+/* Typography & Pills */
+.nameText {
+  color: #18243a;
+  font-weight: 850;
+  font-size: 0.95rem;
+}
+
+.amountText {
+  color: #303949;
+  font-weight: 700;
+}
+
+.kannadaText {
+  color: #5d6775;
+  font-size: 0.9rem;
+}
+
+.missingText {
+  color: #9aa2ae;
+  font-style: italic;
+  font-size: 0.85rem;
+}
+
+.statusYes,
+.statusNo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 850;
+}
+
+.statusYes {
+  background: #eef6ef;
+  color: #315f39;
+  border: 1px solid rgba(74, 119, 82, 0.2);
+}
+
+.statusNo {
+  background: #fdf0ee;
+  color: #8c2d20;
+  border: 1px solid rgba(154, 61, 46, 0.2);
+}
+
+.emptyState {
+  padding: 4rem 1rem;
+  text-align: center;
+  color: #67717e;
+  background: #fcfbf9;
+  border-radius: 8px;
+  border: 1px dashed rgba(24, 36, 58, 0.15);
+  font-weight: 800;
+}
+
+/* =========================================
+   MOBILE LAYOUT (Cards)
+   ========================================= */
+@media (max-width: 768px) {
+  .panelHeaderSplit {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .primaryButton {
+    width: 100%;
+  }
+
+  .listHeader {
+    display: none;
+  }
+
+  .listBody {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .row {
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
+    border: 1px solid rgba(24, 36, 58, 0.1);
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(24, 36, 58, 0.02);
+  }
+
+  .col {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(24, 36, 58, 0.05);
+  }
+
+  .col:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .col:first-child {
+    padding-top: 0;
+  }
+
+  .col::before {
+    content: attr(data-label);
+    font-size: 0.75rem;
+    font-weight: 900;
+    color: #67717e;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}
+
+/* =========================================
+   DESKTOP LAYOUT (Grid Table)
+   ========================================= */
+@media (min-width: 769px) {
+  .listHeader {
+    padding: 1rem 1.25rem;
+    background: #f9f8f6;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    
+    color: #67717e;
+    font-size: 0.75rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* 5 Columns when actions are present */
+  .rowManage {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.5fr 80px;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  /* 4 Columns when actions are hidden */
+  .rowView {
+    display: grid;
+    grid-template-columns: 2.5fr 1fr 1fr 1.5fr;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .row {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid rgba(24, 36, 58, 0.06);
+    transition: background-color 0.2s ease;
+  }
+
+  .row:last-child {
+    border-bottom: none;
+  }
+
+  .row:hover {
+    background: #fcfbf9;
+    border-radius: 8px;
+  }
+
+  .col::before {
+    display: none;
+  }
+}
