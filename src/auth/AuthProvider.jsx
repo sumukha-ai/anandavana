@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import { AuthContext } from "./AuthContext";
-import { apiRequest } from "../api/client";
+import { apiRequest, setAuthToken } from "../api/client";
 
 const AUTH_STORAGE_KEY = "agadi_auth";
 
@@ -36,10 +36,15 @@ async function postAuthRequest(path, body, fallbackMessage) {
 }
 
 export default function AuthProvider({ children }) {
-  const [auth, setAuth] = useState(loadStoredAuth);
+  const [auth, setAuth] = useState(() => {
+    const storedAuth = loadStoredAuth();
+    setAuthToken(storedAuth?.token || null);
+    return storedAuth;
+  });
 
   const persistAuth = useCallback((nextAuth) => {
     setAuth(nextAuth);
+    setAuthToken(nextAuth?.token || null);
     if (nextAuth) {
       window.localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(nextAuth));
     } else {

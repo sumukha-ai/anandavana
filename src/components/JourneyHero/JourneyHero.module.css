@@ -314,8 +314,8 @@
 
   .guruBadge {
     left: 50%;
-    transform: translateX(-50%);
-    top: max(1.2rem, calc(5rem + env(safe-area-inset-top)));
+    transform: translateX(-50%) scale(1.5);
+    top: max(1.2rem, calc(7rem + env(safe-area-inset-top)));
   }
 
   .guruCircle {

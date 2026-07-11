@@ -238,3 +238,15 @@
 .switchText a:hover {
   color: #74341c;
 }
+
+
+.eyeButton {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit; /* Inherit the color of the other icons */
+}

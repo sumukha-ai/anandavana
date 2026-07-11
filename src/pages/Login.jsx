@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { LockKeyhole, LogIn, Mail } from "lucide-react";
+import { LockKeyhole, LogIn, Mail, Eye, EyeOff } from "lucide-react";
 import { Link, Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 import { getRoleHomePath } from "../auth/access";
 import { useAuth } from "../auth/AuthContext";
@@ -12,9 +12,11 @@ export default function Login() {
   const location = useLocation();
   const { lang: rawLang } = useParams();
   const lang = normalizeLang(rawLang);
+  
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // New state for password visibility
 
   const redirectTo = location.state?.from?.pathname || getRoleHomePath(user?.role, lang);
 
@@ -73,13 +75,21 @@ export default function Login() {
             <div className={styles.inputWrap}>
               <LockKeyhole size={18} aria-hidden="true" />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 value={form.password}
                 onChange={handleChange}
                 autoComplete="current-password"
                 required
               />
+              <button
+                type="button"
+                className={styles.eyeButton}
+                onClick={() => setShowPassword((prev) => !prev)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <EyeOff size={18} aria-hidden="true" /> : <Eye size={18} aria-hidden="true" />}
+              </button>
             </div>
           </label>
 
