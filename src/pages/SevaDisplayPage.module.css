@@ -1,0 +1,290 @@
+.page {
+  min-height: 100vh;
+  background:
+    linear-gradient(180deg, #fbf6ed 0%, #f6faf7 58%, #fff8ed 100%);
+  color: #241b18;
+}
+
+.sevaShell {
+  width: min(1220px, calc(100% - 2rem));
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(340px, 410px);
+  gap: clamp(1.25rem, 3vw, 2rem);
+  margin: 0 auto;
+  padding: calc(var(--nav-height) + 2.25rem) 0 clamp(3rem, 6vw, 5rem);
+  align-items: start;
+}
+
+.sevaMain {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.backLink,
+.backButton,
+.heroMeta span,
+.summary div,
+.bookingForm button,
+.contactButton,
+.status {
+  display: flex;
+  align-items: center;
+}
+
+.backLink,
+.backButton {
+  width: fit-content;
+  gap: 0.45rem;
+  color: #0d6670;
+  font-weight: 900;
+}
+
+.mediaPanel {
+  width: 100%;
+  height: clamp(300px, 42vw, 480px);
+  overflow: hidden;
+  border: 1px solid rgba(39, 60, 54, 0.12);
+  border-radius: 8px;
+  background: #e8ece6;
+  box-shadow: 0 22px 54px rgba(45, 36, 28, 0.14);
+}
+
+.mediaPanel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.detailsPanel,
+.bookingPanel {
+  border: 1px solid rgba(18, 68, 74, 0.13);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 18px 42px rgba(49, 42, 35, 0.09);
+}
+
+.detailsPanel {
+  padding: clamp(1.2rem, 3vw, 2rem);
+}
+
+.eyebrow,
+.sectionLabel {
+  display: block;
+  color: #0d6670;
+  font-size: 0.78rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.detailsPanel h1 {
+  max-width: 780px;
+  margin-top: 0.3rem;
+  color: #241b18;
+  font-family: var(--font-display);
+  font-size: clamp(2.15rem, 4.8vw, 4.2rem);
+  line-height: 1;
+}
+
+.detailsPanel p {
+  max-width: 760px;
+  margin-top: 1rem;
+  color: #5d6460;
+  font-size: clamp(1rem, 1.4vw, 1.12rem);
+  line-height: 1.75;
+}
+
+.heroMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
+.heroMeta span {
+  min-height: 2.55rem;
+  gap: 0.45rem;
+  border: 1px solid rgba(13, 102, 112, 0.16);
+  border-radius: 8px;
+  background: #f3f8f5;
+  padding: 0.55rem 0.75rem;
+  color: #3e2723;
+  font-weight: 900;
+}
+
+.bookingPanel {
+  position: sticky;
+  top: calc(var(--nav-height) + 1rem);
+  padding: clamp(1.1rem, 2.5vw, 1.45rem);
+}
+
+.bookingPanel h2 {
+  margin-top: 0.25rem;
+  color: #241b18;
+  font-family: var(--font-display);
+  font-size: clamp(1.55rem, 3vw, 2.25rem);
+  line-height: 1.08;
+}
+
+.bookingForm {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.1rem;
+}
+
+.bookingForm label {
+  display: grid;
+  gap: 0.4rem;
+  color: #241b18;
+  font-weight: 850;
+}
+
+.bookingForm select,
+.bookingForm input {
+  min-height: 3.15rem;
+  width: 100%;
+  border: 1px solid rgba(13, 102, 112, 0.2);
+  border-radius: 8px;
+  background: #fff;
+  color: #241b18;
+  padding: 0 0.85rem;
+}
+
+.bookingForm select:disabled {
+  background: #f7f3ec;
+  color: #7f746c;
+}
+
+.summary {
+  display: grid;
+  gap: 0.55rem;
+  border-radius: 8px;
+  background: #edf8f3;
+  padding: 0.9rem;
+  color: #385c55;
+  font-weight: 850;
+}
+
+.summary div {
+  gap: 0.5rem;
+}
+
+.status {
+  gap: 0.45rem;
+  padding: 0.8rem;
+  border-radius: 8px;
+  font-weight: 850;
+}
+
+.loading {
+  background: rgba(13, 102, 112, 0.1);
+  color: #0d6670;
+}
+
+.success {
+  background: rgba(37, 118, 70, 0.1);
+  color: #257646;
+}
+
+.error {
+  background: rgba(176, 42, 42, 0.1);
+  color: #9f2323;
+}
+
+.bookingForm button,
+.contactButton {
+  min-height: 3.25rem;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 8px;
+  background: #123f46;
+  color: #fffdf7;
+  font-weight: 950;
+}
+
+.bookingForm button:hover,
+.contactButton:hover {
+  background: #0d6670;
+}
+
+.bookingForm button:disabled {
+  cursor: not-allowed;
+  opacity: 0.62;
+}
+
+.loginLink {
+  color: #0d6670;
+  font-weight: 900;
+  text-align: center;
+}
+
+.contactBox {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.contactBox p {
+  color: #5d6460;
+}
+
+.contactButton {
+  background: #8a4d28;
+}
+
+.paymentBox {
+  margin-top: 1rem;
+  border-radius: 8px;
+  background: #123f46;
+  color: #fffdf7;
+  padding: 0.95rem;
+}
+
+.paymentBox span,
+.paymentBox strong,
+.paymentBox small {
+  display: block;
+}
+
+.paymentBox strong {
+  overflow-wrap: anywhere;
+  margin: 0.35rem 0;
+}
+
+.centerState {
+  width: min(560px, calc(100% - 2rem));
+  display: grid;
+  gap: 0.8rem;
+  margin: 0 auto;
+  padding: calc(var(--nav-height) + 5rem) 0 5rem;
+  justify-items: center;
+  color: #53615e;
+  text-align: center;
+}
+
+.centerState strong {
+  color: #241b18;
+  font-size: 1.35rem;
+}
+
+@media (max-width: 960px) {
+  .sevaShell {
+    grid-template-columns: 1fr;
+  }
+
+  .bookingPanel {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .sevaShell {
+    width: min(100% - 1rem, 100%);
+    padding-top: calc(var(--nav-height) + 1.25rem);
+  }
+
+  .mediaPanel {
+    height: 280px;
+  }
+}

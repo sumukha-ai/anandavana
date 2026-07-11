@@ -30,6 +30,17 @@
   box-shadow: 0 4px 20px rgba(92, 64, 51, 0.08);
 }
 
+.solid {
+  --nav-bg: rgba(249, 246, 240, 0.96);
+  --nav-text: #3e2723;
+  --nav-subtitle: #8b6b47;
+  --nav-border: rgba(139, 107, 71, 0.12);
+
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 20px rgba(92, 64, 51, 0.08);
+}
+
 .authenticated,
 .authenticated.scrolled {
   --nav-bg: linear-gradient(90deg, #1b1833 0%, #2b203f 52%, #4a2b31 100%);

@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
 import styles from "./Navbar.module.css";
 import logoImg from "../../assets/logo.png";
 import { getRoleHomePath, normalizeRole } from "../auth/access";
@@ -11,6 +11,7 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { lang: rawLang } = useParams();
   const lang = normalizeLang(rawLang);
   const { t } = useI18n("navbar");
@@ -43,6 +44,7 @@ export default function Navbar() {
   }, [isAuthenticated, isBhakta, lang, t]);
 
   const brandPath = isAuthenticated ? getRoleHomePath(user?.role, lang) : `/${lang}`;
+  const forceSolidNav = /^\/[^/]+\/seva\/[^/]+/.test(location.pathname);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -64,7 +66,7 @@ export default function Navbar() {
     <header
       className={`${styles.header} ${isScrolled ? styles.scrolled : ""} ${
         isAuthenticated ? styles.authenticated : ""
-      }`}
+      } ${forceSolidNav ? styles.solid : ""}`}
     >
       <div className={styles.navContainer}>
         <Link to={brandPath} className={styles.brandWrapper}>
