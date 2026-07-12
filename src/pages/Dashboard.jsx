@@ -635,9 +635,7 @@ export default function Dashboard({ section = "overview" }) {
               <Typography variant="h3" sx={{ color: palette.text, fontWeight: 950, lineHeight: 1.05, fontSize: { xs: "2rem", md: "3rem" } }}>
                 {activeSection === "overview" ? `Welcome, ${user?.username}` : navItems.find((item) => item.section === activeSection)?.label}
               </Typography>
-              <Typography sx={{ mt: 1, color: palette.muted, maxWidth: 760 }}>
-                Manage your profile, family members, seva bookings, and booking history from one calm account space.
-              </Typography>
+              
             </Box>
             
           </Stack>

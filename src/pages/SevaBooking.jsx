@@ -40,11 +40,9 @@ export default function SevaBooking() {
       <div className={styles.container}>
         <section className={styles.catalogShell}>
           <div className={styles.catalogIntro}>
-            <span>Temple sevas</span>
-            <h2>Choose a seva to view details and book</h2>
+            <h2>Online Seva Booking</h2>
             <p>
-              Review the seva details, image, amount, and booking availability before
-              continuing to the dedicated seva page.
+              Book online seva offerings at Sri Kshetra Anandavana.
             </p>
           </div>
 
@@ -70,7 +68,7 @@ export default function SevaBooking() {
                     <img src={sevaImageUrl(seva, bgImg)} alt={seva.name} />
                   </Link>
                   <div className={styles.cardBody}>
-                    <div className={styles.cardTopline}>
+                    {/* <div className={styles.cardTopline}>
                       <span className={isBookable ? styles.bookablePill : styles.contactPill}>
                         {isBookable ? "Book online" : "Contact booking"}
                       </span>
@@ -78,10 +76,10 @@ export default function SevaBooking() {
                         <IndianRupee size={15} aria-hidden="true" />
                         {amount || "Contact"}
                       </span>
-                    </div>
+                    </div> */}
                     <h3>{seva.name}</h3>
                     <p>{seva.description}</p>
-                    <div className={styles.cardMeta}>
+                    {/* <div className={styles.cardMeta}>
                       <span>
                         <CalendarCheck size={16} aria-hidden="true" />
                         {isBookable ? "Select date on detail page" : "Confirm date by phone"}
@@ -92,7 +90,7 @@ export default function SevaBooking() {
                           {sevaContactPhone(seva)}
                         </span>
                       ) : null}
-                    </div>
+                    </div> */}
                     <Link to={`/${lang}/seva/${seva.id}`} className={styles.viewButton}>
                       <span>View seva</span>
                       <ArrowRight size={17} aria-hidden="true" />

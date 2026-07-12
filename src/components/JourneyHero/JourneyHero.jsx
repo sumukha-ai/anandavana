@@ -214,13 +214,13 @@ const CONTENT = {
     topLine: "SRI KSHETRA",
     bottomLine: "ANANDAVANA",
     guruAlt: "Guru of Sri Kshetra Anandavana",
-    outro: "Welcome To Anandavana",
+    outro: " ",
   },
   kn: {
     topLine: "ಶ್ರೀ ಕ್ಷೇತ್ರ",
     bottomLine: "ಆನಂದವನ",
     guruAlt: "ಶ್ರೀ ಕ್ಷೇತ್ರ ಆನಂದವನದ ಗುರು",
-    outro: "ಆನಂದವನದ ಒಳಗಡೆಗೆ ಸ್ವಾಗತ",
+    outro: " ",
   },
 };
 

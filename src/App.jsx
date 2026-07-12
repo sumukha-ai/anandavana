@@ -57,7 +57,7 @@ function AppLayout() {
           <Route element={<ProtectedRoute allowedRoles={USER_ROLES} />}>
             <Route path="dashboard" element={<Dashboard section="overview" />} />
             <Route path="dashboard/profile" element={<Dashboard section="profile" />} />
-            <Route path="dashboard/book-seva" element={<Dashboard section="book-seva" />} />
+            <Route path="dashboard/book-seva" element={<SevaBooking />} />
             <Route path="dashboard/bookings" element={<Dashboard section="bookings" />} />
           </Route>
           <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>

@@ -159,7 +159,7 @@ export default function SevaDisplayPage() {
           <div className={styles.detailsPanel}>
             <span className={styles.eyebrow}>Seva details</span>
             <h1>{seva.name}</h1>
-            <div className={styles.heroMeta}>
+            {/* <div className={styles.heroMeta}>
               <span>
                 <IndianRupee size={18} aria-hidden="true" />
                 {amount || "Contact for amount"}
@@ -174,7 +174,7 @@ export default function SevaDisplayPage() {
                   {contactPhone}
                 </span>
               ) : null}
-            </div>
+            </div> */}
           <p>{seva.description}</p>
           </div>
         </div>
