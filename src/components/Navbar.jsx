@@ -45,7 +45,7 @@ export default function Navbar() {
   }, [isAuthenticated, isBhakta, lang, t]);
 
   const brandPath = isAuthenticated ? getRoleHomePath(user?.role, lang) : `/${lang}`;
-  const forceSolidNav = /^\/[^/]+\/seva\/[^/]+/.test(location.pathname);
+  const forceSolidNav = /^\/[^/]+\/(seva\/|seva-booking|checkout|dashboard\/(bookings|book-seva))/.test(location.pathname);
   const otherLang = lang === "kn" ? "en" : "kn";
   const switchLangPath = `/${otherLang}${location.pathname.replace(/^\/[^/]+/, "")}${location.search}${location.hash}`;
 

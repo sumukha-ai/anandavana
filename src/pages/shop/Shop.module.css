@@ -1,0 +1,558 @@
+/* Shop layer: catalog, product, checkout, orders, receipt.
+   Modern commerce rhythm (quiet white surfaces, hairline borders, strong price type)
+   carried in the Samsthana's temple-wood and kumkum palette. */
+
+.shop {
+  --ink: #1f1a17;
+  --ink-2: #544b44;
+  --ink-3: #7d7269;
+  --line: #ebe5dc;
+  --line-strong: #d8cfc2;
+  --canvas: #faf8f4;
+  --surface: #ffffff;
+  --brand: #2c140c;
+  --brand-hover: #43200f;
+  --accent: #b85c1e;
+  --accent-ink: #8f4410;
+  --accent-soft: #fbf0e6;
+  --gold: #d4af37;
+  --success: #1d6b3a;
+  --success-soft: #e7f3ea;
+  --warning: #855400;
+  --warning-soft: #fcf2dc;
+  --danger: #9b2c1f;
+  --danger-soft: #fbe9e5;
+  --radius: 14px;
+  --radius-sm: 10px;
+  --shadow-card: 0 1px 2px rgba(31, 26, 23, 0.04), 0 8px 24px rgba(31, 26, 23, 0.06);
+  --shadow-lift: 0 2px 4px rgba(31, 26, 23, 0.05), 0 18px 40px rgba(31, 26, 23, 0.1);
+
+  min-height: 100vh;
+  padding: calc(var(--nav-height) + 2.25rem) 0 clamp(4rem, 8vw, 6rem);
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+
+.container {
+  width: min(1240px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.narrow {
+  width: min(760px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+/* ---------- Page header ---------- */
+
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.86rem;
+  color: var(--ink-3);
+}
+
+.breadcrumbs a {
+  color: var(--ink-2);
+  transition: color 0.15s ease;
+}
+
+.breadcrumbs a:hover {
+  color: var(--accent);
+}
+
+.breadcrumbs svg {
+  color: var(--line-strong);
+}
+
+.breadcrumbs [aria-current="page"] {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.pageHeader {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1.25rem 0 2rem;
+}
+
+.pageTitle {
+  font-family: var(--font-display);
+  font-size: clamp(2.1rem, 4.4vw, 3.2rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.pageTitle:lang(kn) {
+  line-height: 1.3;
+}
+
+.pageIntro {
+  max-width: 62ch;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--ink-2);
+}
+
+.sectionTitle {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+/* ---------- Buttons ---------- */
+
+.btnPrimary,
+.btnSecondary,
+.btnGhost {
+  min-height: 3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0 1.35rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.97rem;
+  font-weight: 650;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s var(--ease-out);
+}
+
+.btnPrimary {
+  background: var(--brand);
+  color: #fffaf2;
+  box-shadow: 0 1px 2px rgba(44, 20, 12, 0.2);
+}
+
+.btnPrimary:hover {
+  background: var(--brand-hover);
+  box-shadow: 0 6px 16px rgba(44, 20, 12, 0.22);
+}
+
+.btnPrimary:active,
+.btnSecondary:active {
+  transform: translateY(1px);
+}
+
+.btnPrimary:disabled {
+  background: #9d928a;
+  box-shadow: none;
+}
+
+.btnSecondary {
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  color: var(--ink);
+}
+
+.btnSecondary:hover {
+  border-color: var(--ink-3);
+  background: #fdfcfa;
+}
+
+.btnGhost {
+  min-height: 2.5rem;
+  padding: 0 0.75rem;
+  color: var(--accent-ink);
+}
+
+.btnGhost:hover {
+  background: var(--accent-soft);
+}
+
+.btnBlock {
+  width: 100%;
+}
+
+.btnLarge {
+  min-height: 3.4rem;
+  font-size: 1.02rem;
+}
+
+.textLink {
+  color: var(--accent-ink);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+.textLink:hover {
+  color: var(--accent);
+}
+
+/* ---------- Badges ---------- */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 1.6rem;
+  padding: 0 0.6rem;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 650;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.badgeOnline {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.badgeOffice {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+
+.badgePaid {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.badgePending {
+  background: var(--warning-soft);
+  color: var(--warning);
+}
+
+.badgeFailed {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.badgeDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* ---------- Price ---------- */
+
+.price {
+  font-size: 1.15rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.priceMuted {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--ink-3);
+}
+
+/* ---------- Seva card ---------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition:
+    box-shadow 0.25s var(--ease-out),
+    border-color 0.25s ease,
+    transform 0.25s var(--ease-out);
+}
+
+.card:hover {
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-lift);
+  transform: translateY(-2px);
+}
+
+.cardMedia {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #efe8dd;
+}
+
+.cardMedia img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s var(--ease-out);
+}
+
+.card:hover .cardMedia img {
+  transform: scale(1.04);
+}
+
+.cardBadge {
+  position: absolute;
+  top: 0.8rem;
+  left: 0.8rem;
+  box-shadow: 0 2px 8px rgba(31, 26, 23, 0.12);
+}
+
+.cardBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.1rem 1.15rem 1.2rem;
+}
+
+.cardTitle {
+  font-size: 1.08rem;
+  font-weight: 650;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.cardTitle a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.cardText {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.cardFooter {
+  margin-top: auto;
+  padding-top: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.cardAction {
+  position: relative;
+  z-index: 2;
+  min-height: 2.6rem;
+  padding: 0 1rem;
+  font-size: 0.9rem;
+}
+
+/* ---------- Skeletons ---------- */
+
+.skeleton {
+  background: linear-gradient(90deg, #efe9e0 0%, #f7f3ed 50%, #efe9e0 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.skeletonCard {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.skeletonMedia {
+  aspect-ratio: 4 / 3;
+  border-radius: 0;
+}
+
+.skeletonLines {
+  display: grid;
+  gap: 0.6rem;
+  padding: 1.1rem 1.15rem 1.3rem;
+}
+
+.skeletonLine {
+  height: 0.85rem;
+}
+
+/* ---------- States ---------- */
+
+.stateBox {
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  padding: clamp(2.5rem, 6vw, 4rem) 1.5rem;
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.stateIcon {
+  width: 3rem;
+  height: 3rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.stateTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.stateBody {
+  max-width: 44ch;
+  color: var(--ink-2);
+  line-height: 1.65;
+}
+
+.stateActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+
+.spin {
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- Assurance strip ---------- */
+
+.assurance {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.assuranceItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 1.1rem 1.25rem;
+}
+
+.assuranceItem + .assuranceItem {
+  border-left: 1px solid var(--line);
+}
+
+.assuranceItem svg {
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+  color: var(--accent);
+}
+
+.assuranceItem strong {
+  display: block;
+  font-size: 0.93rem;
+  font-weight: 650;
+  color: var(--ink);
+}
+
+.assuranceItem span {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--ink-3);
+}
+
+.assuranceStack {
+  grid-template-columns: 1fr;
+}
+
+.assuranceStack .assuranceItem + .assuranceItem {
+  border-left: 0;
+  border-top: 1px solid var(--line);
+}
+
+/* ---------- Panels ---------- */
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.divider {
+  height: 1px;
+  background: var(--line);
+  border: 0;
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .shop {
+    padding-top: calc(var(--nav-height) + 1.25rem);
+  }
+
+  .assurance {
+    grid-template-columns: 1fr;
+  }
+
+  .assuranceItem + .assuranceItem {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card:hover,
+  .card:hover .cardMedia img {
+    transform: none;
+  }
+
+  .skeleton {
+    animation: none;
+  }
+}

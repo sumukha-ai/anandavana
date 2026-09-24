@@ -14,6 +14,10 @@ import GuruParampare from "./pages/GuruParampare";
 import Institutions from "./pages/Institutions";
 import SevaBooking from "./pages/SevaBooking";
 import SevaDisplayPage from "./pages/SevaDisplayPage";
+import CheckoutPage from "./pages/shop/CheckoutPage";
+import OrderConfirmedPage from "./pages/shop/OrderConfirmedPage";
+import OrdersPage from "./pages/shop/OrdersPage";
+import ReceiptPage from "./pages/shop/ReceiptPage";
 import Publications from "./pages/Publications";
 import SadguruVamshaVruksha from "./pages/SadguruVamshaVruksha/SadguruVamshaVruksha";
 import Login from "./pages/Login";
@@ -58,7 +62,10 @@ function AppLayout() {
             <Route path="dashboard" element={<Dashboard section="overview" />} />
             <Route path="dashboard/profile" element={<Dashboard section="profile" />} />
             <Route path="dashboard/book-seva" element={<SevaBooking />} />
-            <Route path="dashboard/bookings" element={<Dashboard section="bookings" />} />
+            <Route path="dashboard/bookings" element={<OrdersPage />} />
+            <Route path="dashboard/bookings/:bookingId" element={<ReceiptPage />} />
+            <Route path="checkout/confirmed" element={<OrderConfirmedPage />} />
+            <Route path="checkout/:sevaId" element={<CheckoutPage />} />
           </Route>
           <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
             <Route path="admin" element={<RolePortal role="admin" section="overview" />} />

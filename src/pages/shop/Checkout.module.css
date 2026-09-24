@@ -1,0 +1,563 @@
+.header {
+  margin: 1.25rem 0 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+}
+
+.secure {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #1d6b3a;
+  font-size: 0.9rem;
+  font-weight: 650;
+}
+
+/* ---------- Progress ---------- */
+
+.progress {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 1.75rem;
+}
+
+.progressItem {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding-top: 0.85rem;
+  border-top: 3px solid #e3dccf;
+  color: #7d7269;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+
+.progressDone,
+.progressActive {
+  border-top-color: #2c140c;
+  color: #1f1a17;
+}
+
+.progressDot {
+  width: 1.6rem;
+  height: 1.6rem;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #efe8dd;
+  color: #544b44;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.progressActive .progressDot,
+.progressDone .progressDot {
+  background: #2c140c;
+  color: #fffaf2;
+}
+
+.progressLabel {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------- Layout ---------- */
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
+  gap: clamp(1.25rem, 3vw, 2.25rem);
+  align-items: start;
+}
+
+.steps {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.step {
+  padding: 1.25rem 1.4rem;
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.stepOpen {
+  border-color: #d8cfc2;
+  box-shadow: 0 1px 2px rgba(31, 26, 23, 0.04), 0 10px 28px rgba(31, 26, 23, 0.07);
+}
+
+.stepHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.stepNumber {
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid #d8cfc2;
+  color: #7d7269;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.stepNumberActive {
+  border-color: #2c140c;
+  background: #2c140c;
+  color: #fffaf2;
+}
+
+.stepNumberDone {
+  border-color: #1d6b3a;
+  background: #1d6b3a;
+  color: #ffffff;
+}
+
+.stepHeading {
+  flex: 1;
+  min-width: 0;
+}
+
+.stepTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #1f1a17;
+}
+
+.stepSummary {
+  margin-top: 0.15rem;
+  color: #544b44;
+  font-size: 0.93rem;
+}
+
+.stepBody {
+  margin-top: 1rem;
+  padding-left: 2.9rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.help {
+  color: #7d7269;
+  font-size: 0.93rem;
+  line-height: 1.6;
+}
+
+.stepActions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ---------- Devotee cards ---------- */
+
+.profileGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.profileCard {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.95rem 1rem;
+  border: 1px solid #d8cfc2;
+  border-radius: 12px;
+  background: #ffffff;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.profileCard:hover {
+  border-color: #7d7269;
+}
+
+.profileCard input,
+.day input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.profileCard:has(input:focus-visible),
+.day:has(input:focus-visible) {
+  outline: 2px solid #b85c1e;
+  outline-offset: 2px;
+}
+
+.profileCardChecked,
+.profileCardChecked:hover {
+  border-color: #2c140c;
+  background: #fdfbf8;
+  box-shadow: inset 0 0 0 1px #2c140c;
+}
+
+.profileAvatar {
+  width: 2.25rem;
+  height: 2.25rem;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #fbf0e6;
+  color: #b85c1e;
+}
+
+.profileText {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.profileName {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 650;
+  color: #1f1a17;
+}
+
+.profileTag {
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  background: #f3eee7;
+  color: #544b44;
+  font-size: 0.72rem;
+  font-weight: 650;
+}
+
+.profileMeta {
+  display: block;
+  color: #7d7269;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  font-weight: 400;
+}
+
+.radioMark {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  border-radius: 50%;
+  border: 1.5px solid #b3a899;
+  transition: border 0.15s ease;
+}
+
+.profileCardChecked .radioMark {
+  border: 5px solid #2c140c;
+}
+
+.addProfile {
+  min-height: 4.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1.5px dashed #d8cfc2;
+  border-radius: 12px;
+  color: #8f4410;
+  font-weight: 650;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.addProfile:hover {
+  border-color: #b85c1e;
+  background: #fbf0e6;
+}
+
+.inlineNotice {
+  display: grid;
+  justify-items: start;
+  gap: 0.5rem;
+  padding: 1.1rem;
+  border-radius: 12px;
+  background: #fbf0e6;
+  color: #544b44;
+  line-height: 1.6;
+}
+
+.inlineNotice strong {
+  color: #1f1a17;
+}
+
+/* ---------- Date picker ---------- */
+
+.dayStrip {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 4.6rem;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding: 0.2rem 0.1rem 0.5rem;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+}
+
+.day {
+  position: relative;
+  scroll-snap-align: start;
+  display: grid;
+  justify-items: center;
+  gap: 0.1rem;
+  padding: 0.7rem 0.3rem;
+  border: 1px solid #d8cfc2;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #544b44;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.day:hover {
+  border-color: #7d7269;
+}
+
+.dayChecked,
+.dayChecked:hover {
+  border-color: #2c140c;
+  background: #2c140c;
+  color: #fffaf2;
+}
+
+.dayWeek,
+.dayMonth {
+  font-size: 0.74rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.dayNumber {
+  font-size: 1.35rem;
+  font-weight: 750;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+.otherDate {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  color: #544b44;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.otherDate input {
+  height: 2.75rem;
+  padding: 0 0.8rem;
+  border: 1px solid #d8cfc2;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #1f1a17;
+  font-weight: 500;
+}
+
+.otherDate input:focus {
+  outline: none;
+  border-color: #b85c1e;
+  box-shadow: 0 0 0 3px rgba(184, 92, 30, 0.14);
+}
+
+/* ---------- Review ---------- */
+
+.review {
+  display: grid;
+  border: 1px solid #ebe5dc;
+  border-radius: 12px;
+}
+
+.review > div {
+  display: grid;
+  grid-template-columns: 8rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+}
+
+.review > div + div {
+  border-top: 1px solid #ebe5dc;
+}
+
+.review dt {
+  color: #7d7269;
+  font-size: 0.88rem;
+}
+
+.review dd {
+  color: #1f1a17;
+  font-weight: 600;
+}
+
+.error {
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  background: #fbe9e5;
+  color: #9b2c1f;
+  font-weight: 600;
+  line-height: 1.55;
+}
+
+.payNote,
+.summaryNote {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  color: #7d7269;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.payNote svg,
+.summaryNote svg {
+  flex-shrink: 0;
+  color: #1d6b3a;
+}
+
+.testNote {
+  padding: 0.75rem 0.9rem;
+  border-radius: 10px;
+  background: #fcf2dc;
+  color: #6d4600;
+  font-size: 0.87rem;
+  line-height: 1.55;
+}
+
+/* ---------- Summary ---------- */
+
+.summary {
+  position: sticky;
+  top: calc(var(--nav-height) + 1.25rem);
+  padding: 1.35rem;
+  display: grid;
+  gap: 1.1rem;
+}
+
+.summaryTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1f1a17;
+}
+
+.summaryItem {
+  display: flex;
+  gap: 0.9rem;
+  align-items: center;
+}
+
+.summaryItem img {
+  width: 96px;
+  height: 72px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 10px;
+  background: #efe8dd;
+}
+
+.summaryItem > div {
+  display: grid;
+  gap: 0.4rem;
+  justify-items: start;
+}
+
+.summaryName {
+  font-weight: 650;
+  line-height: 1.3;
+  color: #1f1a17;
+}
+
+.summaryRows {
+  display: grid;
+  gap: 0.6rem;
+  padding: 1rem 0;
+  border-top: 1px solid #ebe5dc;
+  border-bottom: 1px solid #ebe5dc;
+}
+
+.summaryRows > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.93rem;
+}
+
+.summaryRows dt {
+  color: #7d7269;
+}
+
+.summaryRows dd {
+  color: #1f1a17;
+  font-weight: 600;
+  text-align: right;
+}
+
+.summaryTotal {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-weight: 700;
+  color: #1f1a17;
+}
+
+.totalPrice {
+  font-size: 1.5rem;
+}
+
+@media (max-width: 960px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .summary {
+    position: static;
+    order: -1;
+  }
+}
+
+@media (max-width: 640px) {
+  .step {
+    padding: 1.1rem 1rem;
+  }
+
+  .stepBody {
+    padding-left: 0;
+  }
+
+  .profileGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .review > div {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .review dt {
+    grid-column: 1 / -1;
+  }
+
+  .stepActions button {
+    width: 100%;
+  }
+
+  .progressLabel {
+    font-size: 0.8rem;
+  }
+}
