@@ -1,106 +1,130 @@
 import { NavLink } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
-import styles from "./RolePortal.module.css";
-import { statusToneKey } from "./rolePortalConfig";
-import { formatSevaDate } from "../sevaHelpers";
+import { CalendarX2, ChevronLeft, ChevronRight, Printer } from "lucide-react";
+import { dateKey, displayLookup, formatAmount, isPaidStatus, money, parseDateKey, relativeDay, sectionPath } from "./rolePortalConfig";
+import { EmptyState, Kpis, Page, PageHeader, Panel, PaymentBadge, SkeletonRows } from "./ui";
+import { cx } from "./cx";
+import styles from "./Console.module.css";
 
-function lookupName(item, lang) {
-  if (!item) return "";
-  if (typeof item === "string") return item;
-  return lang === "kn" ? item.name_kn || item.name : item.name || item.name_kn;
-}
-
-function Field({ label, value }) {
+function Item({ label, value, wide, wideSm }) {
   if (value === null || value === undefined || value === "") return null;
   return (
-    <div className={styles.detailItem}>
-      <span>{label}</span>
-      <strong>{value}</strong>
+    <div className={cx(styles.dlItem, wide && styles.dlWide, wideSm && styles.dlWideSm)}>
+      <dt>{label}</dt>
+      <dd>{value}</dd>
     </div>
   );
 }
 
-export default function CalendarDayDetailsPage({ bookings, date, lang, role }) {
+function shiftDay(key, amount) {
+  const date = parseDateKey(key);
+  return dateKey(new Date(date.getFullYear(), date.getMonth(), date.getDate() + amount));
+}
+
+export default function CalendarDayDetailsPage({ bookings, date, lang, role, loaded }) {
   const dayBookings = bookings.filter((booking) => booking.seva_date === date);
+  const parsed = parseDateKey(date);
+  const valid = !Number.isNaN(parsed.getTime());
+  const title = valid
+    ? new Intl.DateTimeFormat("en-IN", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(parsed)
+    : "Seva day";
+  const bySeva = Object.values(
+    dayBookings.reduce((acc, booking) => {
+      const key = booking.seva?.id || booking.seva?.name || "seva";
+      if (!acc[key]) acc[key] = { key, name: booking.seva?.name || "Seva", amount: booking.seva?.amount, items: [] };
+      acc[key].items.push(booking);
+      return acc;
+    }, {})
+  );
+  const expected = dayBookings.reduce((sum, booking) => sum + Number(booking.seva?.amount || 0), 0);
+  const paid = dayBookings.reduce((sum, booking) => (isPaidStatus(booking.payment_status) ? sum + Number(booking.seva?.amount || 0) : sum), 0);
+  const base = `/${lang}/${role}/calendar`;
+  let counter = 0;
 
   return (
-    <div className={styles.stackList}>
-      <section className={styles.panel}>
-        <div className={styles.panelHeaderSplit}>
-          <div>
-            <h2 className={styles.panelTitle}>{formatSevaDate(date, lang)}</h2>
-          </div>
-          <NavLink to={`/${lang}/${role}/calendar`} className={styles.secondaryButton}>
-            <ArrowLeft size={17} aria-hidden="true" />
-            Calendar
-          </NavLink>
-        </div>
-        <div className={styles.grid3}>
-          <article className={styles.metricCard}>
-            <span className={styles.cardLabel}>Bookings</span>
-            <strong className={styles.metricValue}>{dayBookings.length}</strong>
-            <span className={styles.helperText}>For this date</span>
-          </article>
-          <article className={styles.metricCard}>
-            <span className={styles.cardLabel}>Sevas</span>
-            <strong className={styles.metricValue}>{new Set(dayBookings.map((booking) => booking.seva?.id)).size}</strong>
-            <span className={styles.helperText}>Unique seva types</span>
-          </article>
-          <article className={styles.metricCard}>
-            <span className={styles.cardLabel}>Expected amount</span>
-            <strong className={styles.metricValue}>
-              INR {dayBookings.reduce((sum, booking) => sum + Number(booking.seva?.amount || 0), 0).toLocaleString("en-IN")}
-            </strong>
-            <span className={styles.helperText}>Based on seva amounts</span>
-          </article>
-        </div>
-      </section>
+    <Page>
+      <PageHeader
+        back={{ to: sectionPath(lang, role, "calendar"), label: "Seva calendar" }}
+        title={title}
+        description={relativeDay(date) ? `${relativeDay(date)} · the full sheet for every seva booked on this day.` : "The full sheet for every seva booked on this day."}
+        actions={
+          valid ? (
+            <>
+              <NavLink to={`${base}/${shiftDay(date, -1)}`} className={cx(styles.iconButton, styles.iconButtonBordered)} aria-label="Previous day">
+                <ChevronLeft size={16} aria-hidden="true" />
+              </NavLink>
+              <NavLink to={`${base}/${shiftDay(date, 1)}`} className={cx(styles.iconButton, styles.iconButtonBordered)} aria-label="Next day">
+                <ChevronRight size={16} aria-hidden="true" />
+              </NavLink>
+              <button type="button" className={cx(styles.btn, styles.btnSecondary)} onClick={() => window.print()} disabled={!dayBookings.length}>
+                <Printer size={15} aria-hidden="true" />
+                Print day sheet
+              </button>
+            </>
+          ) : null
+        }
+      />
 
-      {dayBookings.length ? (
-        dayBookings.map((booking) => {
-          const profile = booking.bhakta_profile || {};
-          return (
-            <article key={booking.id} className={styles.bookingDetailCard}>
-              <div className={styles.bookingHeader}>
-                <div>
-                  <strong className={styles.miniCardTitle}>{booking.seva?.name || "Seva"}</strong>
-                  <span className={styles.metaText}>
-                    Booked for {profile.name || "Bhakta"} {profile.is_self ? "(Self)" : "(Family member)"}
-                  </span>
-                </div>
-                <span className={`${styles.statusPill} ${styles[statusToneKey(booking.payment_status)]}`}>
-                  {booking.payment_status || "Pending"}
-                </span>
-              </div>
+      {loaded ? (
+        <Kpis
+          items={[
+            { label: "Bookings", value: dayBookings.length, sub: "On this day" },
+            { label: "Sevas", value: bySeva.length, sub: "Different sevas" },
+            { label: "Expected", value: money(expected), sub: "At seva amounts" },
+            { label: "Received", value: money(paid), sub: expected > paid ? `${money(expected - paid)} pending` : "Fully paid", warn: expected > paid },
+          ]}
+        />
+      ) : null}
 
-              <div className={styles.detailGrid}>
-                <Field label="Bhakta name" value={profile.name} />
-                <Field label="Phone" value={profile.phone_number} />
-                <Field label="Email" value={profile.email} />
-                <Field label="Rashi" value={lookupName(profile.rashi, lang)} />
-                <Field label="Nakshatra" value={lookupName(profile.nakshatra, lang)} />
-                <Field label="Gotra" value={lang === "kn" ? profile.gotra_kn || profile.gotra : profile.gotra} />
-                <Field label="Charana" value={profile.charana} />
-                <Field label="Profile type" value={profile.is_self ? "Self" : "Family member"} />
-                <Field label="Amount" value={Number(booking.seva?.amount) > 0 ? `INR ${Number(booking.seva.amount).toLocaleString("en-IN")}` : "Offline"} />
-                <Field label="Booking reference" value={booking.payment_order_id} />
-                <Field label="Payment ref" value={booking.payment_reference} />
-              </div>
-
-              {profile.address ? (
-                <div className={styles.addressBlock}>
-                  <span>Address</span>
-                  <p>{profile.address}</p>
-                </div>
-              ) : null}
-            </article>
-          );
-        })
+      {!loaded ? (
+        <Panel>
+          <SkeletonRows rows={4} />
+        </Panel>
+      ) : dayBookings.length ? (
+        bySeva.map((group) => (
+          <Panel key={group.key} title={group.name} meta={`${group.items.length} · ${formatAmount(group.amount)} each`}>
+            {group.items.map((booking) => {
+              counter += 1;
+              const profile = booking.bhakta_profile || {};
+              return (
+                <article key={booking.id} className={styles.bookingCard}>
+                  <div className={styles.bookingHead}>
+                    <span className={styles.bookingIndex}>{counter}</span>
+                    <div className={styles.listText}>
+                      <strong>{profile.name || "Devotee"}</strong>
+                      <span>{profile.is_self ? "Booked for self" : "Booked for a family member"}</span>
+                    </div>
+                    <PaymentBadge status={booking.payment_status} />
+                  </div>
+                  <dl className={styles.dl}>
+                    <Item label="Rashi" value={displayLookup(profile.rashi, lang)} />
+                    <Item label="Nakshatra" value={displayLookup(profile.nakshatra, lang)} />
+                    <Item label="Gotra" value={lang === "kn" ? profile.gotra_kn || profile.gotra : profile.gotra} />
+                    <Item label="Charana" value={profile.charana} />
+                    <Item label="Phone" value={profile.phone_number} />
+                    <Item label="Email" value={profile.email} wideSm />
+                    <Item label="Booking reference" value={booking.payment_order_id} />
+                    <Item label="Payment reference" value={booking.payment_reference} />
+                    <Item label="Address" value={profile.address} wide />
+                  </dl>
+                </article>
+              );
+            })}
+          </Panel>
+        ))
       ) : (
-        <section className={styles.panel}>
-          <div className={styles.emptyState}>No bookings found for this date.</div>
-        </section>
+        <Panel>
+          <EmptyState
+            icon={CalendarX2}
+            title="No sevas booked for this day"
+            text="Use the arrows to step through nearby days, or go back to the calendar to pick another date."
+            action={
+              <NavLink to={sectionPath(lang, role, "calendar")} className={cx(styles.btn, styles.btnSecondary)}>
+                Back to calendar
+              </NavLink>
+            }
+          />
+        </Panel>
       )}
-    </div>
+    </Page>
   );
 }

@@ -1,21 +1,12 @@
 import { useMemo, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { groupBookings } from "./rolePortalConfig";
-import styles from "./CalendarPage.module.css";
+import { dateKey, groupBookings, sectionMeta } from "./rolePortalConfig";
+import { Page, PageHeader, Panel, Skeleton } from "./ui";
+import { cx } from "./cx";
+import styles from "./Console.module.css";
 
 const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
-function dateKey(date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
-
-function monthLabel(date) {
-  return date.toLocaleDateString(undefined, { month: "long", year: "numeric" });
-}
 
 function buildMonthDays(currentMonth) {
   const year = currentMonth.getFullYear();
@@ -23,103 +14,136 @@ function buildMonthDays(currentMonth) {
   const first = new Date(year, month, 1);
   const last = new Date(year, month + 1, 0);
   const days = [];
-
-  for (let i = 0; i < first.getDay(); i += 1) {
-    days.push(null);
-  }
-  for (let day = 1; day <= last.getDate(); day += 1) {
-    days.push(new Date(year, month, day));
-  }
+  for (let i = first.getDay(); i > 0; i -= 1) days.push({ date: new Date(year, month, 1 - i), outside: true });
+  for (let day = 1; day <= last.getDate(); day += 1) days.push({ date: new Date(year, month, day), outside: false });
+  let next = 1;
   while (days.length % 7 !== 0) {
-    days.push(null);
+    days.push({ date: new Date(year, month + 1, next), outside: true });
+    next += 1;
   }
   return days;
 }
 
-export default function CalendarPage({ bookings, role, lang }) {
-  const [currentMonth, setCurrentMonth] = useState(() => new Date());
-  const groupedBookings = useMemo(() => groupBookings(bookings), [bookings]);
+function sevaGroups(bookings) {
+  const groups = bookings.reduce((acc, booking) => {
+    const name = booking.seva?.name || "Seva";
+    acc[name] = (acc[name] || 0) + 1;
+    return acc;
+  }, {});
+  return Object.entries(groups).sort((a, b) => b[1] - a[1]);
+}
+
+export default function CalendarPage({ bookings, loaded, role, lang }) {
+  const [currentMonth, setCurrentMonth] = useState(() => {
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), 1);
+  });
+  const [direction, setDirection] = useState(0);
+  const grouped = useMemo(() => groupBookings(bookings), [bookings]);
   const days = useMemo(() => buildMonthDays(currentMonth), [currentMonth]);
+  const today = dateKey();
+  const monthPrefix = dateKey(currentMonth).slice(0, 7);
+  const monthTotal = Object.entries(grouped).reduce((sum, [key, list]) => (key.startsWith(monthPrefix) ? sum + list.length : sum), 0);
+  const isCurrentMonth = today.startsWith(monthPrefix);
 
   const moveMonth = (amount) => {
+    setDirection(amount);
     setCurrentMonth((current) => new Date(current.getFullYear(), current.getMonth() + amount, 1));
   };
 
+  const goToday = () => {
+    const now = new Date();
+    const target = new Date(now.getFullYear(), now.getMonth(), 1);
+    setDirection(target > currentMonth ? 1 : -1);
+    setCurrentMonth(target);
+  };
+
   return (
-    <section className={styles.panel}>
-      <div className={styles.calendarToolbar}>
-        <div className={styles.titleBlock}>
-          <h2 className={styles.panelTitle}>{monthLabel(currentMonth)}</h2>
+    <Page>
+      <PageHeader title={sectionMeta.calendar.label} description={sectionMeta.calendar.text} />
+
+      <Panel>
+        <div className={styles.calToolbar}>
+          <h2 className={styles.calMonth} aria-live="polite">
+            {currentMonth.toLocaleDateString("en-IN", { month: "long", year: "numeric" })}
+            {loaded ? (
+              <span className={styles.panelMeta}>
+                {monthTotal} {monthTotal === 1 ? "booking" : "bookings"}
+              </span>
+            ) : null}
+          </h2>
+          <div className={styles.calNav}>
+            <button type="button" className={cx(styles.btn, styles.btnSecondary, styles.btnSm)} onClick={goToday} disabled={isCurrentMonth}>
+              Today
+            </button>
+            <button type="button" className={cx(styles.iconButton, styles.iconButtonBordered)} onClick={() => moveMonth(-1)} aria-label="Previous month">
+              <ChevronLeft size={16} aria-hidden="true" />
+            </button>
+            <button type="button" className={cx(styles.iconButton, styles.iconButtonBordered)} onClick={() => moveMonth(1)} aria-label="Next month">
+              <ChevronRight size={16} aria-hidden="true" />
+            </button>
+          </div>
         </div>
-        <div className={styles.calendarActions}>
-          <button type="button" className={styles.iconButton} onClick={() => moveMonth(-1)} aria-label="Previous month">
-            <ChevronLeft size={18} strokeWidth={2.5} aria-hidden="true" />
-          </button>
-          <button type="button" className={styles.todayButton} onClick={() => setCurrentMonth(new Date())}>
+
+        <div className={styles.calViewport}>
+          <div className={styles.calGrid} role="row">
+            {weekdays.map((weekday) => (
+              <div key={weekday} className={styles.calWeekday} role="columnheader">
+                {weekday}
+              </div>
+            ))}
+          </div>
+          <div
+            key={monthPrefix}
+            className={cx(styles.calGrid, direction > 0 && styles.calSlideNext, direction < 0 && styles.calSlidePrev)}
+            role="grid"
+            aria-label="Seva bookings by day"
+          >
+            {days.map(({ date, outside }) => {
+              const key = dateKey(date);
+              const list = grouped[key] || [];
+              const count = list.length;
+              const classes = cx(styles.calDay, outside && styles.calDayOutside, key === today && styles.calToday, key < today && styles.calDayPast);
+              const groups = sevaGroups(list);
+              const inner = (
+                <>
+                  <span className={styles.calNum}>{date.getDate()}</span>
+                  {!loaded && !outside && date.getDate() % 5 === 2 ? <Skeleton height={16} /> : null}
+                  {groups.slice(0, 2).map(([name, n]) => (
+                    <span key={name} className={styles.calEvent} title={`${name}: ${n}`}>
+                      <span>{name}</span>
+                      {n > 1 ? <strong>×{n}</strong> : null}
+                    </span>
+                  ))}
+                  {groups.length > 2 ? <span className={styles.calMore}>+{groups.length - 2} more</span> : null}
+                  {count ? <span className={styles.calDot}>{count}</span> : null}
+                </>
+              );
+              const label = `${date.toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long" })}: ${count ? `${count} ${count === 1 ? "booking" : "bookings"}` : "no bookings"}`;
+              return count ? (
+                <NavLink key={key} to={`/${lang}/${role}/calendar/${key}`} className={classes} role="gridcell" aria-label={label}>
+                  {inner}
+                </NavLink>
+              ) : (
+                <div key={key} className={classes} role="gridcell" aria-label={outside ? undefined : label}>
+                  {inner}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className={styles.calLegend}>
+          <span>
+            <span className={styles.legendToday} aria-hidden="true" />
             Today
-          </button>
-          <button type="button" className={styles.iconButton} onClick={() => moveMonth(1)} aria-label="Next month">
-            <ChevronRight size={18} strokeWidth={2.5} aria-hidden="true" />
-          </button>
+          </span>
+          <span>
+            <span className={styles.legendSwatch} aria-hidden="true" />
+            Booked seva · open the day for the full sheet
+          </span>
         </div>
-      </div>
-
-      <div className={styles.calendarWrapper}>
-        <div className={styles.monthCalendar} role="grid" aria-label="Seva booking calendar">
-          {/* Weekday Headers */}
-          {weekdays.map((weekday) => (
-            <div key={weekday} className={styles.weekdayCell} role="columnheader">
-              {weekday}
-            </div>
-          ))}
-
-          {/* Days Grid */}
-          {days.map((day, index) => {
-            if (!day) {
-              return <div key={`blank-${index}`} className={`${styles.dayCell} ${styles.dayCellMuted}`} />;
-            }
-
-            const key = dateKey(day);
-            const count = groupedBookings[key]?.length || 0;
-            const isToday = key === dateKey(new Date());
-
-            const content = (
-              <div className={styles.dayInner}>
-                <div className={styles.dayTop}>
-                  <span className={`${styles.dayNumber} ${isToday ? styles.todayNumber : ""}`}>
-                    {day.getDate()}
-                  </span>
-                </div>
-                <div className={styles.dayBottom}>
-                  {count > 0 ? (
-                    <div className={styles.bookingBadge}>
-                      <strong className={styles.bookingCount}>{count}</strong>
-                      <span className={styles.bookingLabel}>{count === 1 ? "booking" : "bookings"}</span>
-                    </div>
-                  ) : (
-                    <div className={styles.emptyBadge}>No bookings</div>
-                  )}
-                </div>
-              </div>
-            );
-
-            return count > 0 ? (
-              <NavLink
-                key={key}
-                to={`/${lang}/${role}/calendar/${key}`}
-                className={`${styles.dayCell} ${styles.dayCellClickable}`}
-                role="gridcell"
-              >
-                {content}
-              </NavLink>
-            ) : (
-              <div key={key} className={styles.dayCell} role="gridcell">
-                {content}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
+      </Panel>
+    </Page>
   );
 }

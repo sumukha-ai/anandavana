@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { apiRequest } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
@@ -13,7 +13,7 @@ import SevaCatalogPage from "./rolePortal/SevaCatalogPage";
 import SevaEditorPage from "./rolePortal/SevaEditorPage";
 import StaffPage from "./rolePortal/StaffPage";
 import UsersPage from "./rolePortal/UsersPage";
-import { getMenuItems } from "./rolePortal/rolePortalConfig";
+import { getMenuItems, sectionPath, shortDate } from "./rolePortal/rolePortalConfig";
 
 const emptyStaff = { username: "", email: "", password: "", role: "" };
 const emptySeva = {
@@ -44,6 +44,28 @@ function toSevaForm(seva) {
   };
 }
 
+function useToasts() {
+  const [toasts, setToasts] = useState([]);
+  const counter = useRef(0);
+
+  const dismiss = useCallback((id) => {
+    setToasts((current) => current.map((toast) => (toast.id === id ? { ...toast, leaving: true } : toast)));
+    window.setTimeout(() => setToasts((current) => current.filter((toast) => toast.id !== id)), 200);
+  }, []);
+
+  const notify = useCallback(
+    (tone, title, text) => {
+      counter.current += 1;
+      const id = counter.current;
+      setToasts((current) => [...current.slice(-2), { id, tone, title, text }]);
+      if (tone !== "error") window.setTimeout(() => dismiss(id), 4200);
+    },
+    [dismiss]
+  );
+
+  return { toasts, notify, dismiss };
+}
+
 export default function RolePortal({ role, section = "overview" }) {
   const { token, user } = useAuth();
   const location = useLocation();
@@ -56,11 +78,15 @@ export default function RolePortal({ role, section = "overview" }) {
   const [lookups, setLookups] = useState({ rashis: [], nakshatras: [] });
   const [staffForm, setStaffForm] = useState(emptyStaff);
   const [sevaForm, setSevaForm] = useState(() => toSevaForm(location.state?.seva));
+  const [sevaBaseline, setSevaBaseline] = useState(() => toSevaForm(location.state?.seva));
   const [lookupForm, setLookupForm] = useState(emptyLookup);
   const [filters, setFilters] = useState({ from_date: "", to_date: "" });
-  const [status, setStatus] = useState(location.state?.seva ? "Loaded seva into the editor" : "");
-  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [loaded, setLoaded] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [sevaMissing, setSevaMissing] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
+  const { toasts, notify, dismiss } = useToasts();
 
   const canManage = role === "admin";
   const canSeeUsers = role === "admin" || role === "manager";
@@ -78,8 +104,7 @@ export default function RolePortal({ role, section = "overview" }) {
       if (filters.to_date) params.set("to_date", filters.to_date);
     }
     params.set("per_page", "100");
-    const query = params.toString();
-    return query ? `/booked_sevas?${query}` : "/booked_sevas";
+    return `/booked_sevas?${params.toString()}`;
   }, [activeSection, bookingDate, filters.from_date, filters.to_date]);
 
   useEffect(() => {
@@ -87,7 +112,7 @@ export default function RolePortal({ role, section = "overview" }) {
     let active = true;
 
     async function loadWorkspace() {
-      setError("");
+      setLoading(true);
       try {
         const requests = [
           apiRequest("/seva", { token, lang }),
@@ -102,18 +127,22 @@ export default function RolePortal({ role, section = "overview" }) {
         setSevas(sevaData.sevas || []);
         if (activeSection === "seva-editor" && sevaId) {
           const selectedSeva = (sevaData.sevas || []).find((seva) => String(seva.id) === String(sevaId));
+          setSevaMissing(!selectedSeva);
           if (selectedSeva) {
             setSevaForm(toSevaForm(selectedSeva));
-            setStatus("Loaded seva into the editor");
-          } else {
-            setError("Seva not found");
+            setSevaBaseline(toSevaForm(selectedSeva));
           }
         }
-        setLookups(lookupData);
+        setLookups({ rashis: lookupData?.rashis || [], nakshatras: lookupData?.nakshatras || [] });
         setBookings(bookingData.booked_sevas || []);
         if (userData) setUsers(userData.users || []);
       } catch (err) {
-        if (active) setError(err.message || "Unable to load workspace");
+        if (active) notify("error", "Could not load the workspace", err.message);
+      } finally {
+        if (active) {
+          setLoading(false);
+          setLoaded(true);
+        }
       }
     }
 
@@ -121,7 +150,7 @@ export default function RolePortal({ role, section = "overview" }) {
     return () => {
       active = false;
     };
-  }, [activeSection, bookingQuery, canSeeUsers, lang, refreshKey, sevaId, token]);
+  }, [activeSection, bookingQuery, canSeeUsers, lang, notify, refreshKey, sevaId, token]);
 
   useEffect(() => {
     if (!location.state?.seva) return;
@@ -131,8 +160,8 @@ export default function RolePortal({ role, section = "overview" }) {
   useEffect(() => {
     if (activeSection !== "seva-editor" || sevaId) return;
     setSevaForm(emptySeva);
-    setStatus("");
-    setError("");
+    setSevaBaseline(emptySeva);
+    setSevaMissing(false);
   }, [activeSection, sevaId, location.pathname]);
 
   const handleStaffChange = (event) => {
@@ -158,31 +187,34 @@ export default function RolePortal({ role, section = "overview" }) {
     setFilters((current) => ({ ...current, [name]: value }));
   };
 
+  const clearFilters = () => setFilters({ from_date: "", to_date: "" });
+
   const createStaff = async (event) => {
     event.preventDefault();
-    setStatus("");
-    setError("");
+    setSaving(true);
     try {
       await apiRequest("/users/staff", { method: "POST", token, body: staffForm });
-      setStatus(`${staffForm.role} account created`);
+      notify("success", "Staff login created", `${staffForm.username} can now sign in as ${staffForm.role}.`);
       setStaffForm(emptyStaff);
       setRefreshKey((current) => current + 1);
     } catch (err) {
-      setError(err.message || "Unable to create staff account");
+      notify("error", "Could not create the login", err.message || "Please check the details and try again.");
+    } finally {
+      setSaving(false);
     }
   };
 
   const saveSeva = async (event) => {
     event.preventDefault();
-    setStatus("");
-    setError("");
-    const payload = sevaForm.photo ? new FormData() : {
-      name: sevaForm.name,
-      description: sevaForm.description,
-      amount: sevaForm.amount === "" ? null : Number(sevaForm.amount),
-      photo_url: sevaForm.photo_url || null,
-      enabled: sevaForm.enabled,
-    };
+    const payload = sevaForm.photo
+      ? new FormData()
+      : {
+          name: sevaForm.name,
+          description: sevaForm.description,
+          amount: sevaForm.amount === "" ? null : Number(sevaForm.amount),
+          photo_url: sevaForm.photo_url || null,
+          enabled: sevaForm.enabled,
+        };
     if (payload instanceof FormData) {
       payload.append("name", sevaForm.name);
       payload.append("description", sevaForm.description);
@@ -204,80 +236,130 @@ export default function RolePortal({ role, section = "overview" }) {
         payload.description_kn = sevaForm.description_kn;
       }
     }
+    setSaving(true);
     try {
       await apiRequest("/seva", { method: "POST", token, body: payload });
-      setStatus("Seva saved");
+      notify("success", sevaForm.id ? "Seva updated" : "Seva added", `${sevaForm.name} is saved to the catalog.`);
       setSevaForm(emptySeva);
       setRefreshKey((current) => current + 1);
+      navigate(sectionPath(lang, role, "sevas"));
     } catch (err) {
-      setError(err.message || "Unable to save seva");
+      notify("error", "Could not save the seva", err.message || "Please try again.");
+    } finally {
+      setSaving(false);
     }
   };
 
   const editSeva = (seva) => {
+    setSevaForm(toSevaForm(seva));
+    setSevaBaseline(toSevaForm(seva));
+    setSevaMissing(false);
     navigate(`/${lang}/${role}/seva-editor/${seva.id}`, { state: { seva } });
   };
 
   const addSeva = () => {
     setSevaForm(emptySeva);
-    setStatus("");
-    setError("");
     navigate(`/${lang}/${role}/seva-editor`);
   };
 
   const saveLookup = async (event) => {
     event.preventDefault();
-    setStatus("");
-    setError("");
     const { kind, ...payload } = lookupForm;
     if (!payload.id) delete payload.id;
+    setSaving(true);
     try {
       await apiRequest(`/lookups/${kind}`, { method: "POST", token, body: payload });
-      setStatus("Lookup saved");
-      setLookupForm(emptyLookup);
+      notify("success", payload.id ? "Reference updated" : "Reference added", `${payload.name} · ${payload.name_kn}`);
+      setLookupForm((current) => ({ ...emptyLookup, kind: current.kind }));
       setRefreshKey((current) => current + 1);
     } catch (err) {
-      setError(err.message || "Unable to save lookup");
+      notify("error", "Could not save the reference", err.message || "Please try again.");
+    } finally {
+      setSaving(false);
     }
   };
 
+  const editLookup = (kind, item) => {
+    setLookupForm({ id: item.id, kind, name: item.name || "", name_kn: item.name_kn || "" });
+  };
+
+  const resetLookup = (kind) => setLookupForm({ ...emptyLookup, kind: kind || lookupForm.kind });
+
   const renderPage = () => {
     if (activeSection === "staff" && canManage) {
-      return <StaffPage staffForm={staffForm} onStaffChange={handleStaffChange} onCreateStaff={createStaff} />;
+      return (
+        <StaffPage
+          staffForm={staffForm}
+          onStaffChange={handleStaffChange}
+          onCreateStaff={createStaff}
+          saving={saving}
+          users={users}
+          loaded={loaded}
+        />
+      );
     }
     if (activeSection === "seva-editor" && canManage) {
       return (
         <SevaEditorPage
           key={sevaId || "new-seva"}
+          lang={lang}
+          role={role}
+          isEdit={Boolean(sevaId)}
+          notFound={loaded && sevaMissing && Boolean(sevaId)}
+          loading={Boolean(sevaId) && String(sevaForm.id) !== String(sevaId) && !sevaMissing}
           sevaForm={sevaForm}
+          sevaBaseline={sevaBaseline}
           onSevaChange={handleSevaChange}
           onSaveSeva={saveSeva}
+          saving={saving}
         />
       );
     }
     if (activeSection === "sevas") {
-      return <SevaCatalogPage sevas={sevas} canManage={canManage} onEditSeva={editSeva} onAddSeva={canManage ? addSeva : null} />;
+      return (
+        <SevaCatalogPage
+          sevas={sevas}
+          loaded={loaded}
+          canManage={canManage}
+          onEditSeva={editSeva}
+          onAddSeva={canManage ? addSeva : null}
+        />
+      );
     }
     if (activeSection === "bookings") {
-      return <BookingsPage bookings={bookings} filters={filters} onFilterChange={handleFilterChange} />;
+      return (
+        <BookingsPage
+          bookings={bookings}
+          loaded={loaded}
+          lang={lang}
+          role={role}
+          filters={filters}
+          onFilterChange={handleFilterChange}
+          onClearFilters={clearFilters}
+        />
+      );
     }
     if (activeSection === "calendar") {
-      return <CalendarPage bookings={bookings} lang={lang} role={role} />;
+      return <CalendarPage bookings={bookings} loaded={loaded} lang={lang} role={role} />;
     }
     if (activeSection === "calendar-detail") {
-      return <CalendarDayDetailsPage bookings={bookings} lang={lang} date={bookingDate} role={role} />;
+      return <CalendarDayDetailsPage bookings={bookings} loaded={loaded && !loading} lang={lang} date={bookingDate} role={role} />;
     }
     if (activeSection === "users" && canSeeUsers) {
-      return <UsersPage users={users} />;
+      return <UsersPage users={users} loaded={loaded} />;
     }
     if (activeSection === "lookups" && canManage) {
       return (
         <LookupsPage
           lang={lang}
           lookups={lookups}
+          loaded={loaded}
           lookupForm={lookupForm}
           onLookupChange={handleLookupChange}
           onSaveLookup={saveLookup}
+          onEditLookup={editLookup}
+          onResetLookup={resetLookup}
+          saving={saving}
         />
       );
     }
@@ -285,6 +367,8 @@ export default function RolePortal({ role, section = "overview" }) {
       <OverviewPage
         role={role}
         lang={lang}
+        user={user}
+        loaded={loaded}
         bookings={bookings}
         sevas={sevas}
         users={users}
@@ -294,18 +378,23 @@ export default function RolePortal({ role, section = "overview" }) {
     );
   };
 
+  let crumb;
+  if (activeSection === "calendar-detail") {
+    crumb = { parent: "Seva calendar", parentTo: sectionPath(lang, role, "calendar"), label: shortDate(bookingDate, { day: "numeric", month: "short", year: "numeric" }) };
+  } else if (activeSection === "seva-editor") {
+    crumb = { parent: "Seva catalog", parentTo: sectionPath(lang, role, "sevas"), label: sevaId ? sevaForm.name || "Edit seva" : "New seva" };
+  }
+
   return (
     <RoleShell
       role={role}
       lang={lang}
       section={activeSection}
-      user={user}
-      status={status}
-      error={error}
-      titleOverride={activeSection === "seva-editor" ? (sevaId || sevaForm.id ? "Edit seva" : "Add seva") : undefined}
-      textOverride={activeSection === "seva-editor" ? "Manage seva details, amount, availability, Kannada text, and media from this editor." : undefined}
-      onClearStatus={() => setStatus("")}
-      onClearError={() => setError("")}
+      sevas={sevas}
+      loading={loading}
+      crumb={crumb}
+      toasts={toasts}
+      onDismissToast={dismiss}
     >
       {renderPage()}
     </RoleShell>

@@ -37,10 +37,16 @@ function ScrollToTop() {
   return null;
 }
 
+const STAFF_CONSOLE_PATH = /^\/[^/]+\/(admin|manager|priest)(\/|$)/;
+
 function AppLayout() {
+  const { pathname } = useLocation();
+  // Staff workspaces run in their own full-height console shell
+  const isConsole = STAFF_CONSOLE_PATH.test(pathname);
+
   return (
     <div className={styles["app-wrapper"]}>
-      <Navbar />
+      {isConsole ? null : <Navbar />}
       <main className={styles["main-content"]}>
         <Routes>
           <Route index element={<Home />} />
@@ -98,7 +104,7 @@ function AppLayout() {
           <Route path="*" element={<Navigate to="." replace />} />
         </Routes>
       </main>
-      <Footer />
+      {isConsole ? null : <Footer />}
     </div>
   );
 }

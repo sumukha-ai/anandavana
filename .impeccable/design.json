@@ -1,0 +1,209 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-25T00:00:00Z",
+  "title": "Design System: Sri Kshetra Anandavana Staff Console",
+  "extensions": {
+    "scope": "Staff console only (src/pages/rolePortal, Console.module.css). The public site (src/index.css, src/pages/shop/*.module.css) is a separate world summarised in DESIGN.md's 'Public Site Surface' section; never mix tokens.",
+    "colorMeta": {
+      "accent": { "role": "primary", "displayName": "Kumkum Ember", "canonical": "#c2410c", "tonalRamp": ["#7c2d12", "#9a3412", "#c2410c", "#ea580c", "#fb923c", "#fdba74", "#fed7bf", "#fff4ed"] },
+      "accent-hover": { "role": "primary", "displayName": "Ember Deep", "canonical": "#9a3412" },
+      "accent-soft": { "role": "primary", "displayName": "Ember Wash", "canonical": "#fff4ed" },
+      "accent-line": { "role": "primary", "displayName": "Ember Line", "canonical": "#fed7bf" },
+      "on-accent": { "role": "primary", "displayName": "On Ember", "canonical": "#ffffff" },
+      "canvas": { "role": "neutral", "displayName": "Paper Canvas", "canonical": "#fafafa", "tonalRamp": ["#18181b", "#27272a", "#3f3f46", "#52525b", "#71717a", "#a1a1aa", "#e4e4e7", "#fafafa"] },
+      "rail": { "role": "neutral", "displayName": "Zinc Rail", "canonical": "#f4f4f5" },
+      "surface": { "role": "neutral", "displayName": "Sheet White", "canonical": "#ffffff" },
+      "surface-2": { "role": "neutral", "displayName": "Surface Two", "canonical": "#fafafa" },
+      "hover": { "role": "neutral", "displayName": "Hover", "canonical": "#f4f4f5" },
+      "press": { "role": "neutral", "displayName": "Press", "canonical": "#e9e9ec" },
+      "border": { "role": "neutral", "displayName": "Hairline", "canonical": "#e4e4e7" },
+      "border-strong": { "role": "neutral", "displayName": "Hairline Strong", "canonical": "#d4d4d8" },
+      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "#18181b" },
+      "ink-2": { "role": "neutral", "displayName": "Ink 2", "canonical": "#52525b" },
+      "ink-3": { "role": "neutral", "displayName": "Ink 3", "canonical": "#6b6b74" },
+      "mark": { "role": "neutral", "displayName": "Chart Mark", "canonical": "#a1a1aa" },
+      "skeleton": { "role": "neutral", "displayName": "Skeleton", "canonical": "#ececef" },
+      "success": { "role": "status", "displayName": "Success", "canonical": "#15803d", "tonalRamp": ["#14532d", "#166534", "#15803d", "#16a34a", "#4ade80", "#86efac", "#bbf7d0", "#ecfdf3"] },
+      "success-soft": { "role": "status", "displayName": "Success Wash", "canonical": "#ecfdf3" },
+      "warning": { "role": "status", "displayName": "Warning", "canonical": "#a15c07", "tonalRamp": ["#78350f", "#92400e", "#a15c07", "#d97706", "#fbbf24", "#fcd34d", "#fde68a", "#fef8e7"] },
+      "warning-soft": { "role": "status", "displayName": "Warning Wash", "canonical": "#fef8e7" },
+      "danger": { "role": "status", "displayName": "Danger", "canonical": "#b91c1c", "tonalRamp": ["#7f1d1d", "#991b1b", "#b91c1c", "#dc2626", "#f87171", "#fca5a5", "#fecaca", "#fef2f2"] },
+      "danger-soft": { "role": "status", "displayName": "Danger Wash", "canonical": "#fef2f2" },
+      "dark-canvas": { "role": "neutral", "displayName": "Graphite Canvas", "canonical": "#0c0c0e" },
+      "dark-rail": { "role": "neutral", "displayName": "Dark Rail", "canonical": "#111113" },
+      "dark-surface": { "role": "neutral", "displayName": "Dark Sheet", "canonical": "#161618" },
+      "dark-hover": { "role": "neutral", "displayName": "Dark Hover", "canonical": "#1f1f23" },
+      "dark-border": { "role": "neutral", "displayName": "Dark Hairline", "canonical": "#26262b" },
+      "dark-border-strong": { "role": "neutral", "displayName": "Dark Hairline Strong", "canonical": "#3a3a41" },
+      "dark-ink": { "role": "neutral", "displayName": "Dark Ink", "canonical": "#f4f4f5" },
+      "dark-ink-2": { "role": "neutral", "displayName": "Dark Ink 2", "canonical": "#b4b4bc" },
+      "dark-ink-3": { "role": "neutral", "displayName": "Dark Ink 3", "canonical": "#8e8e98" },
+      "dark-accent-text": { "role": "primary", "displayName": "Dark Ember Text", "canonical": "#fb923c" },
+      "dark-accent-hover": { "role": "primary", "displayName": "Dark Ember Hover", "canonical": "#d9531a" }
+    },
+    "themes": {
+      "mechanism": "data-theme attribute on the .console root; 'dark' swaps every --c-* token; preference persisted in localStorage.",
+      "darkOnly": {
+        "surface-2": "#131315",
+        "press": "#28282d",
+        "accent-soft": "rgba(251, 146, 60, 0.1)",
+        "accent-line": "rgba(251, 146, 60, 0.28)",
+        "success": "#4ade80",
+        "success-soft": "rgba(74, 222, 128, 0.1)",
+        "warning": "#fbbf24",
+        "warning-soft": "rgba(251, 191, 36, 0.1)",
+        "danger": "#f87171",
+        "danger-soft": "rgba(248, 113, 113, 0.1)",
+        "skeleton": "#222226",
+        "mark": "#62626b",
+        "scrim": "rgba(0, 0, 0, 0.6)"
+      }
+    },
+    "typographyMeta": {
+      "headline": { "displayName": "Headline", "purpose": "The single page title per route; 1.3rem below 640px." },
+      "metric": { "displayName": "Metric", "purpose": "KPI values, tabular; 1.05rem when the value is text." },
+      "title": { "displayName": "Title", "purpose": "Panel titles, form-section headings, empty-state titles." },
+      "body": { "displayName": "Body", "purpose": "Default console text and input text; 1.65 line height under :lang(kn)." },
+      "label": { "displayName": "Label", "purpose": "Field labels, cell mains; buttons at 0.84rem, badges at 0.74rem, table headers at 0.76rem Ink 3." },
+      "caption": { "displayName": "Caption", "purpose": "Hints, sub-lines, table footers, list secondary lines in Ink 3." },
+      "group-label": { "displayName": "Group label", "purpose": "Nav and palette group labels; sentence case, never uppercase." },
+      "mono": { "displayName": "Mono", "purpose": "Booking and reference IDs only." }
+    },
+    "shadows": [
+      { "name": "rest", "value": "0 1px 2px rgba(24, 24, 27, 0.05)", "purpose": "Every resting surface: panels, KPI strip, inputs, secondary buttons, nav indicator." },
+      { "name": "lifted", "value": "0 1px 2px rgba(24, 24, 27, 0.04), 0 4px 12px -2px rgba(24, 24, 27, 0.07)", "purpose": "Empty-state icon tile." },
+      { "name": "floating", "value": "0 2px 6px rgba(24, 24, 27, 0.06), 0 24px 48px -12px rgba(24, 24, 27, 0.22)", "purpose": "Toasts, command palette, save bar, mobile drawer only." },
+      { "name": "focus-ring", "value": "0 0 0 3px rgba(194, 65, 12, 0.18)", "purpose": "Focused inputs, switches, choice cards, dropzones. Dark: rgba(251, 146, 60, 0.25)." },
+      { "name": "primary-highlight", "value": "inset 0 1px 0 rgba(255, 255, 255, 0.14)", "purpose": "Top highlight on primary buttons, layered with rest." }
+    ],
+    "motion": [
+      { "name": "ease-console", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Expo-out for every entrance and slide." },
+      { "name": "state", "value": "150ms ease", "purpose": "Colour, border and background state changes." },
+      { "name": "page-in", "value": "220ms; opacity 0, translateY(6px), blur(2px) to rest", "purpose": "Route change content fade-rise." },
+      { "name": "nav-indicator", "value": "220ms transform", "purpose": "Sliding active nav tile." },
+      { "name": "calendar-slide", "value": "220ms; translateX(+/-24px)", "purpose": "Month change by direction." },
+      { "name": "toast-in", "value": "220ms; translateY(16px) scale(0.96) blur(3px) to rest", "purpose": "Toast entrance; exits 200ms translateX(24px)." },
+      { "name": "palette-in", "value": "220ms; translateY(-8px) scale(0.975) to rest", "purpose": "Command palette entrance over a 160ms scrim fade." },
+      { "name": "bar-grow", "value": "280ms scaleY from baseline, 12ms stagger", "purpose": "Load chart first paint." },
+      { "name": "drawer", "value": "300ms transform", "purpose": "Mobile rail drawer." },
+      { "name": "reduced-motion", "value": "0.01ms", "purpose": "All animations and transitions under prefers-reduced-motion." }
+    ],
+    "breakpoints": [
+      { "name": "print", "value": "print", "purpose": "Day sheet: content column only." },
+      { "name": "sm", "value": "640px", "purpose": "Stacked tables, two-column KPIs, full-width actions." },
+      { "name": "md", "value": "900px", "purpose": "Rail becomes off-canvas drawer; calendar dots." },
+      { "name": "lg", "value": "1100px", "purpose": "Splits and form sections collapse to one column." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one primary action per view.",
+      "html": "<button class=\"ds-btn ds-btn-primary\"><svg width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12h14\"/><path d=\"M12 5v14\"/></svg>New seva</button>",
+      "css": ".ds-btn { height: 2.125rem; display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem; padding: 0 0.85rem; border: 0; border-radius: 8px; font-family: Inter, system-ui, sans-serif; font-size: 0.84rem; font-weight: 600; cursor: pointer; transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease; } .ds-btn-primary { background: #c2410c; color: #ffffff; box-shadow: 0 1px 2px rgba(24, 24, 27, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.14); } .ds-btn-primary:hover { background: #9a3412; } .ds-btn:active { transform: translateY(1px) scale(0.99); } .ds-btn:focus-visible { outline: 2px solid #c2410c; outline-offset: 2px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Supporting actions such as export and cancel.",
+      "html": "<button class=\"ds-btn-secondary\">Export CSV</button>",
+      "css": ".ds-btn-secondary { height: 2.125rem; display: inline-flex; align-items: center; gap: 0.45rem; padding: 0 0.85rem; border: 1px solid #e4e4e7; border-radius: 8px; background: #ffffff; color: #18181b; font-family: Inter, system-ui, sans-serif; font-size: 0.84rem; font-weight: 600; box-shadow: 0 1px 2px rgba(24, 24, 27, 0.05); cursor: pointer; transition: background-color 0.15s ease, border-color 0.15s ease; } .ds-btn-secondary:hover { background: #f4f4f5; border-color: #d4d4d8; } .ds-btn-secondary:active { transform: translateY(1px) scale(0.99); } .ds-btn-secondary:focus-visible { outline: 2px solid #c2410c; outline-offset: 2px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Tertiary actions inside panels and toolbars.",
+      "html": "<button class=\"ds-btn-ghost\">Clear filters</button>",
+      "css": ".ds-btn-ghost { height: 2.125rem; padding: 0 0.85rem; border: 0; border-radius: 8px; background: transparent; color: #52525b; font-family: Inter, system-ui, sans-serif; font-size: 0.84rem; font-weight: 600; cursor: pointer; transition: background-color 0.15s ease, color 0.15s ease; } .ds-btn-ghost:hover { background: #f4f4f5; color: #18181b; } .ds-btn-ghost:focus-visible { outline: 2px solid #c2410c; outline-offset: 2px; }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Labelled input with hint; accent border and ring on focus.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-label\">Devotee name</span><input class=\"ds-input\" placeholder=\"Full name\" /><span class=\"ds-hint\">As it should appear on the receipt.</span></label>",
+      "css": ".ds-field { display: grid; gap: 0.4rem; font-family: Inter, system-ui, sans-serif; max-width: 20rem; } .ds-label { color: #18181b; font-size: 0.82rem; font-weight: 600; } .ds-hint { color: #6b6b74; font-size: 0.78rem; } .ds-input { min-height: 2.125rem; padding: 0.4rem 0.7rem; border: 1px solid #e4e4e7; border-radius: 8px; background: #ffffff; color: #18181b; font: inherit; font-size: 0.875rem; box-shadow: 0 1px 2px rgba(24, 24, 27, 0.05); transition: border-color 0.15s ease, box-shadow 0.15s ease; } .ds-input::placeholder { color: #6b6b74; } .ds-input:hover { border-color: #d4d4d8; } .ds-input:focus { outline: none; border-color: #c2410c; box-shadow: 0 0 0 3px rgba(194, 65, 12, 0.18); }"
+    },
+    {
+      "name": "Rail Navigation",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Grouped rail links; the active link sits on a sliding white indicator tile with an accent icon.",
+      "html": "<nav class=\"ds-rail\"><div class=\"ds-group\">Operations</div><a class=\"ds-link ds-link-active\" href=\"#\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"18\" rx=\"2\"/><path d=\"M16 2v4M8 2v4M3 10h18\"/></svg>Bookings<span class=\"ds-count\">12</span></a><a class=\"ds-link\" href=\"#\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 3v18h18\"/><path d=\"M7 16v-4M12 16V8M17 16v-7\"/></svg>Calendar</a></nav>",
+      "css": ".ds-rail { width: 228px; padding: 0.75rem 0.625rem; background: #f4f4f5; display: grid; gap: 1px; font-family: Inter, system-ui, sans-serif; font-size: 0.875rem; } .ds-group { padding: 0 0.625rem 0.3rem; color: #6b6b74; font-size: 0.72rem; font-weight: 600; } .ds-link { height: 2.125rem; display: flex; align-items: center; gap: 0.6rem; padding: 0 0.625rem; border-radius: 7px; color: #52525b; font-weight: 500; text-decoration: none; transition: color 0.15s ease, background-color 0.15s ease; } .ds-link svg { color: #6b6b74; } .ds-link:hover { color: #18181b; background: rgba(233, 233, 236, 0.55); } .ds-link:focus-visible { outline: 2px solid #c2410c; outline-offset: 2px; } .ds-link-active, .ds-link-active:hover { color: #18181b; background: #ffffff; box-shadow: 0 1px 2px rgba(24, 24, 27, 0.05), inset 0 0 0 1px #e4e4e7; } .ds-link-active svg { color: #c2410c; } .ds-count { margin-left: auto; min-width: 1.35rem; padding: 0 0.4rem; border-radius: 999px; background: #fff4ed; color: #c2410c; font-size: 0.7rem; font-weight: 600; line-height: 1.25rem; text-align: center; font-variant-numeric: tabular-nums; }"
+    },
+    {
+      "name": "Status Badges",
+      "kind": "chip",
+      "refersTo": "badge-success",
+      "description": "Dot badges on tinted washes carrying payment and booking status.",
+      "html": "<div class=\"ds-badges\"><span class=\"ds-badge ds-ok\">Paid</span><span class=\"ds-badge ds-warn\">Pending</span><span class=\"ds-badge ds-bad\">Failed</span><span class=\"ds-badge\">Offline</span></div>",
+      "css": ".ds-badges { display: flex; gap: 0.5rem; font-family: Inter, system-ui, sans-serif; } .ds-badge { display: inline-flex; align-items: center; gap: 0.35rem; height: 1.4rem; padding: 0 0.5rem; border-radius: 6px; font-size: 0.74rem; font-weight: 600; background: #f4f4f5; color: #52525b; box-shadow: inset 0 0 0 1px #e4e4e7; } .ds-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; } .ds-ok { background: #ecfdf3; color: #15803d; box-shadow: inset 0 0 0 1px rgba(21, 128, 61, 0.22); } .ds-warn { background: #fef8e7; color: #a15c07; box-shadow: inset 0 0 0 1px rgba(161, 92, 7, 0.22); } .ds-bad { background: #fef2f2; color: #b91c1c; box-shadow: inset 0 0 0 1px rgba(185, 28, 28, 0.22); }"
+    },
+    {
+      "name": "Panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "The hairline container for every table, list and form; head with title, tabular meta and link.",
+      "html": "<section class=\"ds-panel\"><div class=\"ds-panel-head\"><h2>Today's sevas <span>8</span></h2><a href=\"#\">View all</a></div><div class=\"ds-panel-row\"><strong>Rudrabhisheka</strong><span>07:30</span></div><div class=\"ds-panel-row\"><strong>Annadana seva</strong><span>12:00</span></div></section>",
+      "css": ".ds-panel { max-width: 26rem; background: #ffffff; border: 1px solid #e4e4e7; border-radius: 10px; box-shadow: 0 1px 2px rgba(24, 24, 27, 0.05); overflow: hidden; font-family: Inter, system-ui, sans-serif; font-size: 0.875rem; color: #52525b; } .ds-panel-head { min-height: 3.25rem; display: flex; align-items: center; justify-content: space-between; padding: 0.7rem 1.1rem; border-bottom: 1px solid #e4e4e7; } .ds-panel-head h2 { margin: 0; display: flex; gap: 0.5rem; align-items: center; color: #18181b; font-size: 0.9rem; font-weight: 600; letter-spacing: -0.005em; } .ds-panel-head h2 span { color: #6b6b74; font-size: 0.8rem; font-weight: 400; font-variant-numeric: tabular-nums; } .ds-panel-head a { color: #52525b; font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: color 0.15s ease; } .ds-panel-head a:hover { color: #c2410c; } .ds-panel-row { display: flex; justify-content: space-between; padding: 0.75rem 1.1rem; border-bottom: 1px solid #e4e4e7; font-variant-numeric: tabular-nums; transition: background-color 0.12s ease; } .ds-panel-row:last-child { border-bottom: 0; } .ds-panel-row:hover { background: #fafafa; } .ds-panel-row strong { color: #18181b; font-weight: 600; }"
+    },
+    {
+      "name": "Segmented Control",
+      "kind": "custom",
+      "refersTo": "segmented-active",
+      "description": "Status filter with counts; the active segment lifts onto a white tile.",
+      "html": "<div class=\"ds-seg\" role=\"radiogroup\"><button class=\"ds-seg-btn ds-seg-on\" role=\"radio\" aria-checked=\"true\">All <span>124</span></button><button class=\"ds-seg-btn\" role=\"radio\" aria-checked=\"false\">Paid <span>98</span></button><button class=\"ds-seg-btn\" role=\"radio\" aria-checked=\"false\">Pending <span>26</span></button></div>",
+      "css": ".ds-seg { display: inline-flex; padding: 2px; gap: 2px; border-radius: 8px; background: #f4f4f5; border: 1px solid #e4e4e7; font-family: Inter, system-ui, sans-serif; } .ds-seg-btn { height: 1.75rem; display: inline-flex; align-items: center; gap: 0.35rem; padding: 0 0.65rem; border: 0; border-radius: 6px; background: transparent; color: #52525b; font: inherit; font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: background-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease; } .ds-seg-btn span { color: #6b6b74; font-variant-numeric: tabular-nums; } .ds-seg-btn:hover { color: #18181b; } .ds-seg-btn:focus-visible { outline: 2px solid #c2410c; outline-offset: 2px; } .ds-seg-on, .ds-seg-on:hover { background: #ffffff; color: #18181b; box-shadow: 0 1px 2px rgba(24, 24, 27, 0.05), 0 0 0 1px #e4e4e7; }"
+    },
+    {
+      "name": "Command Palette",
+      "kind": "custom",
+      "refersTo": "command-palette",
+      "description": "The ⌘K jump-anywhere dialog, the console's signature layer.",
+      "html": "<div class=\"ds-pal\"><div class=\"ds-pal-search\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.3-4.3\"/></svg><input placeholder=\"Search pages and actions\" /></div><div class=\"ds-pal-list\"><div class=\"ds-pal-group\">Pages</div><button class=\"ds-pal-item ds-pal-active\">Bookings</button><button class=\"ds-pal-item\">Seva calendar</button></div><div class=\"ds-pal-foot\"><kbd>↵</kbd> open <kbd>esc</kbd> close</div></div>",
+      "css": ".ds-pal { width: min(600px, 100%); border: 1px solid #e4e4e7; border-radius: 14px; background: #ffffff; box-shadow: 0 2px 6px rgba(24, 24, 27, 0.06), 0 24px 48px -12px rgba(24, 24, 27, 0.22); overflow: hidden; font-family: Inter, system-ui, sans-serif; } .ds-pal-search { display: flex; align-items: center; gap: 0.65rem; padding: 0 1rem; border-bottom: 1px solid #e4e4e7; color: #6b6b74; } .ds-pal-search input { flex: 1; height: 3.25rem; border: 0; outline: none; background: none; color: #18181b; font: inherit; font-size: 0.95rem; } .ds-pal-list { padding: 0.4rem; display: grid; } .ds-pal-group { padding: 0.55rem 0.65rem 0.3rem; color: #6b6b74; font-size: 0.72rem; font-weight: 600; } .ds-pal-item { height: 2.5rem; padding: 0 0.65rem; border: 0; border-radius: 8px; background: transparent; color: #52525b; text-align: left; font: inherit; font-size: 0.86rem; cursor: pointer; } .ds-pal-item:hover, .ds-pal-active { background: #f4f4f5; color: #18181b; } .ds-pal-item:focus-visible { outline: 2px solid #c2410c; outline-offset: -2px; } .ds-pal-foot { display: flex; gap: 0.5rem; align-items: center; padding: 0.55rem 1rem; border-top: 1px solid #e4e4e7; background: #fafafa; color: #6b6b74; font-size: 0.74rem; } .ds-pal-foot kbd { display: inline-flex; align-items: center; height: 1.3rem; padding: 0 0.35rem; border: 1px solid #e4e4e7; border-radius: 5px; background: #fafafa; font-family: inherit; font-size: 0.7rem; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Temple Office Ledger",
+    "overview": "The console is a quiet, exact instrument for running the day's sevas. It is a standalone app shell with a 248px rail, a 56px top bar and a content column capped at 1320px. It is not a public page with a sidebar attached. Cool zinc neutrals sit on two layers: the rail is a shade darker than the canvas. Hairline 1px borders define structure, and one saffron-orange accent marks the only things that matter at a glance: the primary action, the current selection, today, and focus. It sits in the same class as Linear, Stripe Dashboard and Vercel, and it belongs to this temple only through its accent hue, the logo lockup and its bilingual content.\n\nDensity is set for office staff at a desk in daylight and for priests on phones. Body text is 14px, rows are 3.1rem tall, panels use a 1.1rem inset and every numeral is tabular. Expression gives way to scanability. Dates, seva names, devotee details and amounts are the content, and the chrome stays out of their way. The public site's warmth (ivory, Playfair, gold) is deliberately absent here.\n\nMotion is short and purposeful, 160 to 220ms on a single expo-out curve (`cubic-bezier(0.16, 1, 0.3, 1)`). Pages fade and rise into place. The nav indicator slides between links. The calendar month slides in the direction of travel. Toasts rise from the corner. Loading states use skeletons. `prefers-reduced-motion` reduces every animation and transition to near zero.",
+    "keyCharacteristics": [
+      "Two-layer zinc neutrals with 1px hairline borders; flat surfaces with only a 1px ambient shadow at rest.",
+      "One accent, `#c2410c`, reserved for the primary action, selection, today and focus.",
+      "Inter with tabular numerals everywhere; weights run from 400 to 700, and nothing is uppercase.",
+      "Status carried by small dot badges tinted in success, warning, danger or accent.",
+      "Light by default, with a dark theme on the same token names via `data-theme=\"dark\"`.",
+      "Signature: the sliding nav indicator and the ⌘K command palette."
+    ],
+    "rules": [
+      { "name": "The One Accent Rule", "body": "Saffron-orange appears only on the primary action, the current selection, today, and focus. Data bars, chips, icons and headings stay neutral until they are selected or represent today.", "section": "colors" },
+      { "name": "The Two-Layer Rule", "body": "The rail is always one step darker than the canvas, and panels are always the lightest layer. Depth comes from these three tones and hairlines, not from colour blocks.", "section": "colors" },
+      { "name": "The Tabular Rule", "body": "Every number in the console (KPIs, table cells, counts, dates, calendar days, chart axes) uses tabular numerals so columns align and values do not shift as they update.", "section": "typography" },
+      { "name": "The Sentence Case Rule", "body": "No uppercase and no tracked-out small caps. Group labels, table headers and badges are sentence case at small sizes in Ink 3. Weight and ink level carry the hierarchy.", "section": "typography" },
+      { "name": "The Floating-Only Lift Rule", "body": "A surface earns the Floating shadow only if it sits above page content (toast, palette, save bar, drawer). Panels never lift, even on hover.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do build every console screen from the shared console tokens and primitives (Page, PageHeader, Panel, Kpis, Badge, Field, Segmented, Switch, EmptyState, Skeleton). Never restyle a page locally.",
+      "Do keep the accent (`#c2410c`) to the primary action, the current selection, today and focus, with one primary button per view.",
+      "Do use 1px hairlines and the three tonal layers (rail, canvas, surface) for structure, with the Rest shadow on resting surfaces.",
+      "Do set every number in tabular numerals and every label in sentence case.",
+      "Do carry status with dot badges on soft washes, and pair colour with a text label.",
+      "Do ship both themes: any new colour needs a `data-theme=\"dark\"` value, and accent text in dark uses `#fb923c`.",
+      "Do use skeleton rows while loading and honest empty states when there is no data.",
+      "Do keep motion between 120 and 300ms on `cubic-bezier(0.16, 1, 0.3, 1)` and respect reduced motion."
+    ],
+    "donts": [
+      "Don't bring the public site's ivory, brown ink, gold, Playfair Display or 14px card radii into the console.",
+      "Don't build dashboards as stacks of separately shadowed white cards with big numbers. KPIs live in one strip divided by hairlines.",
+      "Don't use the Floating shadow on anything that does not float above content.",
+      "Don't add uppercase tracked labels or eyebrow text above headings. The console has none.",
+      "Don't colour data bars, icons or chips with the accent unless they represent today or the current selection.",
+      "Don't place the console under the public site's navbar. It is its own full-height shell."
+    ]
+  }
+}
