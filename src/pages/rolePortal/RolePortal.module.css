@@ -167,7 +167,12 @@
 .workspace {
   width: 100%;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1.5rem;
+}
+
+.workspace > * {
+  min-width: 0;
 }
 
 .heroPanel,
@@ -341,9 +346,16 @@
 .metricValue {
   margin-top: 0.35rem;
   color: #18243a;
-  font-size: clamp(1.45rem, 3vw, 2.25rem);
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
   font-weight: 950;
-  line-height: 1;
+  line-height: 1.1;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.metricValueText {
+  white-space: normal;
+  font-size: clamp(1.15rem, 1.6vw, 1.45rem);
   overflow-wrap: anywhere;
 }
 
@@ -357,7 +369,13 @@
 
 .stackList {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.8rem;
+}
+
+.stackList > *,
+.panel {
+  min-width: 0;
 }
 
 .miniCard,
@@ -397,6 +415,36 @@
 .softPill {
   background: #f0ece4;
   color: #303949;
+  white-space: nowrap;
+}
+
+.statusPill {
+  text-transform: capitalize;
+}
+
+.statusPaid {
+  background: #e3f1e6;
+  color: #1d5a31;
+}
+
+.statusPending {
+  background: #fbf0d9;
+  color: #7a5410;
+}
+
+.statusFailed {
+  background: #f8e3df;
+  color: #8a2419;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.referenceCell {
+  color: #67717e;
+  font-size: 0.86rem;
+  font-variant-numeric: tabular-nums;
 }
 
 .actionCard {

@@ -69,14 +69,6 @@
   padding: clamp(1.2rem, 3vw, 2rem);
 }
 
-.eyebrow,
-.sectionLabel {
-  display: block;
-  color: #0d6670;
-  font-size: 0.78rem;
-  font-weight: 950;
-  text-transform: uppercase;
-}
 
 .detailsPanel h1 {
   max-width: 780px;
@@ -213,11 +205,6 @@
   opacity: 0.62;
 }
 
-.loginLink {
-  color: #0d6670;
-  font-weight: 900;
-  text-align: center;
-}
 
 .contactBox {
   display: grid;
@@ -235,21 +222,69 @@
 
 .paymentBox {
   margin-top: 1rem;
-  border-radius: 8px;
-  background: #123f46;
-  color: #fffdf7;
-  padding: 0.95rem;
+  display: grid;
+  gap: 0.45rem;
+  border-radius: 12px;
+  background: #eef6ef;
+  border: 1px solid rgba(35, 110, 60, 0.22);
+  color: #1d4a2c;
+  padding: 1.1rem;
 }
 
-.paymentBox span,
-.paymentBox strong,
-.paymentBox small {
-  display: block;
+.paymentBox svg {
+  color: #2f7a47;
 }
 
 .paymentBox strong {
+  font-size: 1.05rem;
+  color: #173d24;
+}
+
+.paymentBox p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.reference {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
   overflow-wrap: anywhere;
-  margin: 0.35rem 0;
+}
+
+.signInButton {
+  min-height: 3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.7rem 1.1rem;
+  border-radius: 8px;
+  background: #3e2723;
+  color: #fff8e7;
+  font-weight: 800;
+  text-align: center;
+  transition: background 0.2s ease;
+}
+
+.signInButton:hover {
+  background: #2c140c;
+}
+
+.centerActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.spin {
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .centerState {
@@ -280,7 +315,7 @@
 
 @media (max-width: 640px) {
   .sevaShell {
-    width: min(100% - 1rem, 100%);
+    width: calc(100% - 2rem);
     padding-top: calc(var(--nav-height) + 1.25rem);
   }
 

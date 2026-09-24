@@ -5,6 +5,7 @@ import logoImg from "../../assets/logo.png";
 import { getRoleHomePath, normalizeRole } from "../auth/access";
 import { useAuth } from "../auth/AuthContext";
 import { normalizeLang } from "../i18n/config";
+import { Languages } from "lucide-react";
 import { useI18n } from "../i18n/useI18n";
 
 export default function Navbar() {
@@ -23,10 +24,10 @@ export default function Navbar() {
   const navItems = useMemo(() => {
     if (isBhakta) {
       return [
-        { to: `/${lang}/dashboard`, label: "Dashboard" },
-        { to: `/${lang}/dashboard/profile`, label: "Profile" },
-        { to: `/${lang}/dashboard/book-seva`, label: "Book Seva" },
-        { to: `/${lang}/dashboard/bookings`, label: "Booked Sevas" },
+        { to: `/${lang}/dashboard`, label: t("dashboard"), end: true },
+        { to: `/${lang}/dashboard/profile`, label: t("profile") },
+        { to: `/${lang}/dashboard/book-seva`, label: t("bookSeva") },
+        { to: `/${lang}/dashboard/bookings`, label: t("bookedSevas") },
       ];
     }
 
@@ -45,6 +46,8 @@ export default function Navbar() {
 
   const brandPath = isAuthenticated ? getRoleHomePath(user?.role, lang) : `/${lang}`;
   const forceSolidNav = /^\/[^/]+\/seva\/[^/]+/.test(location.pathname);
+  const otherLang = lang === "kn" ? "en" : "kn";
+  const switchLangPath = `/${otherLang}${location.pathname.replace(/^\/[^/]+/, "")}${location.search}${location.hash}`;
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -52,6 +55,15 @@ export default function Navbar() {
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return undefined;
+    const handleKey = (event) => {
+      if (event.key === "Escape") setIsMobileMenuOpen(false);
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [isMobileMenuOpen]);
 
   const closeMenu = () => setIsMobileMenuOpen(false);
   const toggleMenu = () => setIsMobileMenuOpen((prev) => !prev);
@@ -66,7 +78,7 @@ export default function Navbar() {
     <header
       className={`${styles.header} ${isScrolled ? styles.scrolled : ""} ${
         isAuthenticated ? styles.authenticated : ""
-      } ${forceSolidNav ? styles.solid : ""}`}
+      } ${forceSolidNav ? styles.solid : ""} ${navItems.length === 0 ? styles.utilityOnly : ""}`}
     >
       <div className={styles.navContainer}>
         <Link to={brandPath} className={styles.brandWrapper}>
@@ -88,6 +100,7 @@ export default function Navbar() {
             <NavLink
               key={item.to}
               to={item.to}
+              end={item.end}
               className={({ isActive }) =>
                 isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
               }
@@ -96,9 +109,20 @@ export default function Navbar() {
             </NavLink>
           ))}
 
+          <Link
+            to={switchLangPath}
+            className={styles.langToggle}
+            lang={otherLang}
+            hrefLang={otherLang}
+            aria-label={t("languageToggleLabel")}
+          >
+            <Languages size={15} aria-hidden="true" />
+            <span>{t("languageToggle")}</span>
+          </Link>
+
           {isAuthenticated ? (
             <button type="button" className={styles.authButton} onClick={handleLogout}>
-              Logout
+              {t("logout")}
             </button>
           ) : (
             <NavLink
@@ -107,7 +131,7 @@ export default function Navbar() {
                 isActive ? `${styles.authButton} ${styles.authButtonActive}` : styles.authButton
               }
             >
-              Login
+              {t("login")}
             </NavLink>
           )}
         </nav>
@@ -115,7 +139,7 @@ export default function Navbar() {
         <button
           className={styles.mobileMenuBtn}
           onClick={toggleMenu}
-          aria-label="Toggle menu"
+          aria-label={isMobileMenuOpen ? t("closeMenu") : t("menu")}
           aria-expanded={isMobileMenuOpen}
           aria-controls="mobile-navigation"
           type="button"
@@ -127,21 +151,42 @@ export default function Navbar() {
       <div
         id="mobile-navigation"
         className={`${styles.mobileNav} ${isMobileMenuOpen ? styles.mobileNavOpen : ""}`}
+        inert={isMobileMenuOpen ? undefined : true}
       >
         {navItems.map((item) => (
-          <NavLink key={item.to} to={item.to} className={styles.mobileNavLink} onClick={closeMenu}>
+          <NavLink
+            key={item.to}
+            to={item.to}
+            end={item.end}
+            className={({ isActive }) =>
+              isActive ? `${styles.mobileNavLink} ${styles.mobileNavLinkActive}` : styles.mobileNavLink
+            }
+            onClick={closeMenu}
+          >
             {item.label}
           </NavLink>
         ))}
 
+        <Link
+          to={switchLangPath}
+          className={styles.mobileLangToggle}
+          lang={otherLang}
+          hrefLang={otherLang}
+          aria-label={t("languageToggleLabel")}
+          onClick={closeMenu}
+        >
+          <Languages size={17} aria-hidden="true" />
+          <span>{t("languageToggle")}</span>
+        </Link>
+
         {isAuthenticated ? (
           <button type="button" className={styles.mobileAuthButton} onClick={handleLogout}>
-            Logout
+            {t("logout")}
           </button>
         ) : (
-          <NavLink to={`/${lang}/login`} className={styles.mobileNavLink} onClick={closeMenu}>
-            Login
-          </NavLink>
+          <Link to={`/${lang}/login`} className={styles.mobileAuthButton} onClick={closeMenu}>
+            {t("login")}
+          </Link>
         )}
       </div>
     </header>

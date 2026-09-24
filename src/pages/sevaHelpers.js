@@ -22,3 +22,15 @@ export function sevaImageUrl(seva, fallbackImage) {
   if (/^https?:\/\//i.test(source) || source.startsWith("data:")) return source;
   return new URL(source, API_BASE_URL).toString();
 }
+
+export function formatSevaDate(value, lang = "en") {
+  if (!value) return "";
+  const date = new Date(`${String(value).slice(0, 10)}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return String(value);
+  return new Intl.DateTimeFormat(lang === "kn" ? "kn-IN" : "en-IN", {
+    weekday: "short",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(date);
+}

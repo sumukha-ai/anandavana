@@ -443,8 +443,8 @@ export default function JourneyHero() {
         {!sequenceReady && (
           <div className={styles.loadingState}>
             <div className={styles.loadingInner}>
-              <span className={styles.loadingKicker}>
-                Preparing Journey {loadingProgress}%
+              <span className={styles.loadingKicker} role="status">
+                {language === "kn" ? "ಸಿದ್ಧವಾಗುತ್ತಿದೆ" : "Preparing"} {loadingProgress}%
               </span>
               <div className={styles.loadingBar}>
                 <span
@@ -463,7 +463,7 @@ export default function JourneyHero() {
           lang={language}
         >
           <div className={styles.heroContent}>
-            <h2 className={styles.topLine}>{content.topLine}</h2>
+            <p className={styles.topLine}>{content.topLine}</p>
             <h1 className={styles.bottomLine}>{content.bottomLine}</h1>
           </div>
         </div>

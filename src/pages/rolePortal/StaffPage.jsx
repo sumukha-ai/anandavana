@@ -5,7 +5,6 @@ export default function StaffPage({ staffForm, onStaffChange, onCreateStaff }) {
   return (
     <section className={styles.panel}>
       <div className={styles.panelHeader}>
-        <span className={styles.sectionEyebrow}>Access</span>
         <h2 className={styles.panelTitle}>Create priest or manager login</h2>
       </div>
       <form className={styles.formGrid} onSubmit={onCreateStaff}>

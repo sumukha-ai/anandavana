@@ -180,7 +180,7 @@
   margin-bottom: 1.25rem;
   padding: 0.8rem 0.95rem;
   border-radius: 8px;
-  font-weight: 850;
+  font-weight: 700;
 }
 
 .loading {
@@ -194,8 +194,46 @@
 }
 
 .error {
-  background: rgba(176, 42, 42, 0.1);
-  color: #9f2323;
+  flex-wrap: wrap;
+  gap: 0.9rem 1.25rem;
+  max-width: 46rem;
+  padding: 1rem 1.15rem;
+  background: #fbefe9;
+  border: 1px solid rgba(159, 35, 35, 0.18);
+  color: #7d1f1f;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.error p {
+  flex: 1 1 22rem;
+}
+
+.retryButton {
+  min-height: 2.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0 1rem;
+  border-radius: 999px;
+  background: #7d1f1f;
+  color: #fff8f2;
+  font-weight: 700;
+  transition: background 0.2s ease;
+}
+
+.retryButton:hover {
+  background: #611616;
+}
+
+.spin {
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .emptyState {
@@ -204,7 +242,9 @@
   padding: 1.5rem;
   background: rgba(255, 255, 255, 0.78);
   color: #53615e;
-  font-weight: 850;
+  font-weight: 600;
+  line-height: 1.6;
+  max-width: 46rem;
 }
 
 @media (max-width: 1020px) {

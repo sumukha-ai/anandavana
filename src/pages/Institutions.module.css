@@ -147,6 +147,14 @@
   aspect-ratio: 16/8;
 }
 
+.gridOne {
+  grid-template-columns: 1fr;
+}
+
+.gridOne .imgWrapper {
+  aspect-ratio: 4/3;
+}
+
 .gridTwo .imgWrapper {
   aspect-ratio: 4/5;
 }
@@ -196,7 +204,15 @@
   
   .gridThree .imgWrapper,
   .gridThree .imgWrapper:first-child,
-  .gridTwo .imgWrapper {
+  .gridOne {
+  grid-template-columns: 1fr;
+}
+
+.gridOne .imgWrapper {
+  aspect-ratio: 4/3;
+}
+
+.gridTwo .imgWrapper {
     aspect-ratio: 16/10;
     grid-column: 1 / -1;
   }

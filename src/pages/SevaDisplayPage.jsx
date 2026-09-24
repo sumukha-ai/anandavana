@@ -2,30 +2,31 @@ import { useEffect, useMemo, useState } from "react";
 import {
   ArrowLeft,
   CalendarDays,
+  CheckCircle2,
   CreditCard,
-  IndianRupee,
   Loader2,
   Phone,
-  ShieldCheck,
+  RotateCcw,
   UserRound,
 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import { apiRequest } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
-import { normalizeLang } from "../i18n/config";
+import { useI18n } from "../i18n/useI18n";
 import bgImg from "../../assets/bg1.jpeg";
 import styles from "./SevaDisplayPage.module.css";
-import { formatAmount, sevaContactPhone, sevaImageUrl, telHref } from "./sevaHelpers";
+import { formatAmount, formatSevaDate, sevaContactPhone, sevaImageUrl, telHref } from "./sevaHelpers";
 
 export default function SevaDisplayPage() {
   const { token, isAuthenticated } = useAuth();
-  const { lang: rawLang, sevaId } = useParams();
-  const lang = normalizeLang(rawLang);
+  const { sevaId } = useParams();
+  const { t, lang } = useI18n("sevaDetail");
+  const [attempt, setAttempt] = useState(0);
   const [sevas, setSevas] = useState([]);
   const [profiles, setProfiles] = useState([]);
   const [selectedProfileId, setSelectedProfileId] = useState("");
   const [sevaDate, setSevaDate] = useState("");
-  const [status, setStatus] = useState({ type: "loading", message: "Loading seva details" });
+  const [status, setStatus] = useState("loading");
   const [bookingStatus, setBookingStatus] = useState({ type: "idle", message: "" });
   const [booking, setBooking] = useState(null);
 
@@ -40,26 +41,27 @@ export default function SevaDisplayPage() {
   const today = new Date().toISOString().slice(0, 10);
   const visibleProfiles = isAuthenticated ? profiles : [];
   const profileSelectValue = isAuthenticated ? selectedProfileId : "";
+  const selectedProfile = visibleProfiles.find((profile) => String(profile.id) === String(selectedProfileId));
 
   useEffect(() => {
     let active = true;
     async function loadSeva() {
-      setStatus({ type: "loading", message: "Loading seva details" });
+      setStatus("loading");
       try {
         const data = await apiRequest("/seva", { lang });
         if (active) {
           setSevas(data.sevas || []);
-          setStatus({ type: "idle", message: "" });
+          setStatus("idle");
         }
-      } catch (error) {
-        if (active) setStatus({ type: "error", message: error.message });
+      } catch {
+        if (active) setStatus("error");
       }
     }
     loadSeva();
     return () => {
       active = false;
     };
-  }, [lang]);
+  }, [lang, attempt]);
 
   useEffect(() => {
     if (!token) {
@@ -96,7 +98,7 @@ export default function SevaDisplayPage() {
 
   const handleBook = async (event) => {
     event.preventDefault();
-    setBookingStatus({ type: "loading", message: "Creating Cashfree test order" });
+    setBookingStatus({ type: "loading", message: t("submitting") });
     setBooking(null);
 
     try {
@@ -111,45 +113,54 @@ export default function SevaDisplayPage() {
         },
       });
       setBooking(data);
-      setBookingStatus({ type: "success", message: "Booking created. Complete payment with the sandbox session." });
-    } catch (error) {
-      setBookingStatus({ type: "error", message: error.message });
+      setBookingStatus({ type: "idle", message: "" });
+    } catch {
+      setBookingStatus({ type: "error", message: t("bookError") });
     }
   };
 
-  if (status.type === "loading") {
+  if (status === "loading") {
     return (
-      <main className={styles.page}>
-        <div className={styles.centerState}>
-          <Loader2 size={22} aria-hidden="true" />
-          <span>{status.message}</span>
+      <div className={styles.page} lang={lang}>
+        <div className={styles.centerState} role="status">
+          <Loader2 size={22} aria-hidden="true" className={styles.spin} />
+          <span>{t("loading")}</span>
         </div>
-      </main>
+      </div>
     );
   }
 
-  if (status.type === "error" || !seva) {
+  if (status === "error" || !seva) {
+    const isError = status === "error";
     return (
-      <main className={styles.page}>
-        <div className={styles.centerState}>
-          <strong>{status.type === "error" ? "Unable to load seva" : "Seva not found"}</strong>
-          <span>{status.type === "error" ? status.message : "The requested seva is not available."}</span>
-          <Link to={`/${lang}/seva-booking`} className={styles.backButton}>
-            <ArrowLeft size={17} aria-hidden="true" />
-            Back to sevas
-          </Link>
+      <div className={styles.page} lang={lang}>
+        <div className={styles.centerState} role={isError ? "alert" : undefined}>
+          <strong>{isError ? t("loadErrorTitle") : t("notFoundTitle")}</strong>
+          <span>{isError ? t("loadErrorBody") : t("notFoundBody")}</span>
+          <div className={styles.centerActions}>
+            {isError ? (
+              <button type="button" className={styles.backButton} onClick={() => setAttempt((n) => n + 1)}>
+                <RotateCcw size={17} aria-hidden="true" />
+                {t("retry")}
+              </button>
+            ) : null}
+            <Link to={`/${lang}/seva-booking`} className={styles.backButton}>
+              <ArrowLeft size={17} aria-hidden="true" />
+              {t("backToSevas")}
+            </Link>
+          </div>
         </div>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main className={styles.page}>
+    <div className={styles.page} lang={lang}>
       <section className={styles.sevaShell}>
         <div className={styles.sevaMain}>
           <Link to={`/${lang}/seva-booking`} className={styles.backLink}>
             <ArrowLeft size={17} aria-hidden="true" />
-            All sevas
+            {t("allSevas")}
           </Link>
 
           <div className={styles.mediaPanel}>
@@ -157,53 +168,35 @@ export default function SevaDisplayPage() {
           </div>
 
           <div className={styles.detailsPanel}>
-            <span className={styles.eyebrow}>Seva details</span>
             <h1>{seva.name}</h1>
-            {/* <div className={styles.heroMeta}>
-              <span>
-                <IndianRupee size={18} aria-hidden="true" />
-                {amount || "Contact for amount"}
-              </span>
-              <span>
-                <ShieldCheck size={18} aria-hidden="true" />
-                {isBookable ? "Online booking enabled" : "Assisted booking"}
-              </span>
-              {!isBookable ? (
-                <span>
-                  <Phone size={18} aria-hidden="true" />
-                  {contactPhone}
-                </span>
-              ) : null}
-            </div> */}
-          <p>{seva.description}</p>
+            <p>{seva.description}</p>
           </div>
         </div>
 
         <aside className={styles.bookingPanel}>
-          <span className={styles.sectionLabel}>{isBookable ? "Book seva" : "Contact booking"}</span>
-          <h2>{isBookable ? "Complete your booking" : "Speak with the office"}</h2>
+          <h2>{isBookable ? t("bookTitle") : t("contactTitle")}</h2>
 
           {isBookable ? (
             <form onSubmit={handleBook} className={styles.bookingForm}>
               <label>
-                <span>For</span>
+                <span>{t("forLabel")}</span>
                 <select
                   value={profileSelectValue}
                   onChange={(event) => setSelectedProfileId(event.target.value)}
                   required
                   disabled={!isAuthenticated}
                 >
-                  <option value="">{isAuthenticated ? "Select profile" : "Sign in to load profiles"}</option>
+                  <option value="">{isAuthenticated ? t("selectProfile") : t("signInForProfiles")}</option>
                   {visibleProfiles.map((profile) => (
                     <option key={profile.id} value={profile.id}>
-                      {profile.name} {profile.is_self ? "(Self)" : ""}
+                      {profile.is_self ? `${profile.name} (${t("self")})` : profile.name}
                     </option>
                   ))}
                 </select>
               </label>
 
               <label>
-                <span>Date</span>
+                <span>{t("dateLabel")}</span>
                 <input
                   type="date"
                   min={today}
@@ -216,55 +209,65 @@ export default function SevaDisplayPage() {
               <div className={styles.summary}>
                 <div>
                   <UserRound size={17} aria-hidden="true" />
-                  {visibleProfiles.length || 0} profile options
+                  {selectedProfile?.name || t("selectProfile")}
                 </div>
                 <div>
                   <CalendarDays size={17} aria-hidden="true" />
-                  {sevaDate || "Choose date"}
+                  {sevaDate ? formatSevaDate(sevaDate, lang) : t("chooseDate")}
                 </div>
                 <div>
                   <CreditCard size={17} aria-hidden="true" />
-                  {amount || "Contact for amount"}
+                  {amount || t("amountOnRequest")}
                 </div>
               </div>
 
               {bookingStatus.message ? (
-                <p className={`${styles.status} ${styles[bookingStatus.type]}`}>
-                  {bookingStatus.type === "loading" ? <Loader2 size={16} aria-hidden="true" /> : null}
+                <p
+                  className={`${styles.status} ${styles[bookingStatus.type]}`}
+                  role={bookingStatus.type === "error" ? "alert" : "status"}
+                >
+                  {bookingStatus.type === "loading" ? (
+                    <Loader2 size={16} aria-hidden="true" className={styles.spin} />
+                  ) : null}
                   {bookingStatus.message}
                 </p>
               ) : null}
 
-              <button type="submit" disabled={!isAuthenticated || bookingStatus.type === "loading"}>
-                <CreditCard size={18} aria-hidden="true" />
-                <span>{isAuthenticated ? "Create test payment" : "Sign in to book"}</span>
-              </button>
-
-              {!isAuthenticated ? (
-                <Link to={`/${lang}/login`} className={styles.loginLink}>
-                  Login to continue booking
+              {isAuthenticated ? (
+                <button type="submit" disabled={bookingStatus.type === "loading"}>
+                  <CreditCard size={18} aria-hidden="true" />
+                  <span>{t("submit")}</span>
+                </button>
+              ) : (
+                <Link to={`/${lang}/login`} className={styles.signInButton}>
+                  {t("signInPrompt")}
                 </Link>
-              ) : null}
+              )}
             </form>
           ) : (
             <div className={styles.contactBox}>
-              <p>This seva is handled by the temple office. Call to confirm the date, amount, and availability.</p>
+              <p>{t("contactBody")}</p>
               <a className={styles.contactButton} href={telHref(contactPhone)}>
                 <Phone size={18} aria-hidden="true" />
-                Contact {contactPhone}
+                {t("call")} {contactPhone}
               </a>
             </div>
           )}
 
           {booking ? (
-            <div className={styles.paymentBox}>
-              <span>Payment session</span>
-              <strong>{booking.payment.payment_session_id}</strong>
-              <small>Order {booking.payment.order_id}</small>
+            <div className={styles.paymentBox} role="status">
+              <CheckCircle2 size={22} aria-hidden="true" />
+              <strong>{t("bookedTitle")}</strong>
+              {booking.payment?.order_id ? (
+                <small>
+                  {t("bookingReference")}: <span className={styles.reference}>{booking.payment.order_id}</span>
+                </small>
+              ) : null}
+              <p>{t("testModeNote")}</p>
             </div>
           ) : null}
         </aside>
       </section>
-    </main>
+    </div>
   );
 }

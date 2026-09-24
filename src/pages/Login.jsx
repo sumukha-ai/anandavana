@@ -49,9 +49,8 @@ export default function Login() {
     <section className={styles.loginPage}>
       <div className={styles.loginPanel}>
         <div className={styles.copyBlock}>
-          <span className={styles.kicker}>Secure access</span>
           <h1>Sign in</h1>
-          <p>Use your assigned account to access role based pages for the Samsthana team.</p>
+          <p>Sign in to book sevas and see your bookings. Samsthana staff sign in with their assigned accounts.</p>
         </div>
 
         <form className={styles.form} onSubmit={handleSubmit}>
@@ -93,7 +92,7 @@ export default function Login() {
             </div>
           </label>
 
-          {error ? <p className={styles.error}>{error}</p> : null}
+          {error ? <p className={styles.error} role="alert">{error}</p> : null}
 
           <button className={styles.submitButton} type="submit" disabled={isSubmitting}>
             <LogIn size={18} aria-hidden="true" />

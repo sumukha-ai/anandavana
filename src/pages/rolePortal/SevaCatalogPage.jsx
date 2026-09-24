@@ -10,7 +10,6 @@ export default function SevaCatalogPage({ sevas, canManage, onEditSeva, onAddSev
     <section className={styles.panel}>
       <div className={styles.panelHeaderSplit}>
         <div className={styles.titleBlock}>
-          <span className={styles.sectionEyebrow}>Catalog</span>
           <h2 className={styles.panelTitle}>Seva catalog</h2>
         </div>
         {canManage ? (

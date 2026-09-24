@@ -1,6 +1,8 @@
 import { NavLink } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import styles from "./RolePortal.module.css";
+import { statusToneKey } from "./rolePortalConfig";
+import { formatSevaDate } from "../sevaHelpers";
 
 function lookupName(item, lang) {
   if (!item) return "";
@@ -26,8 +28,7 @@ export default function CalendarDayDetailsPage({ bookings, date, lang, role }) {
       <section className={styles.panel}>
         <div className={styles.panelHeaderSplit}>
           <div>
-            <span className={styles.sectionEyebrow}>Seva day details</span>
-            <h2 className={styles.panelTitle}>{date}</h2>
+            <h2 className={styles.panelTitle}>{formatSevaDate(date, lang)}</h2>
           </div>
           <NavLink to={`/${lang}/${role}/calendar`} className={styles.secondaryButton}>
             <ArrowLeft size={17} aria-hidden="true" />
@@ -67,7 +68,9 @@ export default function CalendarDayDetailsPage({ bookings, date, lang, role }) {
                     Booked for {profile.name || "Bhakta"} {profile.is_self ? "(Self)" : "(Family member)"}
                   </span>
                 </div>
-                <span className={styles.statusPill}>{booking.payment_status || "Pending"}</span>
+                <span className={`${styles.statusPill} ${styles[statusToneKey(booking.payment_status)]}`}>
+                  {booking.payment_status || "Pending"}
+                </span>
               </div>
 
               <div className={styles.detailGrid}>
@@ -79,8 +82,8 @@ export default function CalendarDayDetailsPage({ bookings, date, lang, role }) {
                 <Field label="Gotra" value={lang === "kn" ? profile.gotra_kn || profile.gotra : profile.gotra} />
                 <Field label="Charana" value={profile.charana} />
                 <Field label="Profile type" value={profile.is_self ? "Self" : "Family member"} />
-                <Field label="Amount" value={booking.seva?.amount ? `INR ${booking.seva.amount}` : "Offline"} />
-                <Field label="Order ID" value={booking.payment_order_id} />
+                <Field label="Amount" value={Number(booking.seva?.amount) > 0 ? `INR ${Number(booking.seva.amount).toLocaleString("en-IN")}` : "Offline"} />
+                <Field label="Booking reference" value={booking.payment_order_id} />
                 <Field label="Payment ref" value={booking.payment_reference} />
               </div>
 

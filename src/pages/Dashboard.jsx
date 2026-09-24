@@ -34,6 +34,7 @@ import { apiRequest } from "../api/client";
 import { getRoleHomePath, normalizeRole } from "../auth/access";
 import { useAuth } from "../auth/AuthContext";
 import { normalizeLang } from "../i18n/config";
+import { formatAmount, formatSevaDate, sevaContactPhone, telHref } from "./sevaHelpers";
 
 const emptyProfile = {
   name: "",
@@ -45,16 +46,6 @@ const emptyProfile = {
   gotra: "",
   charana: "",
 };
-
-const FRONT_PAGE_CONTACT_PHONE = "+91 97415 85030";
-
-function sevaContactPhone(seva) {
-  return seva?.contact_phone || FRONT_PAGE_CONTACT_PHONE;
-}
-
-function telHref(phone) {
-  return `tel:${String(phone).replace(/[^\d+]/g, "")}`;
-}
 
 const palette = {
   primary: "#0f3d3e",
@@ -107,6 +98,13 @@ function LookupSelect({ label, name, value, items, lang, onChange }) {
       ))}
     </TextField>
   );
+}
+
+function statusChipSx(status) {
+  const value = String(status || "pending").toLowerCase();
+  if (value === "paid" || value === "success") return { fontWeight: 800, bgcolor: "#e3f1e6", color: "#1d5a31" };
+  if (value === "failed" || value === "cancelled") return { fontWeight: 800, bgcolor: "#f8e3df", color: "#8a2419" };
+  return { fontWeight: 800, bgcolor: "#fbf0d9", color: "#7a5410" };
 }
 
 function EmptyState({ text }) {
@@ -291,7 +289,7 @@ export default function Dashboard({ section = "overview" }) {
         },
       });
       setPaymentSession(data.payment);
-      setNotice({ type: "success", message: "Booking created. Complete payment with the sandbox session." });
+      setNotice({ type: "success", message: "Your seva booking is recorded. Online payment is in test mode, so no money has been charged." });
       setRefreshKey((current) => current + 1);
     } catch (err) {
       setNotice({ type: "error", message: err.message || "Unable to create booking" });
@@ -313,7 +311,6 @@ export default function Dashboard({ section = "overview" }) {
 
       <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", lg: "1fr 1fr" }, gap: 2 }}>
         <Paper elevation={0} sx={{ p: { xs: 2, md: 3 }, borderRadius: 2, border: `1px solid ${palette.border}` }}>
-          <Typography variant="overline" sx={{ color: palette.primary, fontWeight: 900 }}>Account actions</Typography>
           <Typography variant="h5" sx={{ color: "#1f2d2f", fontWeight: 950, mb: 2 }}>Continue your journey</Typography>
           <Stack spacing={1.25}>
             {navItems.filter((item) => item.section !== "overview").map((item) => {
@@ -342,18 +339,17 @@ export default function Dashboard({ section = "overview" }) {
         </Paper>
 
         <Paper elevation={0} sx={{ p: { xs: 2, md: 3 }, borderRadius: 2, border: `1px solid ${palette.border}` }}>
-          <Typography variant="overline" sx={{ color: palette.clay, fontWeight: 900 }}>Recent bookings</Typography>
           <Typography variant="h5" sx={{ color: "#1f2d2f", fontWeight: 950, mb: 2 }}>Booked sevas</Typography>
           {bookings.slice(0, 4).length ? (
             <Stack spacing={1.25}>
               {bookings.slice(0, 4).map((booking) => (
                 <Paper key={booking.id} elevation={0} sx={{ p: 1.5, borderRadius: 2, bgcolor: "#f8faf7", border: "1px solid rgba(35,53,57,0.08)" }}>
-                  <Stack direction={{ xs: "column", sm: "row" }} justifyContent="space-between" spacing={1}>
+                  <Stack direction={{ xs: "column", sm: "row" }} spacing={1} sx={{ justifyContent: "space-between" }}>
                     <Box>
                       <Typography sx={{ fontWeight: 900 }}>{booking.seva?.name || "Seva"}</Typography>
                       <Typography variant="body2" sx={{ color: "#657576" }}>{booking.bhakta_profile?.name || "Bhakta"}</Typography>
                     </Box>
-                    <Chip label={booking.seva_date || "No date"} size="small" sx={{ alignSelf: { xs: "flex-start", sm: "center" }, fontWeight: 850 }} />
+                    <Chip label={booking.seva_date ? formatSevaDate(booking.seva_date, lang) : "Date to be confirmed"} size="small" sx={{ alignSelf: { xs: "flex-start", sm: "center" }, fontWeight: 850 }} />
                   </Stack>
                 </Paper>
               ))}
@@ -382,7 +378,6 @@ export default function Dashboard({ section = "overview" }) {
   const renderProfile = () => (
     <Stack spacing={2}>
       <Paper elevation={0} sx={{ p: { xs: 2, md: 3 }, borderRadius: 2, border: "1px solid rgba(35,53,57,0.1)" }}>
-        <Typography variant="overline" sx={{ color: "#0b6b72", fontWeight: 900 }}>Profile</Typography>
         <Typography variant="h5" sx={{ color: "#1f2d2f", fontWeight: 950, mb: 2 }}>Self details</Typography>
         <Box component="form" onSubmit={saveProfile} sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "repeat(2, 1fr)" }, gap: 2 }}>
           {profileFields(profileForm, handleProfileChange)}
@@ -393,9 +388,8 @@ export default function Dashboard({ section = "overview" }) {
       </Paper>
 
       <Paper elevation={0} sx={{ p: { xs: 2, md: 3 }, borderRadius: 2, border: "1px solid rgba(35,53,57,0.1)" }}>
-        <Stack direction={{ xs: "column", sm: "row" }} justifyContent="space-between" alignItems={{ sm: "center" }} spacing={1.5} sx={{ mb: 2 }}>
+        <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5} sx={{ mb: 2, justifyContent: "space-between", alignItems: {sm: "center"} }}>
           <Box>
-            <Typography variant="overline" sx={{ color: "#9b3d2e", fontWeight: 900 }}>Family</Typography>
             <Typography variant="h5" sx={{ color: "#1f2d2f", fontWeight: 950 }}>Family members</Typography>
           </Box>
           <Button variant="contained" startIcon={<UserRoundPlus size={17} />} onClick={openAddFamilyForm} sx={{ minHeight: 44, bgcolor: "#9b3d2e", fontWeight: 900, textTransform: "none", "&:hover": { bgcolor: "#9b3d2e" } }}>
@@ -405,11 +399,8 @@ export default function Dashboard({ section = "overview" }) {
 
         {isFamilyFormOpen ? (
           <Paper elevation={0} sx={{ p: 2, mb: 3, borderRadius: 2, bgcolor: "#fff8f6", border: "1px solid rgba(155,61,46,0.16)" }}>
-            <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1.5} sx={{ mb: 2 }}>
+            <Stack direction="row" spacing={1.5} sx={{ mb: 2, justifyContent: "space-between", alignItems: "center" }}>
               <Box>
-                <Typography variant="overline" sx={{ color: "#9b3d2e", fontWeight: 900 }}>
-                  {editingFamilyMemberId ? "Edit member" : "New member"}
-                </Typography>
                 <Typography variant="h6" sx={{ color: "#1f2d2f", fontWeight: 950 }}>
                   {editingFamilyMemberId ? "Update family member details" : "Add family member details"}
                 </Typography>
@@ -432,7 +423,7 @@ export default function Dashboard({ section = "overview" }) {
           <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "repeat(2, 1fr)", xl: "repeat(3, 1fr)" }, gap: 1.5 }}>
             {familyMembers.map((member) => (
               <Paper key={member.id} elevation={0} sx={{ p: 1.75, borderRadius: 2, bgcolor: "#f8faf7", border: "1px solid rgba(35,53,57,0.08)" }}>
-                <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={1.5}>
+                <Stack direction="row" spacing={1.5} sx={{ justifyContent: "space-between", alignItems: "flex-start" }}>
                   <Box>
                     <Typography sx={{ fontWeight: 950 }}>{member.name}</Typography>
                     <Typography variant="body2" sx={{ color: "#657576" }}>{member.phone_number || member.email}</Typography>
@@ -441,11 +432,11 @@ export default function Dashboard({ section = "overview" }) {
                     Edit
                   </Button>
                 </Stack>
-                <Stack direction="row" flexWrap="wrap" gap={0.75} sx={{ mt: 1.25 }}>
+                <Stack direction="row" sx={{ mt: 1.25, flexWrap: "wrap", gap: 0.75 }}>
                   <Chip size="small" label={toLookupName(member.rashi, lang) || "Rashi"} />
                   <Chip size="small" label={toLookupName(member.nakshatra, lang) || "Nakshatra"} />
                   <Chip size="small" label={(lang === "kn" ? member.gotra_kn || member.gotra : member.gotra) || "Gotra"} />
-                  <Chip size="small" label={member.charana || "Charana"} />
+                  <Chip size="small" label={member.charana ? `Charana ${member.charana}` : "Charana"} />
                 </Stack>
                 <Box sx={{ display: "grid", gap: 0.5, mt: 1.5 }}>
                   <Typography variant="body2" sx={{ color: "#3f4c4d", fontWeight: 800, overflowWrap: "anywhere" }}>
@@ -468,7 +459,6 @@ export default function Dashboard({ section = "overview" }) {
   const renderBookSeva = () => (
     <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", lg: "minmax(0, 1.25fr) minmax(340px, 0.75fr)" }, gap: 2 }}>
       <Paper elevation={0} sx={{ p: { xs: 2, md: 3 }, borderRadius: 2, border: "1px solid rgba(35,53,57,0.1)" }}>
-        <Typography variant="overline" sx={{ color: "#7b5f19", fontWeight: 900 }}>Seva catalog</Typography>
         <Typography variant="h5" sx={{ color: "#1f2d2f", fontWeight: 950, mb: 2 }}>Choose a seva</Typography>
         <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)" }, gap: 1.5 }}>
           {sevas.map((seva) => {
@@ -493,9 +483,9 @@ export default function Dashboard({ section = "overview" }) {
                 }}
               >
                 <Stack spacing={0.8} sx={{ width: "100%" }}>
-                  <Stack direction="row" justifyContent="space-between" spacing={1}>
+                  <Stack direction="row" spacing={1} sx={{ justifyContent: "space-between" }}>
                     <Typography sx={{ fontWeight: 950 }}>{seva.name}</Typography>
-                    <Chip size="small" label={seva.amount ? `INR ${seva.amount}` : "Contact"} />
+                    <Chip size="small" label={formatAmount(seva.amount) || "Contact office"} sx={{ flexShrink: 0 }} />
                   </Stack>
                   <Typography variant="body2" sx={{ color: "#657576" }}>{seva.description}</Typography>
                   <Typography variant="caption" sx={{ color: isContactOnly ? "#8b6b47" : "#0b6b72", fontWeight: 900 }}>
@@ -509,14 +499,13 @@ export default function Dashboard({ section = "overview" }) {
       </Paper>
 
       <Paper elevation={0} sx={{ p: { xs: 2, md: 3 }, borderRadius: 2, border: "1px solid rgba(35,53,57,0.1)", alignSelf: "start", position: { lg: "sticky" }, top: { lg: 96 } }}>
-        <Typography variant="overline" sx={{ color: "#0b6b72", fontWeight: 900 }}>{selectedSeva?.is_bookable ? "Cashfree sandbox" : "Contact booking"}</Typography>
-        <Typography variant="h5" sx={{ color: "#1f2d2f", fontWeight: 950, mb: 2 }}>{selectedSeva?.is_bookable ? "Book seva" : "Contact for booking"}</Typography>
+        <Typography variant="h5" sx={{ color: "#1f2d2f", fontWeight: 950, mb: 2 }}>{selectedSeva?.is_bookable ? "Book seva" : "Call to book"}</Typography>
         <Stack component="form" onSubmit={handleBook} spacing={2}>
           <TextField label="Selected seva" select value={selectedSevaId} onChange={(event) => setSelectedSevaId(event.target.value)} required>
             <MenuItem value="">Select seva</MenuItem>
             {sevas.map((seva) => (
               <MenuItem key={seva.id} value={seva.id}>
-                {seva.name} {seva.amount ? `- INR ${seva.amount}` : "- contact"}
+                {seva.name} {formatAmount(seva.amount) ? `· ${formatAmount(seva.amount)}` : "· contact office"}
               </MenuItem>
             ))}
           </TextField>
@@ -526,7 +515,7 @@ export default function Dashboard({ section = "overview" }) {
                 <MenuItem value="">Select profile</MenuItem>
                 {profileOptions.map((option) => (
                   <MenuItem key={option.id} value={option.id}>
-                    {option.name} {option.is_self ? "(Self)" : ""}
+                    {option.is_self ? `${option.name} (Self)` : option.name}
                   </MenuItem>
                 ))}
               </TextField>
@@ -536,9 +525,9 @@ export default function Dashboard({ section = "overview" }) {
           <Paper elevation={0} sx={{ p: 1.5, borderRadius: 2, bgcolor: "#f8faf7", border: "1px solid rgba(35,53,57,0.08)" }}>
             <Stack spacing={0.75}>
               <Typography variant="body2" sx={{ fontWeight: 900 }}>Summary</Typography>
-              <Typography variant="body2" sx={{ color: "#657576" }}>Amount: {selectedSeva?.amount ? `INR ${selectedSeva.amount}` : "Contact for booking"}</Typography>
+              <Typography variant="body2" sx={{ color: "#657576" }}>Amount: {formatAmount(selectedSeva?.amount) || "Confirmed by the office"}</Typography>
               {selectedSeva?.is_bookable ? (
-                <Typography variant="body2" sx={{ color: "#657576" }}>Date: {sevaDate || "Choose date"}</Typography>
+                <Typography variant="body2" sx={{ color: "#657576" }}>Date: {sevaDate ? formatSevaDate(sevaDate, lang) : "Choose a date"}</Typography>
               ) : (
                 <Typography variant="body2" sx={{ color: "#657576" }}>Phone: {sevaContactPhone(selectedSeva)}</Typography>
               )}
@@ -546,20 +535,23 @@ export default function Dashboard({ section = "overview" }) {
           </Paper>
           {selectedSeva?.is_bookable ? (
             <Button type="submit" variant="contained" startIcon={<CreditCard size={18} />} sx={{ minHeight: 52, bgcolor: "#0b6b72", fontWeight: 950, textTransform: "none", "&:hover": { bgcolor: "#0b6b72" } }}>
-              Create test payment
+              Confirm booking
             </Button>
           ) : (
             <Button component="a" href={telHref(sevaContactPhone(selectedSeva))} variant="contained" sx={{ minHeight: 52, bgcolor: "#8b6b47", fontWeight: 950, textTransform: "none", "&:hover": { bgcolor: "#8b6b47" } }}>
-              Contact {sevaContactPhone(selectedSeva)}
+              Call {sevaContactPhone(selectedSeva)}
             </Button>
           )}
         </Stack>
 
         {paymentSession ? (
-          <Paper elevation={0} sx={{ mt: 2, p: 1.5, borderRadius: 2, bgcolor: "#fff8e7", border: "1px solid rgba(123,95,25,0.18)" }}>
-            <Typography variant="caption" sx={{ color: "#806c50", fontWeight: 900 }}>Payment session</Typography>
-            <Typography sx={{ fontWeight: 900, overflowWrap: "anywhere" }}>{paymentSession.payment_session_id}</Typography>
-            <Typography variant="body2" sx={{ color: "#657576" }}>Order {paymentSession.order_id}</Typography>
+          <Paper elevation={0} role="status" sx={{ mt: 2, p: 1.5, borderRadius: 2, bgcolor: "#eef6ef", border: "1px solid rgba(35,110,60,0.22)" }}>
+            <Typography sx={{ fontWeight: 900, color: "#173d24" }}>Your seva booking is recorded</Typography>
+            {paymentSession.order_id ? (
+              <Typography variant="body2" sx={{ color: "#1d4a2c", overflowWrap: "anywhere" }}>
+                Booking reference: <strong>{paymentSession.order_id}</strong>
+              </Typography>
+            ) : null}
           </Paper>
         ) : null}
       </Paper>
@@ -568,18 +560,17 @@ export default function Dashboard({ section = "overview" }) {
 
   const renderBookings = () => (
     <Paper elevation={0} sx={{ p: { xs: 2, md: 3 }, borderRadius: 2, border: "1px solid rgba(35,53,57,0.1)", overflow: "hidden" }}>
-      <Typography variant="overline" sx={{ color: "#9b3d2e", fontWeight: 900 }}>History</Typography>
       <Typography variant="h5" sx={{ color: "#1f2d2f", fontWeight: 950, mb: 2 }}>Booked sevas</Typography>
       {bookings.length ? (
         <TableContainer>
-          <Table>
+          <Table size="small" sx={{ "& td, & th": { py: 1.4 } }}>
             <TableHead>
               <TableRow>
                 <TableCell>Seva</TableCell>
                 <TableCell>For</TableCell>
                 <TableCell>Date</TableCell>
                 <TableCell>Status</TableCell>
-                <TableCell>Order</TableCell>
+                <TableCell sx={{ display: { xs: "none", md: "table-cell" } }}>Reference</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -587,9 +578,9 @@ export default function Dashboard({ section = "overview" }) {
                 <TableRow key={booking.id} hover>
                   <TableCell sx={{ fontWeight: 900 }}>{booking.seva?.name}</TableCell>
                   <TableCell>{booking.bhakta_profile?.name}</TableCell>
-                  <TableCell>{booking.seva_date}</TableCell>
-                  <TableCell><Chip label={booking.payment_status || "Pending"} size="small" /></TableCell>
-                  <TableCell sx={{ maxWidth: 240, overflowWrap: "anywhere" }}>{booking.payment_order_id}</TableCell>
+                  <TableCell sx={{ whiteSpace: "nowrap" }}>{booking.seva_date ? formatSevaDate(booking.seva_date, lang) : "To be confirmed"}</TableCell>
+                  <TableCell><Chip label={booking.payment_status || "Pending"} size="small" sx={statusChipSx(booking.payment_status)} /></TableCell>
+                  <TableCell sx={{ display: { xs: "none", md: "table-cell" }, maxWidth: 240, overflowWrap: "anywhere", fontVariantNumeric: "tabular-nums" }}>{booking.payment_order_id}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -621,7 +612,7 @@ export default function Dashboard({ section = "overview" }) {
     >
       <Stack spacing={2.5} sx={{ width: "min(1240px, 100%)", mx: "auto" }}>
         <Paper elevation={0} sx={{ p: { xs: 2, md: 3 }, borderRadius: 2, border: `1px solid ${palette.border}`, bgcolor: palette.paper, backdropFilter: "blur(18px)" }}>
-          <Stack direction={{ xs: "column", lg: "row" }} spacing={2} justifyContent="space-between" alignItems={{ lg: "center" }}>
+          <Stack direction={{ xs: "column", lg: "row" }} spacing={2} sx={{ justifyContent: "space-between", alignItems: {lg: "center"} }}>
             <Box>
               <Breadcrumbs aria-label="Breadcrumb" sx={{ mb: 1, color: palette.muted, "& .MuiBreadcrumbs-separator": { color: palette.muted } }}>
                 <Typography variant="body2" sx={{ color: palette.muted, fontWeight: 800 }}>
@@ -631,7 +622,6 @@ export default function Dashboard({ section = "overview" }) {
                   {navItems.find((item) => item.section === activeSection)?.label}
                 </Typography>
               </Breadcrumbs>
-              <Typography variant="overline" sx={{ color: palette.primary, fontWeight: 900 }}>Bhakta portal</Typography>
               <Typography variant="h3" sx={{ color: palette.text, fontWeight: 950, lineHeight: 1.05, fontSize: { xs: "2rem", md: "3rem" } }}>
                 {activeSection === "overview" ? `Welcome, ${user?.username}` : navItems.find((item) => item.section === activeSection)?.label}
               </Typography>

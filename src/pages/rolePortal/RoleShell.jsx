@@ -7,7 +7,7 @@ import styles from "./RolePortal.module.css";
 
 const drawerWidth = 292;
 
-export default function RoleShell({ role, lang, section, user, status, error, titleOverride, textOverride, onClearStatus, onClearError, children }) {
+export default function RoleShell({ role, lang, section, status, error, titleOverride, textOverride, onClearStatus, onClearError, children }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const meta = sectionMeta[section] || sectionMeta.overview;
@@ -101,13 +101,13 @@ export default function RoleShell({ role, lang, section, user, status, error, ti
         {drawerContent}
       </Drawer>
 
-      <main className={styles.content}>
+      <div className={styles.content}>
         <div className={styles.workspace}>
           <header className={styles.heroPanel}>
             <div className={styles.heroInner}>
               <div className={styles.heroTitleBlock}>
                 {isMobile ? (
-                  <button type="button" className={styles.menuButton} onClick={() => setMobileOpen(true)} aria-label="Open navigation">
+                  <button type="button" className={styles.menuButton} onClick={() => setMobileOpen(true)} aria-label="Open workspace pages" aria-expanded={mobileOpen}>
                     <Menu size={20} aria-hidden="true" />
                   </button>
                 ) : null}
@@ -120,7 +120,7 @@ export default function RoleShell({ role, lang, section, user, status, error, ti
                   {/* <span className={styles.sectionEyebrow}>{meta.eyebrow}</span> */}
                   <h1 className={styles.heroTitle}>{titleOverride || (section === "overview" ? copy.title : meta.label)}</h1>
                   <p className={styles.heroText}>
-                    {textOverride || (section === "overview" ? copy.text : `Manage ${meta.label.toLowerCase()} from its own focused page.`)}
+                    {textOverride || (section === "overview" ? copy.text : meta.text)}
                   </p>
                 </div>
               </div>
@@ -145,7 +145,7 @@ export default function RoleShell({ role, lang, section, user, status, error, ti
 
           {children}
         </div>
-      </main>
+      </div>
     </section>
   );
 }

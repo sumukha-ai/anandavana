@@ -25,15 +25,15 @@ export const roleCopy = {
 };
 
 export const sectionMeta = {
-  overview: { label: "Overview", icon: LayoutDashboard, eyebrow: "Workspace", group: "Home" },
-  staff: { label: "Staff logins", icon: UserRoundPlus, eyebrow: "Access", group: "Access" },
-  "seva-editor": { label: "Seva editor", icon: ListChecks, eyebrow: "Catalog", group: "Catalog" },
-  sevas: { label: "Seva catalog", icon: ClipboardList, eyebrow: "Catalog", group: "Catalog" },
-  bookings: { label: "Booked sevas", icon: CalendarDays, eyebrow: "Operations", group: "Operations" },
-  calendar: { label: "Seva calendar", icon: CalendarCheck, eyebrow: "Schedule", group: "Operations" },
-  "calendar-detail": { label: "Seva day details", icon: CalendarCheck, eyebrow: "Schedule", group: "Operations" },
-  users: { label: "User accounts", icon: Users, eyebrow: "People", group: "Access" },
-  lookups: { label: "Jyotisha references", icon: Languages, eyebrow: "Rashi and Nakshatra", group: "Catalog" },
+  overview: { label: "Overview", text: "Today at a glance.", icon: LayoutDashboard, eyebrow: "Workspace", group: "Home" },
+  staff: { label: "Staff logins", text: "Create sign-in accounts for managers and priests.", icon: UserRoundPlus, eyebrow: "Access", group: "Access" },
+  "seva-editor": { label: "Seva editor", text: "Add a seva or change its name, amount, description, and online booking.", icon: ListChecks, eyebrow: "Catalog", group: "Catalog" },
+  sevas: { label: "Seva catalog", text: "Every seva offered at the kshetra, as devotees see it.", icon: ClipboardList, eyebrow: "Catalog", group: "Catalog" },
+  bookings: { label: "Booked sevas", text: "Bookings, payment status, and income for the dates you choose.", icon: CalendarDays, eyebrow: "Operations", group: "Operations" },
+  calendar: { label: "Seva calendar", text: "Booked sevas by day. Open a date to see who each seva is for.", icon: CalendarCheck, eyebrow: "Schedule", group: "Operations" },
+  "calendar-detail": { label: "Seva day details", text: "Everything the priests need for each seva on this date.", icon: CalendarCheck, eyebrow: "Schedule", group: "Operations" },
+  users: { label: "User accounts", text: "Registered devotees and staff accounts.", icon: Users, eyebrow: "People", group: "Access" },
+  lookups: { label: "Jyotisha references", text: "Rashi and Nakshatra names in English and Kannada, used in devotee profiles.", icon: Languages, eyebrow: "Rashi and Nakshatra", group: "Catalog" },
 };
 
 export function getMenuItems(role) {
@@ -62,8 +62,9 @@ export function displayLookup(item, lang) {
 }
 
 export function formatAmount(amount) {
-  if (amount === null || amount === undefined || amount === "") return "Offline";
-  return `INR ${amount}`;
+  const numericAmount = Number(amount);
+  if (amount === null || amount === undefined || amount === "" || !(numericAmount > 0)) return "Offline";
+  return `INR ${numericAmount.toLocaleString("en-IN")}`;
 }
 
 export function groupBookings(bookings) {
@@ -73,4 +74,11 @@ export function groupBookings(bookings) {
     groups[key].push(booking);
     return groups;
   }, {});
+}
+
+export function statusToneKey(status) {
+  const value = String(status || "pending").toLowerCase();
+  if (["paid", "success", "completed", "captured"].includes(value)) return "statusPaid";
+  if (["failed", "cancelled", "canceled"].includes(value)) return "statusFailed";
+  return "statusPending";
 }

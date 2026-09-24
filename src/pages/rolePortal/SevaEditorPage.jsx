@@ -5,7 +5,6 @@ export default function SevaEditorPage({ sevaForm, onSevaChange, onSaveSeva }) {
   return (
     <section className={styles.panel}>
       <div className={styles.panelHeader}>
-        <span className={styles.sectionEyebrow}>Catalog</span>
         <h2 className={styles.panelTitle}>{sevaForm.id ? "Edit seva" : "Add seva"}</h2>
       </div>
       <form className={styles.formGrid} onSubmit={onSaveSeva}>

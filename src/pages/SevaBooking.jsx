@@ -1,70 +1,78 @@
 import { useEffect, useState } from "react";
-import { ArrowRight, CalendarCheck, IndianRupee, Loader2, Phone } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
+import { ArrowRight, Loader2, RotateCcw } from "lucide-react";
+import { Link } from "react-router-dom";
 import { apiRequest } from "../api/client";
 import PageHero from "../components/PageHero/PageHero";
-import { normalizeLang } from "../i18n/config";
+import { useI18n } from "../i18n/useI18n";
 import bgImg from "../../assets/bg1.jpeg";
 import styles from "./SevaBooking.module.css";
-import { formatAmount, sevaContactPhone, sevaImageUrl } from "./sevaHelpers";
+import { sevaImageUrl } from "./sevaHelpers";
 
 export default function SevaBooking() {
-  const { lang: rawLang } = useParams();
-  const lang = normalizeLang(rawLang);
+  const { t, lang } = useI18n("seva");
+  const { t: tPages } = useI18n("pages");
   const [sevas, setSevas] = useState([]);
-  const [status, setStatus] = useState({ type: "loading", message: "Loading sevas" });
+  const [status, setStatus] = useState("loading");
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
     let active = true;
     async function loadSevas() {
-      setStatus({ type: "loading", message: "Loading sevas" });
+      setStatus("loading");
       try {
         const data = await apiRequest("/seva", { lang });
         if (active) {
           setSevas(data.sevas || []);
-          setStatus({ type: "idle", message: "" });
+          setStatus("idle");
         }
-      } catch (error) {
-        if (active) setStatus({ type: "error", message: error.message });
+      } catch {
+        if (active) setStatus("error");
       }
     }
     loadSevas();
     return () => {
       active = false;
     };
-  }, [lang]);
+  }, [lang, attempt]);
 
   return (
     <>
-      <PageHero title="Seva Offerings" bgImage={bgImg} />
+      <PageHero title={tPages("sevaTitle")} bgImage={bgImg} />
       <div className={styles.container}>
         <section className={styles.catalogShell}>
-          <div className={styles.catalogIntro}>
-            <h2>Online Seva Booking</h2>
-            <p>
-              Book online seva offerings at Sri Kshetra Anandavana.
-            </p>
+          <div className={styles.catalogIntro} lang={lang}>
+            <h2>{t("heading")}</h2>
+            <p>{t("intro")}</p>
           </div>
 
-          {status.message ? (
-            <p className={`${styles.status} ${styles[status.type]}`}>
-              {status.type === "loading" ? <Loader2 size={16} aria-hidden="true" /> : null}
-              {status.message}
-            </p>
-          ) : null}
+          <div aria-live="polite" lang={lang}>
+            {status === "loading" ? (
+              <p className={`${styles.status} ${styles.loading}`}>
+                <Loader2 size={16} aria-hidden="true" className={styles.spin} />
+                {t("loading")}
+              </p>
+            ) : null}
 
-          {!status.message && sevas.length === 0 ? (
-            <div className={styles.emptyState}>No sevas are available right now.</div>
-          ) : null}
+            {status === "error" ? (
+              <div className={`${styles.status} ${styles.error}`} role="alert">
+                <p>{t("loadError")}</p>
+                <button type="button" className={styles.retryButton} onClick={() => setAttempt((n) => n + 1)}>
+                  <RotateCcw size={16} aria-hidden="true" />
+                  {t("retry")}
+                </button>
+              </div>
+            ) : null}
+
+            {status === "idle" && sevas.length === 0 ? (
+              <div className={styles.emptyState}>{t("empty")}</div>
+            ) : null}
+          </div>
 
           <div className={styles.sevaGrid}>
             {sevas.map((seva) => {
-              const amount = formatAmount(seva.amount);
-              const isBookable = Boolean(seva.is_bookable);
-
               return (
                 <article key={seva.id} className={styles.sevaCard}>
-                  <Link to={`/${lang}/seva/${seva.id}`} className={styles.imageLink} aria-label={`View ${seva.name}`}>
+                  <Link to={`/${lang}/seva/${seva.id}`} className={styles.imageLink} aria-label={`${t("viewSeva")}: ${seva.name}`}>
                     <img src={sevaImageUrl(seva, bgImg)} alt={seva.name} />
                   </Link>
                   <div className={styles.cardBody}>
@@ -92,7 +100,7 @@ export default function SevaBooking() {
                       ) : null}
                     </div> */}
                     <Link to={`/${lang}/seva/${seva.id}`} className={styles.viewButton}>
-                      <span>View seva</span>
+                      <span>{t("viewSeva")}</span>
                       <ArrowRight size={17} aria-hidden="true" />
                     </Link>
                   </div>

@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  BadgeCheck,
-  Fingerprint,
   Home,
   LockKeyhole,
   Mail,
@@ -124,7 +122,6 @@ export default function Register() {
     <section className={styles.loginPage}>
       <div className={styles.loginPanel}>
         <div className={styles.copyBlock}>
-          <span className={styles.kicker}>Bhakta onboarding</span>
           <h1>Register</h1>
           <p>Create your bhakta account, verify your email, and save the profile details needed for seva bookings.</p>
           {/* <div className={styles.promiseList} aria-label="Registration highlights">
@@ -288,7 +285,7 @@ export default function Register() {
             </div>
           </label>
 
-          {error ? <p className={styles.error}>{error}</p> : null}
+          {error ? <p className={styles.error} role="alert">{error}</p> : null}
 
           <button className={styles.submitButton} type="submit" disabled={isSubmitting}>
             <UserPlus size={18} aria-hidden="true" />

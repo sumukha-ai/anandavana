@@ -1,9 +1,14 @@
+import { useEffect } from "react";
 import { Navigate, Outlet, useLocation, useParams } from "react-router-dom";
 import { DEFAULT_LANG, SUPPORTED_LANGS } from "./config";
 
 export default function LangRouteGuard() {
   const { lang } = useParams();
   const location = useLocation();
+
+  useEffect(() => {
+    if (SUPPORTED_LANGS.includes(lang)) document.documentElement.lang = lang;
+  }, [lang]);
 
   if (!SUPPORTED_LANGS.includes(lang)) {
     const segments = location.pathname.split("/").filter(Boolean);

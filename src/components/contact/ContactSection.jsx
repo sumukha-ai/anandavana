@@ -3,7 +3,6 @@ import styles from "./ContactSection.module.css";
 import { MapPin, Phone, Mail } from "lucide-react";
 
 const EN_CONTENT = {
-  kicker: "Contact",
   title: "Visit Anandavana",
   subtitle: "Reach the sacred abode of Sri Sheshachala Sadguru with ease.",
   mapTitle: "Anandavana Agadi location map",
@@ -17,7 +16,6 @@ const EN_CONTENT = {
 };
 
 const KN_CONTENT = {
-  kicker: "ಸಂಪರ್ಕ",
   title: "ಆನಂದವನಕ್ಕೆ ಭೇಟಿ ನೀಡಿ",
   subtitle: "ಶ್ರೀ ಶೇಷಾಚಲ ಸದ್ಗುರುವಿನ ಪವಿತ್ರ ನಿವಾಸವನ್ನು ಸುಲಭವಾಗಿ ತಲುಪಿ.",
   mapTitle: "ಆನಂದವನ ಅಗಡಿ ಸ್ಥಳ ನಕ್ಷೆ",
@@ -39,7 +37,6 @@ export default function ContactSection() {
     <section className={styles.contactSection}>
       <div className={styles.container}>
         <div className={styles.sectionHeader} lang={language}>
-          <span className={styles.kicker}>{content.kicker}</span>
           <h2 className={styles.title}>{content.title}</h2>
           <p className={styles.subtitle}>{content.subtitle}</p>
         </div>

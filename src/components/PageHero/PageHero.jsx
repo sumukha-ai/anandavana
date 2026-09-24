@@ -2,7 +2,7 @@ import styles from "./PageHero.module.css";
 import { useI18n } from "../../i18n/useI18n";
 
 export default function PageHero({ title, bgImage }) {
-  const { t } = useI18n("pageHero");
+  const { lang } = useI18n();
 
   return (
     <section
@@ -12,8 +12,7 @@ export default function PageHero({ title, bgImage }) {
       <div className={styles.overlay}></div>
 
       <div className={styles.content}>
-        <div className={styles.inner}>
-          <span className={styles.kicker}>{t("kicker")}</span>
+        <div className={styles.inner} lang={lang}>
           <h1 className={styles.title}>{title}</h1>
         </div>
       </div>

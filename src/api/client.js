@@ -40,8 +40,15 @@ axiosInstance.interceptors.request.use((config) => {
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    const payload = error.response?.data;
-    return Promise.reject(new Error(payload?.error || payload?.message || error.message || "Request failed"));
+    if (!error.response) {
+      return Promise.reject(
+        new Error("We could not reach the Samsthana server. Please check your internet connection and try again.")
+      );
+    }
+    const payload = error.response.data;
+    return Promise.reject(
+      new Error(payload?.error || payload?.message || "Something went wrong. Please try again in a moment.")
+    );
   }
 );
 

@@ -389,3 +389,14 @@
   }
   .bgCanvas { transform: none; }
 }
+/* Kannada: tracking breaks conjuncts apart, so set it solid */
+.topLine:lang(kn) {
+  letter-spacing: 0.02em;
+  margin-right: 0;
+  text-transform: none;
+}
+
+.bottomLine:lang(kn) {
+  letter-spacing: 0;
+  line-height: 1.25;
+}

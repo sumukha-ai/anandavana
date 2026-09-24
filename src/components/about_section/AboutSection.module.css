@@ -249,7 +249,7 @@
   }
 
   .container {
-    width: min(100% - 1rem, 100%);
+    width: calc(100% - 2rem);
   }
 
   .sectionHeader {

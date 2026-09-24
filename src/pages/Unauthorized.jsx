@@ -9,9 +9,8 @@ export default function Unauthorized() {
   return (
     <section className={styles.pageShell}>
       <div className={styles.panel}>
-        <span className={styles.kicker}>Access denied</span>
         <h1>You do not have access to this page.</h1>
-        <p className={styles.lead}>Your account role is not allowed to open this area.</p>
+        <p className={styles.lead}>This area is only for Samsthana staff with the right role. If you think you should have access, please ask the office admin.</p>
         <div className={styles.actions}>
           <Link to={`/${lang}/dashboard`} className={styles.actionLink}>Go to dashboard</Link>
         </div>

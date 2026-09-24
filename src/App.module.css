@@ -28,3 +28,12 @@
     padding: 3rem 1.5rem;
   }
 }
+/* Shared page body container used below a PageHero */
+.container {
+  width: min(var(--max-width), calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.pageBody {
+  padding: clamp(3rem, 7vw, 5.5rem) 0 clamp(4rem, 8vw, 6.5rem);
+}

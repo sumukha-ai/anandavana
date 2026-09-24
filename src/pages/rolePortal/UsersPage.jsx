@@ -4,7 +4,6 @@ export default function UsersPage({ users }) {
   return (
     <section className={styles.panel}>
       <div className={styles.panelHeader}>
-        <span className={styles.sectionEyebrow}>People</span>
         <h2 className={styles.panelTitle}>User accounts</h2>
       </div>
       

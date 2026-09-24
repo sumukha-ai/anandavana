@@ -36,7 +36,6 @@ export default function OverviewPage({ role, lang, bookings, sevas, users, looku
       <div className={styles.grid2}>
         <section className={styles.panel}>
           <div className={styles.panelHeader}>
-            <span className={styles.sectionEyebrow}>Operations</span>
             <h2 className={styles.panelTitle}>Today's sevas</h2>
           </div>
           {todaysBookings.length ? (
@@ -60,7 +59,6 @@ export default function OverviewPage({ role, lang, bookings, sevas, users, looku
 
         <section className={styles.panel}>
           <div className={styles.panelHeader}>
-            <span className={styles.sectionEyebrow}>Navigation</span>
             <h2 className={styles.panelTitle}>Open a focused page</h2>
           </div>
           <div className={styles.actionsGrid}>

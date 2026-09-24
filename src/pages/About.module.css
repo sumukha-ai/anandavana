@@ -1,17 +1,18 @@
-.aboutContainer {
-  padding: 4rem 2rem;
-}
-
-.aboutTitle {
-  text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 2rem;
-}
-
 .aboutContent {
-  max-width: 800px;
+  max-width: 68ch;
   margin: 0 auto;
-  font-size: 1.1rem;
-  line-height: 1.8;
-  color: #444;
+  font-size: 1.125rem;
+  line-height: 1.85;
+  color: var(--text-body);
+}
+
+.aboutContent p + p {
+  margin-top: 1.4em;
+}
+
+.aboutContent p:first-child {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.4vw, 1.55rem);
+  line-height: 1.6;
+  color: var(--text-main);
 }

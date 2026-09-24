@@ -8,7 +8,6 @@ export default function LookupsPage({ lang, lookups, lookupForm, onLookupChange,
       {/* Form Section */}
       <section className={styles.panel}>
         <div className={styles.panelHeader}>
-          <span className={styles.sectionEyebrow}>Jyotisha references</span>
           <h2 className={styles.panelTitle}>Rashi and Nakshatra</h2>
         </div>
         

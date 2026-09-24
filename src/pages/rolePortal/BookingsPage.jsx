@@ -1,8 +1,15 @@
 import styles from "./RolePortal.module.css";
+import { formatSevaDate } from "../sevaHelpers";
+import { statusToneKey } from "./rolePortalConfig";
 
 function money(value) {
   return `INR ${Number(value || 0).toLocaleString("en-IN")}`;
 }
+
+function sevaPrice(value) {
+  return Number(value) > 0 ? money(value) : "Offline";
+}
+
 
 function isPaidStatus(status) {
   return ["paid", "success", "completed", "captured"].includes(String(status || "").toLowerCase());
@@ -45,7 +52,6 @@ export default function BookingsPage({ bookings, filters, onFilterChange }) {
     <div className={styles.stackList}>
       <section className={styles.panel}>
         <div className={styles.panelHeader}>
-          <span className={styles.sectionEyebrow}>Samsthaana overview</span>
           <h2 className={styles.panelTitle}>Booked sevas dashboard</h2>
         </div>
         <div className={styles.grid4}>
@@ -66,15 +72,16 @@ export default function BookingsPage({ bookings, filters, onFilterChange }) {
           </article>
           <article className={styles.metricCard}>
             <span className={styles.cardLabel}>Most booked seva</span>
-            <strong className={styles.metricValue}>{topSeva?.count || 0}</strong>
-            <span className={styles.helperText}>{topSeva?.name || "No seva yet"}</span>
+            <strong className={`${styles.metricValue} ${styles.metricValueText}`}>{topSeva?.name || "None yet"}</strong>
+            <span className={styles.helperText}>
+              {topSeva ? `${topSeva.count} booking${topSeva.count === 1 ? "" : "s"}` : "No bookings in this range"}
+            </span>
           </article>
         </div>
       </section>
 
       <section className={styles.panel}>
         <div className={styles.panelHeader}>
-          <span className={styles.sectionEyebrow}>Seva-wise income</span>
           <h2 className={styles.panelTitle}>Which seva is booked and how much</h2>
         </div>
         {sevaSummary.length ? (
@@ -94,7 +101,7 @@ export default function BookingsPage({ bookings, filters, onFilterChange }) {
                   <tr key={item.id}>
                     <td className={styles.tableStrong}>{item.name}</td>
                     <td>{item.count}</td>
-                    <td>{money(item.amount)}</td>
+                    <td>{sevaPrice(item.amount)}</td>
                     <td>{money(item.expected)}</td>
                     <td>{money(item.paid)}</td>
                   </tr>
@@ -109,7 +116,6 @@ export default function BookingsPage({ bookings, filters, onFilterChange }) {
 
       <section className={styles.panel}>
         <div className={styles.panelHeader}>
-          <span className={styles.sectionEyebrow}>Operations</span>
           <h2 className={styles.panelTitle}>Booked sevas</h2>
         </div>
         <div className={styles.inlineFilters}>
@@ -132,7 +138,7 @@ export default function BookingsPage({ bookings, filters, onFilterChange }) {
                   <th>Date</th>
                   <th>Amount</th>
                   <th>Status</th>
-                  <th>Order</th>
+                  <th>Reference</th>
                 </tr>
               </thead>
               <tbody>
@@ -140,10 +146,14 @@ export default function BookingsPage({ bookings, filters, onFilterChange }) {
                   <tr key={booking.id}>
                     <td className={styles.tableStrong}>{booking.seva?.name}</td>
                     <td>{booking.bhakta_profile?.name}</td>
-                    <td>{booking.seva_date}</td>
-                    <td>{money(booking.seva?.amount)}</td>
-                    <td><span className={styles.statusPill}>{booking.payment_status || "Pending"}</span></td>
-                    <td>{booking.payment_order_id}</td>
+                    <td className={styles.nowrap}>{booking.seva_date ? formatSevaDate(booking.seva_date) : "Unscheduled"}</td>
+                    <td className={styles.nowrap}>{sevaPrice(booking.seva?.amount)}</td>
+                    <td>
+                      <span className={`${styles.statusPill} ${styles[statusToneKey(booking.payment_status)]}`}>
+                        {booking.payment_status || "Pending"}
+                      </span>
+                    </td>
+                    <td className={styles.referenceCell}>{booking.payment_order_id || "—"}</td>
                   </tr>
                 ))}
               </tbody>

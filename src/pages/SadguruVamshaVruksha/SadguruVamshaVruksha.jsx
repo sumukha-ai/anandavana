@@ -11,7 +11,6 @@ import guru5 from "../../../assets/sheshachalaru_lingu.jpg.jpeg";
 
 const EN_PAGE_CONTENT = {
   heroTitle: "Sadguru Vamsha Vruksha",
-  kicker: "Sacred Lineage Tree",
   pageTitle: "The spiritual family lineage",
   pageIntro:
     "Sadguru Vamsha Vruksha presents the sacred generational lineage flowing from Sri Sheshachala Sadguru through successive generations, preserving the spiritual light, values, and tradition across time.",
@@ -19,7 +18,6 @@ const EN_PAGE_CONTENT = {
 
 const KN_PAGE_CONTENT = {
   heroTitle: "ಸದ್ಗುರು ವಂಶ ವೃಕ್ಷ",
-  kicker: "ಪವಿತ್ರ ವಂಶ ಪರಂಪರೆ",
   pageTitle: "ಆಧ್ಯಾತ್ಮಿಕ ಕುಟುಂಬ ಪರಂಪರೆ",
   pageIntro:
     "ಸದ್ಗುರು ವಂಶ ವೃಕ್ಷವು ಶ್ರೀ ಶೇಷಾಚಲ ಸದ್ಗುರುವರಿಂದ ಆರಂಭವಾಗಿ ತಲೆಮಾರುಗಳಿಂದ ಸಾಗುತ್ತಿರುವ ಪವಿತ್ರ ಕುಟುಂಬ ಪರಂಪರೆಯನ್ನು ಪರಿಚಯಿಸುತ್ತದೆ. ಈ ಪರಂಪರೆಯ ಮೂಲಕ ಆಧ್ಯಾತ್ಮಿಕ ಮೌಲ್ಯಗಳು, ಕೃಪೆ ಮತ್ತು ಸಂಪ್ರದಾಯದ ಬೆಳಕು ಮುಂದುವರಿದಿದೆ.",
@@ -133,7 +131,6 @@ export default function SadguruVamshaVruksha() {
 
       <section className={styles.pageSection}>
         <div className={styles.introWrap} lang={language}>
-          <span className={styles.kicker}>{pageContent.kicker}</span>
           <h2 className={styles.pageTitle}>{pageContent.pageTitle}</h2>
           <p className={styles.pageIntro}>{pageContent.pageIntro}</p>
         </div>
@@ -152,6 +149,7 @@ export default function SadguruVamshaVruksha() {
                     src={member.image}
                     alt={member.name}
                     className={styles.guruImage}
+                    loading={index === 0 ? "eager" : "lazy"}
                   />
                   <span className={styles.guruId}>{member.id}</span>
                 </div>
@@ -159,8 +157,8 @@ export default function SadguruVamshaVruksha() {
 
               <div className={styles.contentCol}>
                 <div className={styles.contentCard} lang={language}>
-                  <span className={styles.role}>{member.role}</span>
                   <h3 className={styles.guruName}>{member.name}</h3>
+                  <p className={styles.role}>{member.role}</p>
                   <p className={styles.description}>{member.description}</p>
 
                   {member.quote ? (

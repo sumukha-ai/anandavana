@@ -49,7 +49,6 @@ export default function CalendarPage({ bookings, role, lang }) {
     <section className={styles.panel}>
       <div className={styles.calendarToolbar}>
         <div className={styles.titleBlock}>
-          <span className={styles.sectionEyebrow}>Schedule</span>
           <h2 className={styles.panelTitle}>{monthLabel(currentMonth)}</h2>
         </div>
         <div className={styles.calendarActions}>

@@ -16,7 +16,6 @@ import guru5 from "../../assets/brahmanandaru_maharajaru.jpg.jpeg";
 
 const EN_PAGE_CONTENT = {
   heroTitle: "Guru Parampare",
-  kicker: "Sacred Lineage",
   pageTitle: "The lineage of guiding light",
   pageIntro:
     "The Guru Parampare reflects a living stream of wisdom, devotion, and grace carried across generations. Each revered guru has strengthened the spiritual path and inspired seekers through divine presence, compassion, and inner guidance.",
@@ -24,7 +23,6 @@ const EN_PAGE_CONTENT = {
 
 const KN_PAGE_CONTENT = {
   heroTitle: "ಗುರು ಪರಂಪರೆ",
-  kicker: "ಪವಿತ್ರ ಪರಂಪರೆ",
   pageTitle: "ಮಾರ್ಗದರ್ಶಕ ಬೆಳಕಿನ ಪರಂಪರೆ",
   pageIntro:
     "ಗುರು ಪರಂಪರೆ ಅನೇಕ ತಲೆಮಾರುಗಳ ಮೂಲಕ ಹರಿದು ಬಂದ ಜ್ಞಾನ, ಭಕ್ತಿ ಮತ್ತು ಕೃಪೆಯ ಜೀವಂತ ಧಾರೆಯನ್ನು ಪ್ರತಿಬಿಂಬಿಸುತ್ತದೆ. ಪ್ರತಿಯೊಬ್ಬ ಪೂಜ್ಯ ಗುರುವೂ ಆಧ್ಯಾತ್ಮಿಕ ಮಾರ್ಗವನ್ನು ಬಲಪಡಿಸಿ, ದೈವಿಕ ಸಾನ್ನಿಧ್ಯ, ಕರುಣೆ ಮತ್ತು ಆಂತರಿಕ ಮಾರ್ಗದರ್ಶನದ ಮೂಲಕ ಸಾಧಕರಿಗೆ ಪ್ರೇರಣೆಯಾಗಿದ್ದಾರೆ.",
@@ -228,7 +226,6 @@ export default function GuruParampare() {
 
       <section className={styles.pageSection}>
         <div className={styles.introWrap} lang={language}>
-          <span className={styles.kicker}>{pageContent.kicker}</span>
           <h2 className={styles.pageTitle}>{pageContent.pageTitle}</h2>
           <p className={styles.pageIntro}>{pageContent.pageIntro}</p>
         </div>
@@ -247,6 +244,7 @@ export default function GuruParampare() {
                     src={guru.image}
                     alt={guru.name}
                     className={styles.guruImage}
+                    loading={index === 0 ? "eager" : "lazy"}
                   />
                   <span className={styles.guruId}>{guru.id}</span>
                 </div>
@@ -254,8 +252,8 @@ export default function GuruParampare() {
 
               <div className={styles.contentCol}>
                 <div className={styles.contentCard} lang={language}>
-                  <span className={styles.role}>{guru.role}</span>
                   <h3 className={styles.guruName}>{guru.name}</h3>
+                  <p className={styles.role}>{guru.role}</p>
                   <p className={styles.description}>{guru.description}</p>
                   {guru.quote ? (
                     <blockquote className={styles.quote}>

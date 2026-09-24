@@ -1,11 +1,12 @@
 .hero {
   position: relative;
   width: 100%;
-  min-height: clamp(100vh, 58vh, 880px);
+  min-height: min(72vh, 720px);
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   overflow: hidden;
+  background-color: var(--accent-deep);
 
   background-size: cover;
   background-position: top center;
@@ -18,9 +19,9 @@
   background:
     linear-gradient(
       180deg,
-      rgba(18, 10, 6, 0.28) 0%,
-      rgba(18, 10, 6, 0.38) 35%,
-      rgba(18, 10, 6, 0.52) 100%
+      rgba(18, 10, 6, 0.2) 0%,
+      rgba(18, 10, 6, 0.34) 45%,
+      rgba(18, 10, 6, 0.62) 100%
     );
   z-index: 1;
 }
@@ -42,15 +43,6 @@
   max-width: 760px;
 }
 
-.kicker {
-  display: inline-block;
-  margin-bottom: 1rem;
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: #ffffff;
-}
 
 .title {
   margin: 0;
@@ -59,7 +51,11 @@
   line-height: 1.08;
   color: #ffffff;
   text-wrap: balance;
-  text-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.25), 0 10px 28px rgba(0, 0, 0, 0.3);
+}
+
+.title:lang(kn) {
+  line-height: 1.3;
 }
 
 @media (max-width: 768px) {
@@ -69,16 +65,11 @@
   }
 
   .content {
-    width: min(100% - 1rem, 100%);
+    width: calc(100% - 2rem);
     padding-top: 6.5rem;
     padding-bottom: 3.5rem;
   }
 
-  .kicker {
-    font-size: 0.68rem;
-    letter-spacing: 0.2em;
-    margin-bottom: 0.8rem;
-  }
 
   .title {
     font-size: clamp(1.85rem, 8vw, 3rem);
