@@ -2,17 +2,22 @@ import {
   CalendarCheck,
   CalendarDays,
   ClipboardList,
+  HandCoins,
+  HeartHandshake,
+  Images,
+  PartyPopper,
   Languages,
   LayoutDashboard,
   SquarePen,
   UserRoundPlus,
   Users,
+  Wallet,
 } from "lucide-react";
 
 export const roleCopy = {
   admin: {
     title: "Admin workspace",
-    text: "Staff access, the seva catalog, bookings, the calendar, accounts and Jyotisha references.",
+    text: "Staff access, the seva catalog, bookings, the calendar, income and donations, accounts and Jyotisha references.",
   },
   manager: {
     title: "Manager workspace",
@@ -31,17 +36,25 @@ export const sectionMeta = {
   "calendar-detail": { label: "Seva day", text: "Everything the priests need for each seva on this date.", icon: CalendarCheck, group: "Operations" },
   sevas: { label: "Seva catalog", text: "Every seva offered at the kshetra, as devotees see it.", icon: ClipboardList, group: "Catalog" },
   "seva-editor": { label: "Seva editor", text: "Add a seva or change its name, amount, description and online booking.", icon: SquarePen, group: "Catalog" },
+  events: { label: "Events", text: "Festivals and utsavas shown on the public events page, with dates, photos and details.", icon: PartyPopper, group: "Catalog" },
+  "event-editor": { label: "Event editor", text: "The fixed event template: dates, description, highlights, extra details and photos.", icon: PartyPopper, group: "Catalog" },
+  gallery: { label: "Gallery", text: "Up to 10 photos per event, each with an optional description. They appear on the public Gallery page.", icon: Images, group: "Catalog" },
+  "gallery-event": { label: "Event photos", text: "Add, describe, order and remove the photos of one event.", icon: Images, group: "Catalog" },
   lookups: { label: "Jyotisha references", text: "Rashi and Nakshatra names in English and Kannada, used in devotee profiles.", icon: Languages, group: "Catalog" },
+  finance: { label: "Finance", text: "All income in one place: seva bookings and donations, online and at the counter.", icon: Wallet, group: "Finance" },
+  "finance-seva-entry": { label: "Add seva entry", text: "A seva booked and paid for at the kshetra.", icon: CalendarDays, group: "Finance" },
+  "finance-donation-entry": { label: "Add donation entry", text: "A donation received at the kshetra, with its receipt.", icon: HandCoins, group: "Finance" },
+  "finance-causes": { label: "Donation causes", text: "The causes devotees can give to on the Donate page, with suggested amounts and optional targets.", icon: HeartHandshake, group: "Finance" },
   users: { label: "User accounts", text: "Registered devotees and staff accounts.", icon: Users, group: "Access" },
   staff: { label: "Staff logins", text: "Create sign-in accounts for managers and priests.", icon: UserRoundPlus, group: "Access" },
 };
 
 export function getMenuItems(role) {
   if (role === "admin") {
-    return ["overview", "bookings", "calendar", "sevas", "seva-editor", "lookups", "users", "staff"];
+    return ["overview", "bookings", "calendar", "sevas", "seva-editor", "events", "gallery", "lookups", "finance", "users", "staff"];
   }
   if (role === "manager") {
-    return ["overview", "bookings", "calendar", "sevas", "users"];
+    return ["overview", "bookings", "calendar", "sevas", "events", "gallery", "users"];
   }
   return ["overview", "bookings", "calendar", "sevas"];
 }

@@ -21,7 +21,7 @@ import {
   useDevoteeProfiles,
   useSevas,
 } from "./shopUtils";
-import { collectPayment, isOnlinePaymentEnabled } from "./cashfree";
+import { collectPayment, useLivePayments } from "./cashfree";
 
 const QUICK_DAYS = 14;
 
@@ -82,7 +82,7 @@ export default function CheckoutPage() {
   const seva = sevas.find((item) => String(item.id) === String(sevaId));
   const selectedProfileId = profileId || (profiles[0] ? String(profiles[0].id) : "");
   const profile = profiles.find((item) => String(item.id) === selectedProfileId);
-  const livePayments = isOnlinePaymentEnabled();
+  const livePayments = useLivePayments();
 
   const crumbs = [
     { label: t("sevas"), to: `/${lang}/seva-booking` },
@@ -165,16 +165,19 @@ export default function CheckoutPage() {
 
     let outcome;
     try {
-      outcome = await collectPayment(data?.payment?.payment_session_id);
+      outcome = await collectPayment(data?.payment);
     } catch {
       outcome = "cancelled";
     }
+    // Cashfree is sending the browser to the return URL, which lands on the confirmation page
+    if (outcome === "redirect") return;
 
-    navigate(`/${lang}/checkout/confirmed`, {
+    const orderId = data?.payment?.order_id || "";
+    navigate(`/${lang}/checkout/confirmed${orderId ? `?order_id=${encodeURIComponent(orderId)}` : ""}`, {
       replace: true,
       state: {
         outcome,
-        reference: data?.payment?.order_id || "",
+        reference: orderId,
         sevaId: seva.id,
         sevaName: seva.name,
         amount: seva.amount,

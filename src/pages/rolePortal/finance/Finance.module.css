@@ -1,0 +1,211 @@
+/* Finance section additions. Uses the console tokens defined on .console in Console.module.css. */
+
+.financeRoot {
+  display: contents;
+}
+
+/* ---------- Period picker ---------- */
+
+.period {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.periodSelect {
+  width: auto;
+  min-width: 10.5rem;
+}
+
+/* Sortable column headers: the arrows stay quiet until a column is sorted */
+.sortIdle svg {
+  opacity: 0.35;
+}
+
+.sortIdle:hover svg {
+  opacity: 0.8;
+}
+
+.amountInput {
+  font-size: 1.05rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.inlineFields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+/* ---------- Causes ---------- */
+
+.fundMeter {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 8rem;
+}
+
+.fundTrack {
+  display: block;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--c-hover);
+  overflow: hidden;
+}
+
+.fundFill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--c-accent);
+}
+
+.amountChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.amountChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.3rem 0.2rem 0.6rem;
+  border: 1px solid var(--c-border);
+  border-radius: 999px;
+  background: var(--c-surface-2);
+  font-size: 0.78rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.amountChip button {
+  display: grid;
+  place-items: center;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--c-text-3);
+  cursor: pointer;
+}
+
+.amountChip button:hover {
+  background: var(--c-hover);
+  color: var(--c-text);
+}
+
+.chipAdd {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.chipAdd input {
+  width: 8rem;
+}
+
+/* ---------- Drawer ---------- */
+
+.drawerLayer {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+}
+
+.drawerScrim {
+  position: absolute;
+  inset: 0;
+  background: var(--c-scrim);
+  animation: fadeIn 0.18s ease both;
+}
+
+.drawer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(30rem, 100%);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  background: var(--c-surface);
+  border-left: 1px solid var(--c-border);
+  box-shadow: var(--c-shadow-lg);
+  outline: none;
+  animation: slideIn 0.24s var(--c-ease) both;
+}
+
+.drawerHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+  border-bottom: 1px solid var(--c-border);
+}
+
+.drawerTitle {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.drawerSub {
+  margin: 0.15rem 0 0;
+  color: var(--c-text-3);
+  font-size: 0.8rem;
+}
+
+.drawerBody {
+  overflow-y: auto;
+  display: grid;
+  align-content: start;
+  gap: 1.1rem;
+  padding: 1.1rem;
+}
+
+.drawerFoot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 0.8rem 1.1rem;
+  border-top: 1px solid var(--c-border);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(24px);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .inlineFields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .period {
+    width: 100%;
+  }
+
+  .periodSelect {
+    flex: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drawer,
+  .drawerScrim {
+    animation: none;
+  }
+}

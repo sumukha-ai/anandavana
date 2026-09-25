@@ -1,0 +1,693 @@
+/* Events: public festival listing and event detail. Built on the shop layer tokens (Shop.module.css .shop). */
+
+.section {
+  margin-top: clamp(2.75rem, 6vw, 4rem);
+  display: grid;
+  gap: 1.25rem;
+}
+
+.sectionHead {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.sectionIntro {
+  color: var(--ink-2);
+  font-size: 0.95rem;
+}
+
+.muted {
+  color: var(--ink-3);
+}
+
+/* ---------- Chips ---------- */
+
+.cardMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.category {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+}
+
+.category:lang(kn) {
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: 0.8rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 1.6rem;
+  padding: 0 0.6rem;
+  border-radius: 999px;
+  background: #f1ece5;
+  color: var(--ink-2);
+  font-size: 0.76rem;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.chipSoon {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+
+.chipLive {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.liveDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* ---------- Cards ---------- */
+
+.card .cardMeta {
+  position: relative;
+  z-index: 2;
+}
+
+.dateBadge {
+  position: absolute;
+  top: 0.8rem;
+  left: 0.8rem;
+  min-width: 3.4rem;
+  display: grid;
+  justify-items: center;
+  padding: 0.45rem 0.55rem 0.4rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 2px 10px rgba(31, 26, 23, 0.14);
+  line-height: 1.05;
+  color: var(--ink);
+}
+
+.dateBadge strong {
+  font-size: 1.35rem;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+}
+
+.dateBadge span {
+  font-size: 0.72rem;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent-ink);
+}
+
+.photoCount {
+  position: absolute;
+  right: 0.8rem;
+  bottom: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(31, 26, 23, 0.72);
+  color: #fff;
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.cardDate {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.cardDate svg {
+  color: var(--accent);
+}
+
+/* ---------- Featured (next event) ---------- */
+
+.featured {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: calc(var(--radius) + 4px);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.featuredMedia {
+  position: relative;
+  min-height: 100%;
+  aspect-ratio: 16 / 11;
+  background: #efe8dd;
+  overflow: hidden;
+}
+
+.featuredMedia img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s var(--ease-out);
+}
+
+.featured:hover .featuredMedia img {
+  transform: scale(1.03);
+}
+
+.featuredBody {
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: 0.9rem;
+  padding: clamp(1.5rem, 4vw, 3rem);
+}
+
+.eyebrow {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.eyebrow:lang(kn) {
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: 0.88rem;
+}
+
+.featuredTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.12;
+  color: var(--ink);
+}
+
+.featuredTitle:lang(kn) {
+  line-height: 1.35;
+}
+
+.featuredTitle a:hover {
+  color: var(--accent-ink);
+}
+
+.featuredDate,
+.featuredTimings {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  color: var(--ink);
+}
+
+.featuredDate {
+  font-size: 1.08rem;
+  font-weight: 650;
+}
+
+.featuredTimings {
+  font-size: 0.95rem;
+  color: var(--ink-2);
+}
+
+.featuredDate svg,
+.featuredTimings svg {
+  flex: none;
+  margin-top: 0.15rem;
+  color: var(--accent);
+}
+
+.featuredSummary {
+  max-width: 48ch;
+  color: var(--ink-2);
+  line-height: 1.7;
+}
+
+.featuredAction {
+  margin-top: 0.4rem;
+}
+
+.featuredSkeleton {
+  height: clamp(320px, 38vw, 440px);
+  border-radius: calc(var(--radius) + 4px);
+}
+
+/* ---------- Empty upcoming ---------- */
+
+.emptyUpcoming {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1.1rem 1.4rem;
+  padding: clamp(1.4rem, 3vw, 2rem);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.emptyIcon {
+  width: 3rem;
+  height: 3rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+
+.emptyTitle {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+
+.emptyBody {
+  margin-top: 0.25rem;
+  color: var(--ink-2);
+  line-height: 1.6;
+  max-width: 60ch;
+}
+
+/* ---------- Past, by year ---------- */
+
+.yearGroup {
+  display: grid;
+  gap: 1rem;
+}
+
+.yearGroup + .yearGroup {
+  margin-top: 1.5rem;
+}
+
+.yearLabel {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-3);
+}
+
+.yearLabel::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+/* ---------- Detail page ---------- */
+
+.detailHero {
+  margin-top: 1.25rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: start;
+}
+
+.detailMedia {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #efe8dd;
+}
+
+.detailMedia img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detailInfo {
+  display: grid;
+  gap: 1.1rem;
+  align-content: start;
+  justify-items: start;
+}
+
+.detailTitle {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.6vw, 2.9rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.detailTitle:lang(kn) {
+  line-height: 1.3;
+}
+
+.detailLede {
+  max-width: 52ch;
+  color: var(--ink-2);
+  font-size: 1.02rem;
+  line-height: 1.7;
+}
+
+.factList {
+  width: 100%;
+  display: grid;
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.fact {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.85rem;
+  padding: 0.95rem 1.1rem;
+}
+
+.fact + .fact {
+  border-top: 1px solid var(--line);
+}
+
+.factIcon {
+  width: 2.2rem;
+  height: 2.2rem;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+
+.factLabel {
+  font-size: 0.78rem;
+  font-weight: 650;
+  color: var(--ink-3);
+}
+
+.factValue {
+  margin-top: 0.1rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+.actions {
+  width: 100%;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.detailBody {
+  margin-top: clamp(2.5rem, 5vw, 3.75rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: start;
+}
+
+.prose {
+  display: grid;
+  gap: 1rem;
+}
+
+.prose p {
+  color: var(--ink-2);
+  font-size: 1.02rem;
+  line-height: 1.8;
+  white-space: pre-line;
+}
+
+.aside {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.aside > div {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.highlights {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.highlights li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+.highlights svg {
+  flex: none;
+  margin-top: 0.2rem;
+  color: var(--accent);
+}
+
+.details {
+  display: grid;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.details > div {
+  display: grid;
+  grid-template-columns: minmax(7rem, 0.4fr) 1fr;
+  gap: 1rem;
+  padding: 0.85rem 1.1rem;
+}
+
+.details > div + div {
+  border-top: 1px solid var(--line);
+}
+
+.details dt {
+  color: var(--ink-3);
+  font-size: 0.9rem;
+}
+
+.details dd {
+  color: var(--ink);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  white-space: pre-line;
+}
+
+.details a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------- Gallery ---------- */
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.1rem 0.85rem;
+  list-style: none;
+}
+
+.galleryFigure {
+  display: grid;
+  gap: 0.5rem;
+  align-content: start;
+}
+
+.galleryItem {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #efe8dd;
+  cursor: zoom-in;
+}
+
+.galleryItem img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s var(--ease-out);
+}
+
+.galleryItem:hover img {
+  transform: scale(1.05);
+}
+
+.galleryItem:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.galleryCaption {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background: rgba(14, 10, 8, 0.94);
+  color: #fff;
+}
+
+.lightboxTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1rem;
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.lightboxStage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 0;
+  padding: 0 4rem;
+}
+
+.lightboxStage img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
+.lightboxLabel {
+  font-weight: 650;
+}
+
+.lightboxCaption {
+  max-width: 70ch;
+  margin: 0 auto;
+  line-height: 1.6;
+  min-height: 3.25rem;
+  padding: 0.9rem 1rem 1.25rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.lightboxButton {
+  width: 2.75rem;
+  height: 2.75rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  transition: background 0.15s ease;
+}
+
+.lightboxButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.lightboxPrev,
+.lightboxNext {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lightboxPrev {
+  left: 0.75rem;
+}
+
+.lightboxNext {
+  right: 0.75rem;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 900px) {
+  .featured,
+  .detailHero,
+  .detailBody {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .emptyUpcoming {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+
+  .gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lightboxStage {
+    padding: 0 0.5rem;
+  }
+
+  .lightboxPrev,
+  .lightboxNext {
+    top: auto;
+    bottom: -3.75rem;
+    transform: none;
+  }
+
+  .details > div {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .liveDot {
+    animation: none;
+  }
+
+  .featured:hover .featuredMedia img,
+  .galleryItem:hover img {
+    transform: none;
+  }
+}

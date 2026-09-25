@@ -88,3 +88,132 @@
   }
 }
 
+
+/* ---------- Event albums (photos uploaded from the staff console) ---------- */
+
+.gallery-container {
+  /* Tokens the shared event photo grid and lightbox read (Events.module.css) */
+  --ink: #1f1a17;
+  --ink-2: #544b44;
+  --ink-3: #7d7269;
+  --line: #ebe5dc;
+  --accent: #b85c1e;
+  --accent-ink: #8f4410;
+}
+
+.albums {
+  display: grid;
+  gap: clamp(2.5rem, 6vw, 4rem);
+}
+
+.album {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.albums + .album {
+  margin-top: clamp(2.5rem, 6vw, 4rem);
+}
+
+.albumHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.albumTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 2.6vw, 1.9rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.albumTitle:lang(kn) {
+  line-height: 1.4;
+}
+
+.albumMeta {
+  margin-top: 0.35rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.9rem;
+  color: var(--ink-3);
+}
+
+.albumMeta svg {
+  color: var(--accent);
+}
+
+.albumLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.92rem;
+  font-weight: 650;
+  color: var(--accent-ink);
+}
+
+.albumLink:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.loadError {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1rem 1.2rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--ink-2);
+}
+
+.retry {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 650;
+  color: var(--accent-ink);
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #efe9e0 0%, #f7f3ed 50%, #efe9e0 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+  border-radius: 12px;
+}
+
+.skeletonTitle {
+  width: min(320px, 60%);
+  height: 1.8rem;
+}
+
+.skeletonPhoto {
+  aspect-ratio: 4 / 3;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}

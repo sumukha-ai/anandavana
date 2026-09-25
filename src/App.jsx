@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Events from "./pages/Events";
+import EventDetailPage from "./pages/EventDetailPage";
 import Gallery from "./pages/Gallery";
 import GuruParampare from "./pages/GuruParampare";
 import Institutions from "./pages/Institutions";
@@ -18,6 +19,9 @@ import CheckoutPage from "./pages/shop/CheckoutPage";
 import OrderConfirmedPage from "./pages/shop/OrderConfirmedPage";
 import OrdersPage from "./pages/shop/OrdersPage";
 import ReceiptPage from "./pages/shop/ReceiptPage";
+import DonatePage from "./pages/donate/DonatePage";
+import DonationReceiptPage from "./pages/donate/DonationReceiptPage";
+import MyDonationsPage from "./pages/donate/MyDonationsPage";
 import Publications from "./pages/Publications";
 import SadguruVamshaVruksha from "./pages/SadguruVamshaVruksha/SadguruVamshaVruksha";
 import Login from "./pages/Login";
@@ -53,12 +57,15 @@ function AppLayout() {
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
           <Route path="events" element={<Events />} />
+          <Route path="events/:eventSlug" element={<EventDetailPage />} />
           <Route path="gallery" element={<Gallery />} />
           <Route path="guru-parampare" element={<GuruParampare />} />
           <Route path="sadguru-vamsha-vruksha" element={<SadguruVamshaVruksha />} />
           <Route path="institutions" element={<Institutions />} />
           <Route path="seva-booking" element={<SevaBooking />} />
           <Route path="seva/:sevaId" element={<SevaDisplayPage />} />
+          <Route path="donate" element={<DonatePage />} />
+          <Route path="donate/receipt/:orderId" element={<DonationReceiptPage />} />
           <Route path="publications" element={<Publications />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
@@ -67,9 +74,10 @@ function AppLayout() {
           <Route element={<ProtectedRoute allowedRoles={USER_ROLES} />}>
             <Route path="dashboard" element={<Dashboard section="overview" />} />
             <Route path="dashboard/profile" element={<Dashboard section="profile" />} />
-            <Route path="dashboard/book-seva" element={<SevaBooking />} />
+            <Route path="dashboard/book-seva" element={<SevaBooking inAccount />} />
             <Route path="dashboard/bookings" element={<OrdersPage />} />
             <Route path="dashboard/bookings/:bookingId" element={<ReceiptPage />} />
+            <Route path="dashboard/donations" element={<MyDonationsPage />} />
             <Route path="checkout/confirmed" element={<OrderConfirmedPage />} />
             <Route path="checkout/:sevaId" element={<CheckoutPage />} />
           </Route>
@@ -84,6 +92,15 @@ function AppLayout() {
             <Route path="admin/calendar/:bookingDate" element={<RolePortal role="admin" section="calendar-detail" />} />
             <Route path="admin/users" element={<RolePortal role="admin" section="users" />} />
             <Route path="admin/lookups" element={<RolePortal role="admin" section="lookups" />} />
+            <Route path="admin/events" element={<RolePortal role="admin" section="events" />} />
+            <Route path="admin/events/new" element={<RolePortal role="admin" section="event-editor" />} />
+            <Route path="admin/events/:eventId" element={<RolePortal role="admin" section="event-editor" />} />
+            <Route path="admin/gallery" element={<RolePortal role="admin" section="gallery" />} />
+            <Route path="admin/gallery/:eventId" element={<RolePortal role="admin" section="gallery-event" />} />
+            <Route path="admin/finance" element={<RolePortal role="admin" section="finance" />} />
+            <Route path="admin/finance/seva/new" element={<RolePortal role="admin" section="finance-seva-entry" />} />
+            <Route path="admin/finance/donation/new" element={<RolePortal role="admin" section="finance-donation-entry" />} />
+            <Route path="admin/finance/causes" element={<RolePortal role="admin" section="finance-causes" />} />
           </Route>
           <Route element={<ProtectedRoute allowedRoles={["admin", "manager"]} />}>
             <Route path="manager" element={<RolePortal role="manager" section="overview" />} />
@@ -92,6 +109,11 @@ function AppLayout() {
             <Route path="manager/calendar" element={<RolePortal role="manager" section="calendar" />} />
             <Route path="manager/calendar/:bookingDate" element={<RolePortal role="manager" section="calendar-detail" />} />
             <Route path="manager/users" element={<RolePortal role="manager" section="users" />} />
+            <Route path="manager/events" element={<RolePortal role="manager" section="events" />} />
+            <Route path="manager/events/new" element={<RolePortal role="manager" section="event-editor" />} />
+            <Route path="manager/events/:eventId" element={<RolePortal role="manager" section="event-editor" />} />
+            <Route path="manager/gallery" element={<RolePortal role="manager" section="gallery" />} />
+            <Route path="manager/gallery/:eventId" element={<RolePortal role="manager" section="gallery-event" />} />
           </Route>
           <Route element={<ProtectedRoute allowedRoles={["admin", "manager", "priest"]} />}>
             <Route path="priest" element={<RolePortal role="priest" section="overview" />} />

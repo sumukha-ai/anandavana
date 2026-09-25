@@ -37,18 +37,25 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });
 
+// Fired when the server rejects a stored token; AuthProvider listens and signs the user out
+export const SESSION_EXPIRED_EVENT = "agadi:session-expired";
+
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (!error.response) {
-      return Promise.reject(
-        new Error("We could not reach the Samsthana server. Please check your internet connection and try again.")
-      );
+      const networkError = new Error("We could not reach the Samsthana server. Please check your internet connection and try again.");
+      networkError.code = "network";
+      return Promise.reject(networkError);
     }
-    const payload = error.response.data;
-    return Promise.reject(
-      new Error(payload?.error || payload?.message || "Something went wrong. Please try again in a moment.")
-    );
+    const { status, data: payload } = error.response;
+    const sentToken = Boolean(error.config?.headers?.Authorization);
+    if (status === 401 && sentToken) {
+      window.dispatchEvent(new CustomEvent(SESSION_EXPIRED_EVENT));
+    }
+    const apiError = new Error(payload?.error || payload?.message || "Something went wrong. Please try again in a moment.");
+    apiError.status = status;
+    return Promise.reject(apiError);
   }
 );
 

@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { CalendarDays, Loader2, Receipt, RotateCw, ShoppingBag, UserRound } from "lucide-react";
+import { CalendarDays, CreditCard, Loader2, Receipt, RotateCw, ShoppingBag, UserRound } from "lucide-react";
 import { useAuth } from "../../auth/AuthContext";
 import { useI18n } from "../../i18n/useI18n";
 import shop from "./Shop.module.css";
@@ -38,7 +38,7 @@ export default function OrdersPage() {
             <h1 className={shop.pageTitle}>{t("ordersTitle")}</h1>
             <p className={shop.pageIntro}>{t("ordersIntro")}</p>
           </div>
-          <Link to={`/${lang}/seva-booking`} className={shop.btnPrimary}>
+          <Link to={`/${lang}/dashboard/book-seva`} className={shop.btnPrimary}>
             {t("bookAnother")}
           </Link>
         </header>
@@ -76,7 +76,7 @@ export default function OrdersPage() {
             <p className={shop.stateTitle}>{bookings.length ? t("ordersEmptyFiltered") : t("ordersEmptyTitle")}</p>
             {!bookings.length ? <p className={shop.stateBody}>{t("ordersEmptyBody")}</p> : null}
             <div className={shop.stateActions}>
-              <Link to={`/${lang}/seva-booking`} className={shop.btnPrimary}>
+              <Link to={`/${lang}/dashboard/book-seva`} className={shop.btnPrimary}>
                 {t("browseSevas")}
               </Link>
             </div>
@@ -87,6 +87,7 @@ export default function OrdersPage() {
           <ul className={styles.orderList}>
             {list.map((booking) => {
               const sevaId = booking.seva?.id || booking.seva_id;
+              const unpaidOnline = booking.channel === "online" && booking.payment_status !== "paid" && booking.payment_order_id;
               return (
                 <li key={booking.id} className={`${shop.panel} ${styles.order}`}>
                   <img className={styles.orderThumb} src={sevaImage({ id: sevaId, ...booking.seva })} alt="" width="120" height="90" loading="lazy" />
@@ -121,6 +122,16 @@ export default function OrdersPage() {
                   <div className={styles.orderSide}>
                     <Price amount={booking.seva?.amount} t={t} />
                     <div className={styles.orderActions}>
+                      {unpaidOnline ? (
+                        <Link
+                          to={`/${lang}/checkout/confirmed?order_id=${encodeURIComponent(booking.payment_order_id)}`}
+                          state={{ reference: booking.payment_order_id, outcome: "open" }}
+                          className={shop.btnPrimary}
+                        >
+                          <CreditCard size={16} aria-hidden="true" />
+                          {t("payNow")}
+                        </Link>
+                      ) : null}
                       <Link to={`/${lang}/dashboard/bookings/${booking.id}`} className={shop.btnSecondary}>
                         <Receipt size={16} aria-hidden="true" />
                         {t("viewReceipt")}

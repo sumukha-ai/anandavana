@@ -6,6 +6,14 @@ import { normalizeLang } from "../i18n/config";
 import BookingsPage from "./rolePortal/BookingsPage";
 import CalendarPage from "./rolePortal/CalendarPage";
 import CalendarDayDetailsPage from "./rolePortal/CalendarDayDetailsPage";
+import EventEditorPage from "./rolePortal/EventEditorPage";
+import EventsPage from "./rolePortal/EventsPage";
+import DonationFundsPage from "./rolePortal/finance/DonationFundsPage";
+import FinancePage from "./rolePortal/finance/FinancePage";
+import RecordDonationPage from "./rolePortal/finance/RecordDonationPage";
+import SevaEntryPage from "./rolePortal/finance/SevaEntryPage";
+import GalleryEventPage from "./rolePortal/GalleryEventPage";
+import GalleryPage from "./rolePortal/GalleryPage";
 import LookupsPage from "./rolePortal/LookupsPage";
 import OverviewPage from "./rolePortal/OverviewPage";
 import RoleShell from "./rolePortal/RoleShell";
@@ -13,7 +21,7 @@ import SevaCatalogPage from "./rolePortal/SevaCatalogPage";
 import SevaEditorPage from "./rolePortal/SevaEditorPage";
 import StaffPage from "./rolePortal/StaffPage";
 import UsersPage from "./rolePortal/UsersPage";
-import { getMenuItems, sectionPath, shortDate } from "./rolePortal/rolePortalConfig";
+import { getMenuItems, sectionMeta, sectionPath, shortDate } from "./rolePortal/rolePortalConfig";
 
 const emptyStaff = { username: "", email: "", password: "", role: "" };
 const emptySeva = {
@@ -70,7 +78,7 @@ export default function RolePortal({ role, section = "overview" }) {
   const { token, user } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const { lang: rawLang, sevaId, bookingDate } = useParams();
+  const { lang: rawLang, sevaId, bookingDate, eventId } = useParams();
   const lang = normalizeLang(rawLang);
   const [users, setUsers] = useState([]);
   const [sevas, setSevas] = useState([]);
@@ -86,12 +94,15 @@ export default function RolePortal({ role, section = "overview" }) {
   const [saving, setSaving] = useState(false);
   const [sevaMissing, setSevaMissing] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [eventTitle, setEventTitle] = useState("");
   const { toasts, notify, dismiss } = useToasts();
 
   const canManage = role === "admin";
   const canSeeUsers = role === "admin" || role === "manager";
+  const canEditEvents = role === "admin" || role === "manager";
+  const canSeeFinance = role === "admin";
   const allowedSections = getMenuItems(role);
-  const virtualSections = ["calendar-detail"];
+  const virtualSections = ["calendar-detail", "event-editor", "gallery-event", "finance-seva-entry", "finance-donation-entry", "finance-causes"];
   const activeSection = allowedSections.includes(section) || virtualSections.includes(section) ? section : "overview";
 
   const bookingQuery = useMemo(() => {
@@ -315,6 +326,36 @@ export default function RolePortal({ role, section = "overview" }) {
         />
       );
     }
+    if (activeSection === "events" && canEditEvents) {
+      return <EventsPage lang={lang} role={role} token={token} notify={notify} />;
+    }
+    if (activeSection === "event-editor" && canEditEvents) {
+      return (
+        <EventEditorPage
+          key={eventId || "new-event"}
+          lang={lang}
+          role={role}
+          token={token}
+          eventId={eventId}
+          sevas={sevas}
+          notify={notify}
+          onTitle={setEventTitle}
+        />
+      );
+    }
+    if (activeSection === "gallery" && canEditEvents) {
+      return <GalleryPage lang={lang} role={role} token={token} notify={notify} />;
+    }
+    if (activeSection === "gallery-event" && canEditEvents) {
+      return <GalleryEventPage key={eventId} lang={lang} role={role} token={token} eventId={eventId} notify={notify} onTitle={setEventTitle} />;
+    }
+    if (canSeeFinance) {
+      const financeProps = { lang, role, token, notify };
+      if (activeSection === "finance") return <FinancePage {...financeProps} />;
+      if (activeSection === "finance-seva-entry") return <SevaEntryPage {...financeProps} sevas={sevas} lookups={lookups} loaded={loaded} />;
+      if (activeSection === "finance-donation-entry") return <RecordDonationPage {...financeProps} />;
+      if (activeSection === "finance-causes") return <DonationFundsPage {...financeProps} />;
+    }
     if (activeSection === "sevas") {
       return (
         <SevaCatalogPage
@@ -383,6 +424,12 @@ export default function RolePortal({ role, section = "overview" }) {
     crumb = { parent: "Seva calendar", parentTo: sectionPath(lang, role, "calendar"), label: shortDate(bookingDate, { day: "numeric", month: "short", year: "numeric" }) };
   } else if (activeSection === "seva-editor") {
     crumb = { parent: "Seva catalog", parentTo: sectionPath(lang, role, "sevas"), label: sevaId ? sevaForm.name || "Edit seva" : "New seva" };
+  } else if (activeSection === "event-editor") {
+    crumb = { parent: "Events", parentTo: sectionPath(lang, role, "events"), label: eventTitle || (eventId ? "Edit event" : "New event") };
+  } else if (["finance-seva-entry", "finance-donation-entry", "finance-causes"].includes(activeSection)) {
+    crumb = { parent: "Finance", parentTo: sectionPath(lang, role, "finance"), label: sectionMeta[activeSection].label };
+  } else if (activeSection === "gallery-event") {
+    crumb = { parent: "Gallery", parentTo: sectionPath(lang, role, "gallery"), label: eventTitle || "Event photos" };
   }
 
   return (

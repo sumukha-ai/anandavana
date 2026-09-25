@@ -13,10 +13,11 @@ import {
 } from "lucide-react";
 import { Link, Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 import { apiRequest } from "../api/client";
-import { getRoleHomePath } from "../auth/access";
+import { getPostLoginPath } from "../auth/access";
 import { useAuth } from "../auth/AuthContext";
 import { normalizeLang } from "../i18n/config";
-import styles from "./Login.module.css";
+import AuthShell from "./auth/AuthShell";
+import styles from "./auth/Auth.module.css";
 
 export default function Register() {
   const { register, isAuthenticated, user } = useAuth();
@@ -46,7 +47,7 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const redirectTo = location.state?.from?.pathname || getRoleHomePath(user?.role, lang);
+  const from = location.state?.from;
 
   useEffect(() => {
     let active = true;
@@ -63,7 +64,7 @@ export default function Register() {
   }, [lang]);
 
   if (isAuthenticated) {
-    return <Navigate to={redirectTo} replace />;
+    return <Navigate to={getPostLoginPath(user?.role, lang, from)} replace />;
   }
 
   const handleChange = (event) => {
@@ -110,7 +111,7 @@ export default function Register() {
         return;
       }
 
-      navigate(getRoleHomePath(nextAuth.user?.role, lang), { replace: true });
+      navigate(getPostLoginPath(nextAuth.user?.role, lang, from), { replace: true });
     } catch (err) {
       setError(err.message || "Unable to register");
     } finally {
@@ -119,18 +120,11 @@ export default function Register() {
   };
 
   return (
-    <section className={styles.loginPage}>
-      <div className={styles.loginPanel}>
-        <div className={styles.copyBlock}>
-          <h1>Register</h1>
-          <p>Create your bhakta account, verify your email, and save the profile details needed for seva bookings.</p>
-          {/* <div className={styles.promiseList} aria-label="Registration highlights">
-            <span><BadgeCheck size={16} aria-hidden="true" /> Email OTP verification</span>
-            <span><Sparkles size={16} aria-hidden="true" /> Self profile created instantly</span>
-            <span><Fingerprint size={16} aria-hidden="true" /> JWT includes role and user id</span>
-          </div> */}
-        </div>
-
+    <AuthShell
+      wide
+      title="Register"
+      lead="Create your bhakta account, verify your email, and save the profile details needed for seva bookings."
+    >
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.fieldGrid}>
             <label className={styles.field}>
@@ -293,10 +287,9 @@ export default function Register() {
           </button>
 
           <p className={styles.switchText}>
-            Already have an account? <Link to={`/${lang}/login`}>Sign in</Link>
+            Already have an account? <Link to={`/${lang}/login`} state={from ? { from } : undefined}>Sign in</Link>
           </p>
         </form>
-      </div>
-    </section>
+    </AuthShell>
   );
 }

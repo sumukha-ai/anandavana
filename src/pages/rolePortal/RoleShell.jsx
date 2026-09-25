@@ -164,6 +164,16 @@ export default function RoleShell({ role, lang, section, sevas = [], loading, cr
         run: () => navigate(`/${lang}/${role}/seva-editor`),
       });
     }
+    if (role === "admin" || role === "manager") {
+      list.push({
+        id: "action-add-event",
+        group: "Actions",
+        label: "Add an event",
+        keywords: "create new festival utsava",
+        icon: Plus,
+        run: () => navigate(`/${lang}/${role}/events/new`),
+      });
+    }
     list.push(
       {
         id: "action-theme",

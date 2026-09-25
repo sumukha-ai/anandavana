@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { CalendarCheck, LayoutGrid, ShoppingBag, UsersRound } from "lucide-react";
+import { CalendarCheck, HandHeart, LayoutGrid, ShoppingBag, UsersRound } from "lucide-react";
 import { useAuth } from "../../auth/AuthContext";
 import { useI18n } from "../../i18n/useI18n";
 import shop from "./Shop.module.css";
@@ -33,6 +33,7 @@ export default function AccountLayout({ crumb, children }) {
     { to: `/${lang}/dashboard`, label: t("navOverview"), icon: LayoutGrid, end: true },
     { to: `/${lang}/dashboard/profile`, label: t("navProfile"), icon: UsersRound },
     { to: `/${lang}/dashboard/bookings`, label: t("navBookings"), icon: CalendarCheck },
+    { to: `/${lang}/dashboard/donations`, label: t("navDonations"), icon: HandHeart },
     { to: `/${lang}/dashboard/book-seva`, label: t("navBook"), icon: ShoppingBag },
   ];
 

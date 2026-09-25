@@ -187,3 +187,10 @@
     flex: 0 0 auto;
   }
 }
+
+/* Inside the account shell the column is narrower: two cards a row until the sidebar folds away */
+@media (min-width: 601px) and (max-width: 1240px) {
+  .accountGrid.accountGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

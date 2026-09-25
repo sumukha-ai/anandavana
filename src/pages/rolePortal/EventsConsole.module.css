@@ -1,0 +1,272 @@
+/* Events list and editor additions. Uses the console tokens defined on .console in Console.module.css. */
+
+.rowActions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.25rem;
+}
+
+.dangerIcon:hover {
+  background: var(--c-danger-soft);
+  color: var(--c-danger);
+}
+
+/* ---------- Repeatable rows (highlights, more details) ---------- */
+
+.rows {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.rowIndex {
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--c-text-3);
+  text-align: center;
+}
+
+.detailRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 0.5rem;
+  padding: 0.65rem;
+  border: 1px solid var(--c-border);
+  border-radius: 10px;
+  background: var(--c-surface-2);
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 0.5rem;
+}
+
+.addRow {
+  justify-self: start;
+}
+
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* ---------- Photo meter (N of 10) ---------- */
+
+.meter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.meterTrack {
+  width: 4.5rem;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--c-hover);
+  box-shadow: inset 0 0 0 1px var(--c-border);
+  overflow: hidden;
+}
+
+.meterFill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--c-accent);
+}
+
+.meterFull {
+  background: var(--c-success);
+}
+
+.meterText {
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--c-text-2);
+}
+
+.capacity {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--c-border);
+  border-radius: 10px;
+  background: var(--c-surface);
+  font-size: 0.85rem;
+  color: var(--c-text-2);
+}
+
+.capacity strong {
+  color: var(--c-text);
+}
+
+/* ---------- Photo manager ---------- */
+
+.photoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  list-style: none;
+}
+
+.photoCard {
+  display: grid;
+  align-content: start;
+  gap: 0.6rem;
+  padding: 0.6rem;
+  border: 1px solid var(--c-border);
+  border-radius: 10px;
+  background: var(--c-surface-2);
+}
+
+.photoMedia {
+  position: relative;
+}
+
+.photoMedia img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 7px;
+  background: var(--c-hover);
+}
+
+.photoIndex {
+  position: absolute;
+  top: 0.4rem;
+  left: 0.4rem;
+  min-width: 1.6rem;
+  height: 1.6rem;
+  display: grid;
+  place-items: center;
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  background: rgba(24, 24, 27, 0.72);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.photoFields {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.photoFields textarea {
+  min-height: 3.25rem;
+  font-size: 0.8rem;
+  resize: vertical;
+}
+
+.photoActions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-height: 2.125rem;
+}
+
+.photoOrder {
+  display: inline-flex;
+  gap: 0.15rem;
+}
+
+.galleryRemove {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  width: 1.75rem;
+  height: 1.75rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(24, 24, 27, 0.72);
+  color: #fff;
+  transition: background-color 0.15s ease;
+}
+
+.galleryRemove:hover {
+  background: var(--c-danger);
+}
+
+.uploadBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-top: 0.25rem;
+  font-size: 0.85rem;
+  color: var(--c-text-2);
+}
+
+.fullNote {
+  padding: 0.9rem 1rem;
+  border-radius: 8px;
+  background: var(--c-success-soft);
+  color: var(--c-success);
+  font-size: 0.85rem;
+  font-weight: 550;
+}
+
+.photoLink {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--c-text-2);
+}
+
+/* ---------- Preview ---------- */
+
+.previewDate {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--c-accent-text);
+}
+
+.previewMeta {
+  font-size: 0.76rem;
+  color: var(--c-text-3);
+}
+
+@media (max-width: 640px) {
+  .row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .rowIndex {
+    display: none;
+  }
+
+  .row input + input {
+    grid-column: 1;
+  }
+
+  .row button {
+    grid-row: 1;
+    grid-column: 2;
+  }
+
+  .detailGrid {
+    grid-template-columns: 1fr;
+  }
+}
