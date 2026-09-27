@@ -1,15 +1,16 @@
 import {
+  BookUser,
   CalendarCheck,
   CalendarDays,
   ClipboardList,
   HandCoins,
   HeartHandshake,
   Images,
+  Landmark,
   PartyPopper,
   Languages,
   LayoutDashboard,
   SquarePen,
-  UserRoundPlus,
   Users,
   Wallet,
 } from "lucide-react";
@@ -17,11 +18,11 @@ import {
 export const roleCopy = {
   admin: {
     title: "Admin workspace",
-    text: "Staff access, the seva catalog, bookings, the calendar, income and donations, accounts and Jyotisha references.",
+    text: "Staff access, the seva catalog, bookings, the calendar, income and donations, and accounts.",
   },
   manager: {
     title: "Manager workspace",
-    text: "Bookings, seva availability, user accounts and the daily schedule.",
+    text: "Bookings, seva availability, staff and the daily schedule.",
   },
   priest: {
     title: "Priest workspace",
@@ -31,8 +32,11 @@ export const roleCopy = {
 
 export const sectionMeta = {
   overview: { label: "Overview", text: "Today at a glance.", icon: LayoutDashboard, group: "Home" },
-  bookings: { label: "Booked sevas", text: "Bookings, payment status and income for the dates you choose.", icon: CalendarDays, group: "Operations" },
+  bookings: { label: "Seva Calendar", text: "The seva calendar, and who each seva is for on the days you choose.", icon: CalendarDays, group: "Operations" },
+  // Merged into "bookings"; kept for old links to /calendar
   calendar: { label: "Seva calendar", text: "Booked sevas by day. Open a date to see who each seva is for.", icon: CalendarCheck, group: "Operations" },
+  bhaktas: { label: "Bhaktas", text: "Every registered devotee. Search by name or phone, and open one to see their family, sevas and donations.", icon: BookUser, group: "Operations" },
+  "bhakta-detail": { label: "Bhakta", text: "Profile, family and the full history of sevas and donations.", icon: BookUser, group: "Operations" },
   "calendar-detail": { label: "Seva day", text: "Everything the priests need for each seva on this date.", icon: CalendarCheck, group: "Operations" },
   sevas: { label: "Seva catalog", text: "Every seva offered at the kshetra, as devotees see it.", icon: ClipboardList, group: "Catalog" },
   "seva-editor": { label: "Seva editor", text: "Add a seva or change its name, amount, description and online booking.", icon: SquarePen, group: "Catalog" },
@@ -45,18 +49,20 @@ export const sectionMeta = {
   "finance-seva-entry": { label: "Add seva entry", text: "A seva booked and paid for at the kshetra.", icon: CalendarDays, group: "Finance" },
   "finance-donation-entry": { label: "Add donation entry", text: "A donation received at the kshetra, with its receipt.", icon: HandCoins, group: "Finance" },
   "finance-causes": { label: "Donation causes", text: "The causes devotees can give to on the Donate page, with suggested amounts and optional targets.", icon: HeartHandshake, group: "Finance" },
-  users: { label: "User accounts", text: "Registered devotees and staff accounts.", icon: Users, group: "Access" },
-  staff: { label: "Staff logins", text: "Create sign-in accounts for managers and priests.", icon: UserRoundPlus, group: "Access" },
+  trust: { label: "Trust profile", text: "The trust's registration, contact and income-tax details printed on receipts, its trustees, and the yearly Form 10BD data.", icon: Landmark, group: "Access" },
+  "staff-new": { label: "Add staff", text: "Create a sign-in account for a manager or priest.", icon: Users, group: "Access" },
+  staff: { label: "Staffs", text: "Everyone who can sign in to this console: admins, managers and priests.", icon: Users, group: "Access" },
 };
 
 export function getMenuItems(role) {
+  // Overview is switched off for now, and the seva calendar lives on the booked sevas page
   if (role === "admin") {
-    return ["overview", "bookings", "calendar", "sevas", "seva-editor", "events", "gallery", "lookups", "finance", "users", "staff"];
+    return [/* "overview", */ "bookings", "bhaktas", "sevas", /* "seva-editor", */ "events", "gallery", /* "lookups", */ "finance", "trust", "staff"];
   }
   if (role === "manager") {
-    return ["overview", "bookings", "calendar", "sevas", "events", "gallery", "users"];
+    return [/* "overview", */ "bookings", "bhaktas", "sevas", "events", "gallery", "staff"];
   }
-  return ["overview", "bookings", "calendar", "sevas"];
+  return [/* "overview", */ "bookings", "sevas"];
 }
 
 export function getGroupedMenuItems(role) {
@@ -69,7 +75,9 @@ export function getGroupedMenuItems(role) {
 }
 
 export function sectionPath(lang, role, section) {
-  return section === "overview" ? `/${lang}/${role}` : `/${lang}/${role}/${section}`;
+  // With Overview off, the workspace root opens the booked sevas page
+  if (section === "overview") return `/${lang}/${role}/bookings`;
+  return `/${lang}/${role}/${section}`;
 }
 
 export function displayLookup(item, lang) {

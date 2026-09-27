@@ -1,0 +1,46 @@
+/* Bhakta directory additions. Uses the console tokens defined on .console in Console.module.css. */
+
+/* Family members are buttons that narrow the history to that person */
+.member {
+  width: 100%;
+  font: inherit;
+  text-align: left;
+  color: inherit;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--c-border);
+  cursor: pointer;
+}
+
+.member:hover {
+  background: var(--c-surface-2);
+}
+
+.memberActive,
+.memberActive:hover {
+  background: var(--c-accent-soft);
+}
+
+.historyTools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.personSelect {
+  width: auto;
+  min-width: 10rem;
+}
+
+.dayLink {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--c-border);
+  text-underline-offset: 2px;
+}
+
+.dayLink:hover {
+  color: var(--c-accent-text);
+  text-decoration-color: currentColor;
+}

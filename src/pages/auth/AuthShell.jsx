@@ -1,4 +1,3 @@
-import logoImg from "../../../assets/logo.png";
 import kshetraPortrait from "../../../assets/auth/kshetra-portrait.webp";
 import kshetraBand from "../../../assets/auth/kshetra-band.webp";
 import { useI18n } from "../../i18n/useI18n";
@@ -18,13 +17,8 @@ export default function AuthShell({ title, lead, notice, wide = false, children 
           </picture>
           <div className={styles.visualScrim} aria-hidden="true" />
           <div className={styles.visualCopy}>
-            <span className={styles.seal}>
-              <img src={logoImg} alt="" width="44" height="44" />
-            </span>
             <p className={styles.kshetra} lang="kn">{t("kshetra")}</p>
             <p className={styles.samsthana}>{t("samsthana")}</p>
-            <span className={styles.rule} aria-hidden="true" />
-            <p className={styles.panelLine}>{t("panelLine")}</p>
           </div>
         </aside>
 

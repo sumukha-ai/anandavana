@@ -1,96 +1,190 @@
-import { useMemo, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { ArrowDown, ArrowUp, CalendarDays, Download, IndianRupee, ListFilter, Trophy, X } from "lucide-react";
-import {
-  downloadCsv,
-  formatAmount,
-  isPaidStatus,
-  money,
-  relativeDay,
-  sectionMeta,
-  shortDate,
-  statusTone,
-} from "./rolePortalConfig";
-import { EmptyState, Kpis, Page, PageHeader, Panel, PaymentBadge, SearchInput, Segmented, SkeletonRows } from "./ui";
+import { CalendarDays, ChevronDown, Download, FileText, MapPin } from "lucide-react";
+import { dateKey, displayLookup, downloadCsv, parseDateKey, relativeDay, sectionMeta, shortDate, statusTone } from "./rolePortalConfig";
+import { EmptyState, Page, PageHeader, Panel, Segmented, SkeletonRows } from "./ui";
+import SevaCalendar from "./SevaCalendar";
 import { cx } from "./cx";
 import styles from "./Console.module.css";
 
-function buildSevaSummary(bookings) {
-  return Object.values(
-    bookings.reduce((summary, booking) => {
-      const key = booking.seva?.id || booking.seva?.name || "unknown";
-      if (!summary[key]) {
-        summary[key] = { id: key, name: booking.seva?.name || "Seva", count: 0, amount: Number(booking.seva?.amount || 0), expected: 0, paid: 0 };
-      }
-      const amount = Number(booking.seva?.amount || 0);
-      summary[key].count += 1;
-      summary[key].expected += amount;
-      if (isPaidStatus(booking.payment_status)) summary[key].paid += amount;
-      return summary;
-    }, {})
-  ).sort((a, b) => b.count - a.count);
+const WEEK_DAYS = 7;
+
+function addDays(key, amount) {
+  const date = parseDateKey(key);
+  return dateKey(new Date(date.getFullYear(), date.getMonth(), date.getDate() + amount));
 }
 
-export default function BookingsPage({ bookings, loaded, lang, role, filters, onFilterChange, onClearFilters }) {
-  const [query, setQuery] = useState("");
-  const [status, setStatus] = useState("all");
-  const [sortAsc, setSortAsc] = useState(true);
+function jyotisha(profile, lang) {
+  return {
+    rashi: displayLookup(profile.rashi, lang),
+    nakshatra: displayLookup(profile.nakshatra, lang),
+    gotra: lang === "kn" ? profile.gotra_kn || profile.gotra : profile.gotra,
+    charana: profile.charana,
+  };
+}
 
-  const counts = useMemo(
-    () => ({
-      all: bookings.length,
-      success: bookings.filter((booking) => statusTone(booking.payment_status) === "success").length,
-      warning: bookings.filter((booking) => statusTone(booking.payment_status) === "warning").length,
-      danger: bookings.filter((booking) => statusTone(booking.payment_status) === "danger").length,
-    }),
-    [bookings]
+function groupBySeva(bookings) {
+  const groups = bookings.reduce((acc, booking) => {
+    const name = booking.seva?.name || "Seva";
+    if (!acc[name]) acc[name] = { name, items: [] };
+    acc[name].items.push(booking);
+    return acc;
+  }, {});
+  return Object.values(groups).sort((a, b) => a.name.localeCompare(b.name));
+}
+
+function SevaGroup({ group, lang, showDate }) {
+  const [open, setOpen] = useState(true);
+  const [addressOpen, setAddressOpen] = useState(() => new Set());
+  const columns = showDate ? 9 : 8;
+  const bodyId = `seva-group-${group.name.replace(/\W+/g, "-")}`;
+
+  const toggleAddress = (id) =>
+    setAddressOpen((current) => {
+      const next = new Set(current);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+
+  return (
+    <div className={styles.sevaGroup}>
+      <button type="button" className={styles.collapseHead} onClick={() => setOpen((value) => !value)} aria-expanded={open} aria-controls={bodyId}>
+        <ChevronDown size={16} className={cx(styles.collapseChevron, open && styles.collapseChevronOpen)} aria-hidden="true" />
+        <span className={styles.panelTitle}>{group.name}</span>
+        <span className={styles.groupCount}>
+          {group.items.length}
+          <span>booked</span>
+        </span>
+      </button>
+      {open ? (
+        <div id={bodyId} className={styles.tableWrap}>
+          <table className={cx(styles.table, styles.tableStack)}>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                {showDate ? <th>Date</th> : null}
+                <th>Rashi</th>
+                <th>Nakshatra</th>
+                <th>Gotra</th>
+                <th>Charana</th>
+                <th>
+                  <span className={styles.srOnly}>Address</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {group.items.map((booking) => {
+                const profile = booking.bhakta_profile || {};
+                const details = jyotisha(profile, lang);
+                const showAddress = addressOpen.has(booking.id);
+                const addressId = `address-${booking.id}`;
+                return (
+                  <Fragment key={booking.id}>
+                    <tr className={cx(showAddress && styles.rowExpanded)}>
+                      <td>
+                        <strong className={styles.cellMain}>{profile.name || "Devotee"}</strong>
+                      </td>
+                      <td className={styles.nowrap} data-label="Phone">
+                        {profile.phone_number ? <a href={`tel:${profile.phone_number}`}>{profile.phone_number}</a> : "—"}
+                      </td>
+                      {showDate ? (
+                        <td className={styles.nowrap} data-label="Date">
+                          {shortDate(booking.seva_date, { weekday: "short", day: "numeric", month: "short" })}
+                        </td>
+                      ) : null}
+                      <td data-label="Rashi">{details.rashi || "—"}</td>
+                      <td data-label="Nakshatra">{details.nakshatra || "—"}</td>
+                      <td data-label="Gotra">{details.gotra || "—"}</td>
+                      <td data-label="Charana">{details.charana || "—"}</td>
+                      <td className={cx(styles.num, styles.nowrap)}>
+                        <button type="button" className={styles.addressToggle} onClick={() => toggleAddress(booking.id)} aria-expanded={showAddress} aria-controls={addressId}>
+                          <MapPin size={13} aria-hidden="true" />
+                          {showAddress ? "Hide address" : "View address"}
+                        </button>
+                      </td>
+                    </tr>
+                    {showAddress ? (
+                      <tr id={addressId} className={styles.addressRow}>
+                        <td colSpan={columns}>
+                          <span className={styles.addressLabel}>Address</span>
+                          <p className={styles.addressText}>{profile.address || "No address on file for this devotee."}</p>
+                        </td>
+                      </tr>
+                    ) : null}
+                  </Fragment>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      ) : null}
+    </div>
   );
+}
 
-  const visible = useMemo(() => {
-    const needle = query.trim().toLowerCase();
-    return bookings
-      .filter((booking) => status === "all" || statusTone(booking.payment_status) === status)
-      .filter((booking) => {
-        if (!needle) return true;
-        return [booking.seva?.name, booking.bhakta_profile?.name, booking.payment_order_id, booking.bhakta_profile?.phone_number]
-          .filter(Boolean)
-          .some((value) => String(value).toLowerCase().includes(needle));
-      })
-      .sort((a, b) => {
-        const left = a.seva_date || "9999";
-        const right = b.seva_date || "9999";
-        return sortAsc ? left.localeCompare(right) : right.localeCompare(left);
-      });
-  }, [bookings, query, sortAsc, status]);
+export default function BookingsPage({ bookings, loaded, lang, role }) {
+  const today = dateKey();
+  const [range, setRange] = useState("today");
+  const [custom, setCustom] = useState({ from: today, to: today });
 
-  const expected = bookings.reduce((sum, booking) => sum + Number(booking.seva?.amount || 0), 0);
-  const paid = bookings.reduce((sum, booking) => (isPaidStatus(booking.payment_status) ? sum + Number(booking.seva?.amount || 0) : sum), 0);
-  const summary = buildSevaSummary(bookings);
-  const top = summary[0];
-  const maxCount = Math.max(1, ...summary.map((item) => item.count));
-  const hasDateFilter = Boolean(filters.from_date || filters.to_date);
-  const isFiltered = hasDateFilter || query || status !== "all";
+  // Today, tomorrow, the next seven days, or a custom from–to range (a calendar click is a one-day range)
+  const [from, to] = useMemo(() => {
+    if (range === "tomorrow") return [addDays(today, 1), addDays(today, 1)];
+    if (range === "week") return [today, addDays(today, WEEK_DAYS - 1)];
+    if (range === "custom") return [custom.from, custom.to];
+    return [today, today];
+  }, [custom.from, custom.to, range, today]);
+  const singleDay = from === to;
 
-  const exportCsv = () => {
-    downloadCsv(`booked-sevas-${new Date().toISOString().slice(0, 10)}.csv`, [
-      ["Seva", "Devotee", "Phone", "Seva date", "Amount", "Payment status", "Booking reference", "Payment reference"],
-      ...visible.map((booking) => [
-        booking.seva?.name,
-        booking.bhakta_profile?.name,
-        booking.bhakta_profile?.phone_number,
-        booking.seva_date || "",
-        Number(booking.seva?.amount || 0),
-        booking.payment_status || "pending",
-        booking.payment_order_id,
-        booking.payment_reference,
-      ]),
-    ]);
+  // Failed or cancelled payments are not sevas to perform
+  const scheduled = useMemo(() => bookings.filter((booking) => statusTone(booking.payment_status) !== "danger"), [bookings]);
+
+  const visible = useMemo(
+    () =>
+      scheduled
+        .filter((booking) => booking.seva_date && booking.seva_date >= from && booking.seva_date <= to)
+        .sort((a, b) => a.seva_date.localeCompare(b.seva_date) || String(a.bhakta_profile?.name || "").localeCompare(String(b.bhakta_profile?.name || ""))),
+    [from, scheduled, to],
+  );
+  const groups = useMemo(() => groupBySeva(visible), [visible]);
+
+  const selectDay = (key) => {
+    if (key === today) setRange("today");
+    else if (key === addDays(today, 1)) setRange("tomorrow");
+    else setRange("custom");
+    setCustom({ from: key, to: key });
   };
 
-  const resetAll = () => {
-    setQuery("");
-    setStatus("all");
-    onClearFilters();
+  // Editing either end starts from the range on screen; the other end moves if they would cross
+  const changeRange = (event) => {
+    const { name, value } = event.target;
+    if (!value) return;
+    const next = { from, to, [name]: value };
+    if (next.from > next.to) {
+      if (name === "from") next.to = value;
+      else next.from = value;
+    }
+    setRange("custom");
+    setCustom(next);
+  };
+
+  const rangeTitle = singleDay
+    ? `${relativeDay(from) ? `${relativeDay(from)} · ` : ""}${shortDate(from, { weekday: "long", day: "numeric", month: "long", year: "numeric" })}`
+    : `${shortDate(from, { day: "numeric", month: "short" })} – ${shortDate(to, { day: "numeric", month: "short", year: "numeric" })}`;
+
+  const exportCsv = () => {
+    downloadCsv(`booked-sevas-${from}${singleDay ? "" : `-to-${to}`}.csv`, [
+      ["Seva", "Name", "Phone", "Seva date", "Rashi", "Nakshatra", "Gotra", "Charana", "Address"],
+      ...groups.flatMap((group) =>
+        group.items.map((booking) => {
+          const details = jyotisha(booking.bhakta_profile || {}, lang);
+          const profile = booking.bhakta_profile || {};
+          return [group.name, profile.name, profile.phone_number, booking.seva_date, details.rashi, details.nakshatra, details.gotra, details.charana, profile.address];
+        }),
+      ),
+    ]);
   };
 
   return (
@@ -106,168 +200,53 @@ export default function BookingsPage({ bookings, loaded, lang, role, filters, on
         }
       />
 
-      {loaded ? (
-        <Kpis
-          items={[
-            { label: "Bookings", value: bookings.length, sub: hasDateFilter ? "In the selected dates" : "All loaded bookings", icon: CalendarDays },
-            { label: "Expected", value: money(expected), sub: "At current seva amounts", icon: IndianRupee },
-            {
-              label: "Received",
-              value: money(paid),
-              sub: counts.warning ? `${counts.warning} awaiting payment` : "Nothing outstanding",
-              warn: counts.warning > 0,
-              icon: IndianRupee,
-            },
-            { label: "Most booked", value: top?.name || "None yet", text: true, sub: top ? `${top.count} ${top.count === 1 ? "booking" : "bookings"}` : "No bookings in range", icon: Trophy },
-          ]}
-        />
-      ) : null}
+      <SevaCalendar bookings={scheduled} loaded={loaded} selected={singleDay ? from : null} onSelect={selectDay} />
 
       <Panel>
         <div className={styles.toolbar}>
-          <SearchInput value={query} onChange={setQuery} placeholder="Search seva, devotee or reference" />
-          <div className={styles.dateRange}>
-            <input className={styles.input} type="date" name="from_date" value={filters.from_date} data-empty={!filters.from_date} onChange={onFilterChange} aria-label="From date" max={filters.to_date || undefined} />
-            <span>to</span>
-            <input className={styles.input} type="date" name="to_date" value={filters.to_date} data-empty={!filters.to_date} onChange={onFilterChange} aria-label="To date" min={filters.from_date || undefined} />
-          </div>
+          <h2 className={styles.panelTitle}>
+            {rangeTitle}
+            {loaded ? (
+              <span className={styles.panelMeta}>
+                {visible.length} {visible.length === 1 ? "booking" : "bookings"}
+              </span>
+            ) : null}
+          </h2>
           <div className={styles.toolbarEnd}>
+            {singleDay ? (
+              <NavLink to={`/${lang}/${role}/calendar/${from}`} className={cx(styles.btn, styles.btnGhost, styles.btnSm)}>
+                <FileText size={14} aria-hidden="true" />
+                Day sheet
+              </NavLink>
+            ) : null}
+            <div className={styles.dateRange}>
+              <input className={styles.input} type="date" name="from" value={from} onChange={changeRange} aria-label="From date" />
+              <span>to</span>
+              <input className={styles.input} type="date" name="to" value={to} onChange={changeRange} aria-label="To date" />
+            </div>
             <Segmented
-              label="Payment status"
-              value={status}
-              onChange={setStatus}
+              label="Days"
+              value={range}
+              onChange={setRange}
               options={[
-                { value: "all", label: "All", count: counts.all },
-                { value: "success", label: "Paid", count: counts.success },
-                { value: "warning", label: "Pending", count: counts.warning },
-                { value: "danger", label: "Failed", count: counts.danger },
+                { value: "today", label: "Today" },
+                { value: "tomorrow", label: "Tomorrow" },
+                { value: "week", label: "Week" },
               ]}
             />
           </div>
         </div>
 
         {!loaded ? (
-          <SkeletonRows rows={7} columns={[30, 18, 14, 10, 10, 14]} />
-        ) : visible.length ? (
-          <>
-            <div className={styles.tableWrap}>
-              <table className={cx(styles.table, styles.tableStack)}>
-                <thead>
-                  <tr>
-                    <th>Seva</th>
-                    <th>Devotee</th>
-                    <th aria-sort={sortAsc ? "ascending" : "descending"}>
-                      <button type="button" className={styles.thButton} onClick={() => setSortAsc((value) => !value)}>
-                        Seva date
-                        {sortAsc ? <ArrowUp size={13} aria-hidden="true" /> : <ArrowDown size={13} aria-hidden="true" />}
-                      </button>
-                    </th>
-                    <th className={styles.num}>Amount</th>
-                    <th>Payment</th>
-                    <th>Reference</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {visible.map((booking) => (
-                    <tr key={booking.id}>
-                      <td>
-                        <strong className={styles.cellMain}>{booking.seva?.name || "Seva"}</strong>
-                      </td>
-                      <td data-label="For">
-                        <div className={styles.cellStack}>
-                          <span className={styles.cellPrimary}>{booking.bhakta_profile?.name || "—"}</span>
-                          {booking.bhakta_profile?.phone_number ? <span>{booking.bhakta_profile.phone_number}</span> : null}
-                        </div>
-                      </td>
-                      <td className={styles.nowrap} data-label="Date">
-                        {booking.seva_date ? (
-                          <NavLink to={`/${lang}/${role}/calendar/${booking.seva_date}`} className={styles.cellStack}>
-                            <span className={styles.cellPrimary}>{shortDate(booking.seva_date, { day: "numeric", month: "short", year: "numeric" })}</span>
-                            {relativeDay(booking.seva_date) ? <span>{relativeDay(booking.seva_date)}</span> : null}
-                          </NavLink>
-                        ) : (
-                          <span className={styles.muted}>Unscheduled</span>
-                        )}
-                      </td>
-                      <td className={cx(styles.num, styles.nowrap)} data-label="Amount">{formatAmount(booking.seva?.amount)}</td>
-                      <td data-label="Payment">
-                        <PaymentBadge status={booking.payment_status} />
-                      </td>
-                      <td data-label="Ref">
-                        <span className={styles.mono}>{booking.payment_order_id || "—"}</span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <div className={styles.tableFoot}>
-              <span>
-                Showing {visible.length} of {bookings.length} {bookings.length === 1 ? "booking" : "bookings"}
-              </span>
-              {isFiltered ? (
-                <button type="button" className={cx(styles.btn, styles.btnGhost, styles.btnSm)} onClick={resetAll}>
-                  <X size={13} aria-hidden="true" />
-                  Clear filters
-                </button>
-              ) : null}
-            </div>
-          </>
-        ) : isFiltered ? (
+          <SkeletonRows rows={6} columns={[30, 16, 16, 16, 10]} />
+        ) : groups.length ? (
+          groups.map((group) => <SevaGroup key={group.name} group={group} lang={lang} showDate={!singleDay} />)
+        ) : (
           <EmptyState
-            icon={ListFilter}
-            title="No bookings match these filters"
-            text="Try a wider date range, another payment status or a shorter search."
-            action={
-              <button type="button" className={cx(styles.btn, styles.btnSecondary)} onClick={resetAll}>
-                Clear filters
-              </button>
-            }
+            icon={CalendarDays}
+            title={singleDay ? "No sevas booked for this day" : range === "week" ? "No sevas booked in the next 7 days" : "No sevas booked in these dates"}
+            text="Pick another day on the calendar, change the dates, or switch between Today, Tomorrow and Week."
           />
-        ) : (
-          <EmptyState icon={CalendarDays} title="No bookings yet" text="When devotees book sevas online, each booking appears here with its payment status." />
-        )}
-      </Panel>
-
-      <Panel title="By seva" meta={loaded ? `${summary.length} ${summary.length === 1 ? "seva" : "sevas"}` : null}>
-        {!loaded ? (
-          <SkeletonRows rows={4} columns={[30, 30, 12, 12]} />
-        ) : summary.length ? (
-          <div className={styles.tableWrap}>
-            <table className={cx(styles.table, styles.tableStack)}>
-              <thead>
-                <tr>
-                  <th>Seva</th>
-                  <th className={styles.colShare}>Bookings</th>
-                  <th className={styles.num}>Each</th>
-                  <th className={styles.num}>Expected</th>
-                  <th className={styles.num}>Received</th>
-                </tr>
-              </thead>
-              <tbody>
-                {summary.map((item) => (
-                  <tr key={item.id}>
-                    <td>
-                      <strong className={styles.cellMain}>{item.name}</strong>
-                    </td>
-                    <td data-label="Bookings">
-                      <div className={styles.cellRow}>
-                        <span className={styles.countCell}>{item.count}</span>
-                        <span className={styles.shareBar} aria-hidden="true">
-                          <span style={{ width: `${(item.count / maxCount) * 100}%` }} />
-                        </span>
-                      </div>
-                    </td>
-                    <td className={cx(styles.num, styles.nowrap)} data-label="Each">{formatAmount(item.amount)}</td>
-                    <td className={cx(styles.num, styles.nowrap)} data-label="Expected">{money(item.expected)}</td>
-                    <td className={cx(styles.num, styles.nowrap)} data-label="Received">{money(item.paid)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          <EmptyState compact icon={IndianRupee} title="No income to show" text="Income per seva appears once there are bookings in this range." />
         )}
       </Panel>
     </Page>

@@ -1,107 +1,160 @@
-import { useState } from "react";
-import { BriefcaseBusiness, Eye, EyeOff, Flame, LoaderCircle, UserRoundPlus, UsersRound } from "lucide-react";
+import { useMemo, useState } from "react";
+import { NavLink } from "react-router-dom";
+import { ListFilter, LoaderCircle, ShieldCheck, UserRoundPlus, UsersRound } from "lucide-react";
 import { normalizeRole } from "../../auth/access";
-import { sectionMeta } from "./rolePortalConfig";
-import { Avatar, Badge, EmptyState, Field, FormSection, Page, PageHeader, Panel, SkeletonRows } from "./ui";
+import { sectionMeta, sectionPath } from "./rolePortalConfig";
+import { Avatar, Badge, EmptyState, Page, PageHeader, Panel, SearchInput, Segmented, SkeletonRows } from "./ui";
 import { cx } from "./cx";
 import styles from "./Console.module.css";
 
-const roles = [
-  { value: "priest", label: "Priest", text: "Sees booked sevas, the calendar and day sheets.", icon: Flame },
-  { value: "manager", label: "Manager", text: "Also reviews user accounts and payments.", icon: BriefcaseBusiness },
-];
+const roleLabel = { admin: "Admin", manager: "Manager", priest: "Priest" };
+// Accounts created before the flag existed have no is_active and count as enabled
+const isEnabled = (account) => account.is_active !== false;
 
-export default function StaffPage({ staffForm, onStaffChange, onCreateStaff, saving, users, loaded }) {
-  const [showPassword, setShowPassword] = useState(false);
-  const staff = users.filter((account) => ["admin", "manager", "priest"].includes(normalizeRole(account.role)));
-  const strength = staffForm.password.length;
+export default function StaffPage({ lang, role, users, loaded, canManage, currentUserId, updatingId, onToggleStatus }) {
+  const [query, setQuery] = useState("");
+  const [group, setGroup] = useState("all");
+
+  const counts = {
+    all: users.length,
+    admin: users.filter((account) => normalizeRole(account.role) === "admin").length,
+    manager: users.filter((account) => normalizeRole(account.role) === "manager").length,
+    priest: users.filter((account) => normalizeRole(account.role) === "priest").length,
+    disabled: users.filter((account) => !isEnabled(account)).length,
+  };
+
+  const visible = useMemo(() => {
+    const needle = query.trim().toLowerCase();
+    return users
+      .filter((account) => {
+        if (group === "all") return true;
+        if (group === "disabled") return !isEnabled(account);
+        return normalizeRole(account.role) === group;
+      })
+      .filter((account) => !needle || `${account.username} ${account.email}`.toLowerCase().includes(needle));
+  }, [group, query, users]);
+
+  const toggle = (account) => {
+    if (isEnabled(account) && !window.confirm(`Disable ${account.username || account.email}? They are signed out and cannot sign in until you enable the account again.`)) return;
+    onToggleStatus(account, !isEnabled(account));
+  };
 
   return (
     <Page>
-      <PageHeader title={sectionMeta.staff.label} description={sectionMeta.staff.text} />
+      <PageHeader
+        title={sectionMeta.staff.label}
+        description={sectionMeta.staff.text}
+        actions={
+          canManage ? (
+            <NavLink to={sectionPath(lang, role, "staff-new")} className={cx(styles.btn, styles.btnPrimary)}>
+              <UserRoundPlus size={15} aria-hidden="true" />
+              Add staff
+            </NavLink>
+          ) : null
+        }
+      />
 
-      <div className={styles.split}>
-        <Panel as="form" onSubmit={onCreateStaff}>
-          <FormSection title="Account" description="They sign in with this email and password.">
-            <Field label="Name">
-              <input className={styles.input} name="username" value={staffForm.username} onChange={onStaffChange} required autoComplete="off" placeholder="Full name" />
-            </Field>
-            <Field label="Email">
-              <input className={styles.input} type="email" name="email" value={staffForm.email} onChange={onStaffChange} required autoComplete="off" placeholder="name@example.org" />
-            </Field>
-            <Field
-              label="Temporary password"
-              wide
-              aside={strength ? (strength < 8 ? `${8 - strength} more characters` : "Long enough") : "At least 8 characters"}
-              hint="Share it with them in person and ask them to change it after signing in."
-            >
-              <span className={styles.inputAffix}>
-                <input
-                  className={cx(styles.input, styles.inputNoAffix)}
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  value={staffForm.password}
-                  onChange={onStaffChange}
-                  minLength={8}
-                  required
-                  autoComplete="new-password"
-                />
-                <button
-                  type="button"
-                  className={styles.affixButton}
-                  onClick={() => setShowPassword((value) => !value)}
-                  aria-label={showPassword ? "Hide password" : "Show password"}
-                >
-                  {showPassword ? <EyeOff size={15} aria-hidden="true" /> : <Eye size={15} aria-hidden="true" />}
-                </button>
-              </span>
-            </Field>
-          </FormSection>
-          <FormSection title="Role" description="What they can see and change in the console.">
-            <div className={cx(styles.choiceGrid, styles.fieldWide)} role="radiogroup" aria-label="Role">
-              {roles.map(({ value, label, text, icon: Icon }) => (
-                <label key={value} className={cx(styles.choice, staffForm.role === value && styles.choiceActive)}>
-                  <input type="radio" name="role" value={value} checked={staffForm.role === value} onChange={onStaffChange} required />
-                  <Icon size={17} aria-hidden="true" />
-                  <span className={styles.choiceText}>
-                    <strong>{label}</strong>
-                    <span>{text}</span>
-                  </span>
-                </label>
-              ))}
-            </div>
-          </FormSection>
-          <div className={styles.panelFoot}>
-            <button type="submit" className={cx(styles.btn, styles.btnPrimary)} disabled={saving}>
-              {saving ? <LoaderCircle size={15} className={styles.spin} aria-hidden="true" /> : <UserRoundPlus size={15} aria-hidden="true" />}
-              {saving ? "Creating…" : "Create login"}
-            </button>
+      <Panel>
+        <div className={styles.toolbar}>
+          <SearchInput value={query} onChange={setQuery} placeholder="Search name or email" />
+          <div className={styles.toolbarEnd}>
+            <Segmented
+              label="Role"
+              value={group}
+              onChange={setGroup}
+              options={[
+                { value: "all", label: "All", count: counts.all },
+                { value: "admin", label: "Admins", count: counts.admin },
+                { value: "manager", label: "Managers", count: counts.manager },
+                { value: "priest", label: "Priests", count: counts.priest },
+                { value: "disabled", label: "Disabled", count: counts.disabled },
+              ]}
+            />
           </div>
-        </Panel>
+        </div>
 
-        <Panel title="Current staff" meta={loaded ? staff.length : null}>
-          {!loaded ? (
-            <SkeletonRows rows={4} columns={[50, 16]} />
-          ) : staff.length ? (
-            <div className={styles.list}>
-              {staff.map((account) => (
-                <div key={account.id} className={styles.listItem}>
-                  <Avatar name={account.username || account.email} small />
-                  <span className={styles.listText}>
-                    <strong>{account.username}</strong>
-                    <span>{account.email}</span>
-                  </span>
-                  <Badge tone="neutral" plain>
-                    {roles.find((item) => item.value === normalizeRole(account.role))?.label || "Admin"}
-                  </Badge>
-                </div>
-              ))}
+        {!loaded ? (
+          <SkeletonRows rows={6} columns={[30, 34, 12, 12]} />
+        ) : visible.length ? (
+          <>
+            <div className={styles.tableWrap}>
+              <table className={cx(styles.table, styles.tableStack)}>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>{canManage ? "Enable / disable" : "Status"}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {visible.map((account) => {
+                    const accountRole = normalizeRole(account.role);
+                    const enabled = isEnabled(account);
+                    const isSelf = String(account.id) === String(currentUserId);
+                    const busy = updatingId === account.id;
+                    return (
+                      <tr key={account.id}>
+                        <td>
+                          <div className={styles.cellRow}>
+                            <Avatar name={account.username || account.email} small />
+                            <strong className={styles.cellMain}>{account.username || "—"}</strong>
+                          </div>
+                        </td>
+                        <td data-label="Email">{account.email}</td>
+                        <td data-label="Role">
+                          <Badge tone="neutral" plain>
+                            {accountRole === "admin" ? <ShieldCheck size={12} aria-hidden="true" /> : null}
+                            {roleLabel[accountRole] || accountRole}
+                          </Badge>
+                        </td>
+                        <td data-label="Status">
+                          {canManage ? (
+                            <label
+                              className={styles.switchInline}
+                              title={isSelf ? "You cannot disable your own login" : enabled ? "Disable this login" : "Enable this login"}
+                            >
+                              <span className={styles.switch}>
+                                <input
+                                  type="checkbox"
+                                  role="switch"
+                                  checked={enabled}
+                                  onChange={() => toggle(account)}
+                                  disabled={busy || isSelf}
+                                  aria-label={`${enabled ? "Disable" : "Enable"} ${account.username || account.email}`}
+                                />
+                                <span className={styles.switchTrack} />
+                              </span>
+                              {busy ? <LoaderCircle size={14} className={styles.spin} aria-hidden="true" /> : null}
+                              <span className={enabled ? undefined : styles.statusOff}>
+                                {enabled ? "Enabled" : "Disabled"}
+                                {isSelf ? " (you)" : ""}
+                              </span>
+                            </label>
+                          ) : enabled ? (
+                            <Badge tone="success">Enabled</Badge>
+                          ) : (
+                            <Badge tone="danger">Disabled</Badge>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
-          ) : (
-            <EmptyState compact icon={UsersRound} title="No staff logins yet" text="Priests and managers you add will be listed here." />
-          )}
-        </Panel>
-      </div>
+            <div className={styles.tableFoot}>
+              <span>
+                {visible.length} of {users.length} staff {users.length === 1 ? "account" : "accounts"}
+              </span>
+            </div>
+          </>
+        ) : users.length ? (
+          <EmptyState icon={ListFilter} title="No staff match" text="Try another name or email, or a different filter." />
+        ) : (
+          <EmptyState icon={UsersRound} title="No staff yet" text={canManage ? "Use Add staff to create logins for priests and managers." : "Staff appear here once an admin creates their login."} />
+        )}
+      </Panel>
     </Page>
   );
 }

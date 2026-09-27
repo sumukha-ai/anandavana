@@ -47,9 +47,9 @@ export default function Footer() {
             <Phone size={16} aria-hidden="true" />
             <span>+91 97415 85030</span>
           </a>
-          <a href="mailto:info@anandavanaagadi.org" className={styles.line}>
+          <a href="mailto:shreekshethraanandavana@gmail.com" className={styles.line}>
             <Mail size={16} aria-hidden="true" />
-            <span>info@anandavanaagadi.org</span>
+            <span>shreekshethraanandavana@gmail.com</span>
           </a>
         </div>
 
@@ -68,7 +68,16 @@ export default function Footer() {
       </div>
 
       <div className={styles.baseline}>
-        <p>&copy; {new Date().getFullYear()} {t("copyright")}</p>
+        <div className={styles.baselineInner}>
+          <p>&copy; {new Date().getFullYear()} {t("copyright")}</p>
+          <p className={styles.credit}>
+            <span className={styles.om} aria-hidden="true">ॐ</span>
+            <span>{t("developedBy")}</span>
+            <a href="https://sumukha.ai" target="_blank" rel="noreferrer" className={styles.creditLink}>
+              sumukha.ai
+            </a>
+          </p>
+        </div>
       </div>
     </footer>
   );

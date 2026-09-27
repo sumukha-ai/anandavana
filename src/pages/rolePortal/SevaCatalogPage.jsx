@@ -2,22 +2,73 @@ import { useMemo, useState } from "react";
 import { ClipboardList, ImageOff, ListFilter, Pencil, Plus } from "lucide-react";
 import { sevaImageUrl } from "../sevaHelpers";
 import { formatAmount, sectionMeta } from "./rolePortalConfig";
-import { Badge, EmptyState, Page, PageHeader, Panel, SearchInput, Segmented, SkeletonRows } from "./ui";
+import { Badge, EmptyState, Page, PageHeader, Panel, SearchInput, Segmented, Skeleton } from "./ui";
 import { cx } from "./cx";
 import styles from "./Console.module.css";
+import own from "./SevaCatalog.module.css";
 
-function Thumb({ seva }) {
+function SevaCard({ seva, canManage, onEdit, onToggleEnabled }) {
   const src = sevaImageUrl(seva, null);
-  return src ? (
-    <img className={styles.thumb} src={src} alt="" loading="lazy" />
-  ) : (
-    <span className={cx(styles.thumb, styles.thumbEmpty)} aria-hidden="true">
-      <ImageOff size={15} />
-    </span>
+  const enabled = Boolean(seva.enabled);
+  const stop = (event) => event.stopPropagation();
+
+  return (
+    <article className={cx(own.card, canManage && own.clickable, !enabled && own.off)} onClick={canManage ? () => onEdit(seva) : undefined}>
+      <div className={own.media}>
+        {src ? (
+          <img src={src} alt="" loading="lazy" />
+        ) : (
+          <div className={own.mediaEmpty} aria-hidden="true">
+            <ImageOff size={20} />
+            <span>No image</span>
+          </div>
+        )}
+        <span className={own.status}>{enabled ? "Enabled" : "Disabled"}</span>
+      </div>
+
+      <div className={own.body}>
+        <h3 className={own.name} title={seva.name}>
+          {seva.name}
+        </h3>
+        {seva.name_kn ? (
+          <span className={own.nameKn} lang="kn">
+            {seva.name_kn}
+          </span>
+        ) : null}
+        <div className={own.meta}>
+          {Number(seva.amount) > 0 ? <span className={own.amount}>{formatAmount(seva.amount)}</span> : <span className={own.offline}>Offline only</span>}
+          {!seva.name_kn ? <Badge tone="warning">No Kannada</Badge> : null}
+        </div>
+      </div>
+
+      {canManage ? (
+        <div className={own.foot}>
+          <button
+            type="button"
+            className={cx(styles.btn, styles.btnSecondary, styles.btnSm)}
+            onClick={(event) => {
+              stop(event);
+              onEdit(seva);
+            }}
+            aria-label={`Edit ${seva.name}`}
+          >
+            <Pencil size={13} aria-hidden="true" />
+            Edit
+          </button>
+          <label className={styles.switchInline} onClick={stop}>
+            <span>{enabled ? "Enabled" : "Disabled"}</span>
+            <span className={styles.switch}>
+              <input type="checkbox" role="switch" checked={enabled} onChange={() => onToggleEnabled(seva)} aria-label={`${enabled ? "Disable" : "Enable"} ${seva.name}`} />
+              <span className={styles.switchTrack} />
+            </span>
+          </label>
+        </div>
+      ) : null}
+    </article>
   );
 }
 
-export default function SevaCatalogPage({ sevas, loaded, canManage, onEditSeva, onAddSeva }) {
+export default function SevaCatalogPage({ sevas, loaded, canManage, onEditSeva, onAddSeva, onToggleEnabled }) {
   const [query, setQuery] = useState("");
   const [view, setView] = useState("all");
 
@@ -56,73 +107,32 @@ export default function SevaCatalogPage({ sevas, loaded, canManage, onEditSeva, 
               onChange={setView}
               options={[
                 { value: "all", label: "All", count: counts.all },
-                { value: "open", label: "Open", count: counts.open },
-                { value: "off", label: "Off", count: counts.off },
-                { value: "kn", label: "No Kannada", count: counts.kn },
+                { value: "open", label: "Enabled", count: counts.open },
+                { value: "off", label: "Disabled", count: counts.off },
+                // { value: "kn", label: "No Kannada", count: counts.kn },
               ]}
             />
           </div>
         </div>
 
         {!loaded ? (
-          <SkeletonRows rows={6} columns={[40, 12, 12, 20]} />
+          <div className={own.grid}>
+            {[0, 1, 2, 3, 4, 5].map((item) => (
+              <div key={item} className={own.card}>
+                <Skeleton height="auto" radius={0} style={{ display: "block", aspectRatio: "2 / 1" }} />
+                <div className={own.skeleton}>
+                  <Skeleton width="65%" height={14} />
+                  <Skeleton width="40%" height={11} />
+                  <Skeleton width="30%" height={18} style={{ marginTop: 10 }} />
+                </div>
+              </div>
+            ))}
+          </div>
         ) : visible.length ? (
-          <div className={styles.tableWrap}>
-            <table className={cx(styles.table, styles.tableStack)}>
-              <thead>
-                <tr>
-                  <th>Seva</th>
-                  <th className={styles.num}>Amount</th>
-                  <th>Online booking</th>
-                  <th>Kannada</th>
-                  {canManage ? <th aria-label="Actions" /> : null}
-                </tr>
-              </thead>
-              <tbody>
-                {visible.map((seva) => (
-                  <tr
-                    key={seva.id}
-                    className={canManage ? styles.rowClickable : undefined}
-                    onClick={canManage ? () => onEditSeva(seva) : undefined}
-                  >
-                    <td>
-                      <div className={styles.cellRow}>
-                        <Thumb seva={seva} />
-                        <div className={styles.cellStack}>
-                          <strong className={styles.cellMain}>{seva.name}</strong>
-                          {seva.name_kn ? <span lang="kn">{seva.name_kn}</span> : null}
-                        </div>
-                      </div>
-                    </td>
-                    <td className={cx(styles.num, styles.nowrap)} data-label="Amount">
-                      {Number(seva.amount) > 0 ? formatAmount(seva.amount) : <Badge plain>Offline only</Badge>}
-                    </td>
-                    <td data-label="Booking">
-                      {seva.enabled ? <Badge tone="success">Open</Badge> : <Badge tone="neutral">Off</Badge>}
-                    </td>
-                    <td data-label="Kannada">
-                      {seva.name_kn ? <Badge tone="success">Added</Badge> : <Badge tone="warning">Missing</Badge>}
-                    </td>
-                    {canManage ? (
-                      <td className={styles.num}>
-                        <button
-                          type="button"
-                          className={cx(styles.btn, styles.btnGhost, styles.btnSm, styles.rowAction)}
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            onEditSeva(seva);
-                          }}
-                          aria-label={`Edit ${seva.name}`}
-                        >
-                          <Pencil size={13} aria-hidden="true" />
-                          Edit
-                        </button>
-                      </td>
-                    ) : null}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className={own.grid}>
+            {visible.map((seva) => (
+              <SevaCard key={seva.id} seva={seva} canManage={canManage} onEdit={onEditSeva} onToggleEnabled={onToggleEnabled} />
+            ))}
           </div>
         ) : sevas.length ? (
           <EmptyState
@@ -155,7 +165,7 @@ export default function SevaCatalogPage({ sevas, loaded, canManage, onEditSeva, 
             <span>
               {visible.length} of {sevas.length} {sevas.length === 1 ? "seva" : "sevas"}
             </span>
-            {canManage ? <span className={styles.tableFootHint}>Select a row to edit it</span> : null}
+            {canManage ? <span className={styles.tableFootHint}>Select a card to edit it</span> : null}
           </div>
         ) : null}
       </Panel>

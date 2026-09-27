@@ -51,7 +51,7 @@ export function PeriodPicker({ period, onChange }) {
   );
 }
 
-export function Drawer({ open, title, subtitle, onClose, children, footer }) {
+export function Drawer({ open, title, subtitle, onClose, children, footer, wide, className }) {
   const panelRef = useRef(null);
   const titleId = useId();
 
@@ -71,9 +71,9 @@ export function Drawer({ open, title, subtitle, onClose, children, footer }) {
 
   if (!open) return null;
   return (
-    <div className={own.drawerLayer}>
+    <div className={cx(own.drawerLayer, className)}>
       <div className={own.drawerScrim} onClick={onClose} aria-hidden="true" />
-      <aside className={own.drawer} role="dialog" aria-modal="true" aria-labelledby={titleId} ref={panelRef} tabIndex={-1}>
+      <aside className={cx(own.drawer, wide && own.drawerWide)} role="dialog" aria-modal="true" aria-labelledby={titleId} ref={panelRef} tabIndex={-1}>
         <header className={own.drawerHead}>
           <div>
             <h2 id={titleId} className={own.drawerTitle}>

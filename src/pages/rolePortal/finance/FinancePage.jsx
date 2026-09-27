@@ -1,19 +1,23 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowDown, ArrowUp, ArrowUpDown, CalendarDays, HandCoins, HeartHandshake, IndianRupee, ListFilter, Plus, Wallet, X } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, CalendarDays, HandCoins, HeartHandshake, IndianRupee, ListFilter, Plus, Printer, Wallet, X } from "lucide-react";
 import { sectionMeta, sectionPath } from "../rolePortalConfig";
 import { Badge, EmptyState, Kpis, Page, PageHeader, Panel, SearchInput, Segmented, SkeletonRows } from "../ui";
 import { cx } from "../cx";
 import styles from "../Console.module.css";
 import own from "./Finance.module.css";
-import { PeriodPicker } from "./FinanceParts";
+import shop from "../../shop/Shop.module.css";
+import SevaReceipt from "../../shop/SevaReceipt";
+import DonationReceipt from "../../donate/DonationReceipt";
+import { useTrust } from "../../donate/taxExemption";
+import { Drawer, PeriodPicker } from "./FinanceParts";
 import { DONATION_CHANNEL_LABELS, inr, longDate, periodLabel, rangeQuery, resolvePeriod } from "./financeUtils";
 import { useFinanceQuery } from "./useFinanceQuery";
 
 const COLUMNS = [
   { key: "date", label: "Date" },
   { key: "source", label: "Type" },
-  { key: "description", label: "Seva or cause" },
+  { key: "description", label: "Seva" },
   { key: "person", label: "Devotee" },
   { key: "channel", label: "Mode" },
   { key: "amount", label: "Amount", numeric: true },
@@ -30,6 +34,8 @@ export default function FinancePage({ lang, role, token, notify }) {
   const [source, setSource] = useState("all");
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState({ key: "date", desc: true });
+  const [openEntry, setOpenEntry] = useState(null);
+  const trust = useTrust(lang);
   const range = resolvePeriod(period);
   const validRange = range.from && range.to && range.to >= range.from;
   const { data, loading } = useFinanceQuery(validRange ? `/finance/income?${rangeQuery(range)}` : null, {
@@ -65,6 +71,9 @@ export default function FinancePage({ lang, role, token, notify }) {
   const base = sectionPath(lang, role, "finance");
 
   const toggleSort = (key) => setSort((current) => (current.key === key ? { key, desc: !current.desc } : { key, desc: key === "date" || key === "amount" }));
+
+  const closeReceipt = useCallback(() => setOpenEntry(null), []);
+  const receiptOf = (entry) => (entry.source === "seva" ? entry.booking : entry.donation);
 
   const resetFilters = () => {
     setSource("all");
@@ -147,7 +156,22 @@ export default function FinancePage({ lang, role, token, notify }) {
                   </thead>
                   <tbody>
                     {visible.map((entry) => (
-                      <tr key={entry.id}>
+                      <tr
+                        key={entry.id}
+                        className={receiptOf(entry) ? styles.rowClickable : undefined}
+                        tabIndex={receiptOf(entry) ? 0 : undefined}
+                        onClick={receiptOf(entry) ? () => setOpenEntry(entry) : undefined}
+                        onKeyDown={
+                          receiptOf(entry)
+                            ? (event) => {
+                                if (event.key === "Enter" || event.key === " ") {
+                                  event.preventDefault();
+                                  setOpenEntry(entry);
+                                }
+                              }
+                            : undefined
+                        }
+                      >
                         <td className={styles.nowrap} data-label="Date">
                           {longDate(entry.date)}
                         </td>
@@ -156,11 +180,8 @@ export default function FinancePage({ lang, role, token, notify }) {
                             {entry.source === "seva" ? <Badge tone="accent">Seva</Badge> : <Badge tone="success">Donation</Badge>}
                           </div>
                         </td>
-                        <td>
-                          <div className={styles.cellStack}>
-                            <strong className={styles.cellMain}>{entry.description}</strong>
-                            {entry.detail || entry.reference ? <span>{[entry.detail, entry.reference].filter(Boolean).join(" · ")}</span> : null}
-                          </div>
+                        <td data-label="Seva">
+                          <strong className={styles.cellMain}>{entry.description}</strong>
                         </td>
                         <td data-label="Devotee">
                           <div className={styles.cellStack}>
@@ -213,6 +234,31 @@ export default function FinancePage({ lang, role, token, notify }) {
           )}
         </Panel>
       </Page>
+
+      <Drawer
+        open={Boolean(openEntry)}
+        wide
+        className={own.receiptLayer}
+        title={openEntry?.source === "seva" ? "Seva receipt" : "Donation receipt"}
+        onClose={closeReceipt}
+        footer={
+          <>
+            <button type="button" className={cx(styles.btn, styles.btnGhost)} onClick={closeReceipt}>
+              Close
+            </button>
+            <button type="button" className={cx(styles.btn, styles.btnPrimary)} onClick={() => window.print()}>
+              <Printer size={15} aria-hidden="true" />
+              Print
+            </button>
+          </>
+        }
+      >
+        {openEntry ? (
+          <div className={cx(shop.shop, own.receiptSheet)}>
+            {openEntry.source === "seva" ? <SevaReceipt booking={openEntry.booking} titleAs="h3" /> : <DonationReceipt donation={openEntry.donation} trust={trust} />}
+          </div>
+        ) : null}
+      </Drawer>
     </div>
   );
 }

@@ -41,7 +41,7 @@ It succeeds when a devotee can book a seva in their own language without help, a
 - Bhakta flow: register or log in, open the dashboard, manage profile and family members, book a seva, then view bookings.
 - Staff flow: role workspaces under `/admin`, `/manager` and `/priest`, organised into Home, Access, Catalog and Operations groups.
 - Seva details can depend on Jyotisha data (Rashi, Nakshatra). These lookups have English and Kannada names.
-- Contact: SH 2, Agadi, Haveri - 581128, Karnataka, India · +91 97415 85030 · info@anandavanaagadi.org.
+- Contact: SH 2, Agadi, Haveri - 581128, Karnataka, India · +91 97415 85030 · shreekshethraanandavana@gmail.com.
 
 ## Capabilities and Constraints
 

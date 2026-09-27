@@ -11,7 +11,7 @@ const EN_CONTENT = {
   phoneLabel: "Phone",
   phoneValue: "+91 97415 85030",
   emailLabel: "Email",
-  emailValue: "info@anandavanaagadi.org",
+  emailValue: "shreekshethraanandavana@gmail.com",
   mapButton: "Open in Google Maps",
 };
 
@@ -24,7 +24,7 @@ const KN_CONTENT = {
   phoneLabel: "ದೂರವಾಣಿ",
   phoneValue: "+91 97415 85030",
   emailLabel: "ಇ-ಮೇಲ್",
-  emailValue: "info@anandavanaagadi.org",
+  emailValue: "shreekshethraanandavana@gmail.com",
   mapButton: "Google Maps ನಲ್ಲಿ ತೆರೆಯಿರಿ",
 };
 
@@ -83,7 +83,7 @@ export default function ContactSection() {
               <div>
                 <h3 className={styles.infoTitle}>{content.emailLabel}</h3>
                 <a
-                  href="mailto:info@anandavanaagadi.org"
+                  href="mailto:shreekshethraanandavana@gmail.com"
                   className={styles.infoLink}
                 >
                   {content.emailValue}

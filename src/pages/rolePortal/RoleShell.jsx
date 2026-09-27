@@ -97,7 +97,7 @@ export default function RoleShell({ role, lang, section, sevas = [], loading, cr
   const [theme, setTheme] = useState(readTheme);
   const { box, still } = useNavIndicator(navRef, location.pathname);
   const grouped = getGroupedMenuItems(role);
-  const meta = sectionMeta[section] || sectionMeta.overview;
+  const meta = sectionMeta[section] || sectionMeta.bookings;
   const roleName = role.charAt(0).toUpperCase() + role.slice(1);
   const otherLang = lang === "kn" ? "en" : "kn";
   const switchLangPath = `/${otherLang}${location.pathname.replace(/^\/[^/]+/, "")}${location.search}`;
@@ -254,7 +254,7 @@ export default function RoleShell({ role, lang, section, sevas = [], loading, cr
                       key={item}
                       to={sectionPath(lang, role, item)}
                       end={item === "overview"}
-                      className={({ isActive }) => cx(styles.navLink, isActive && styles.navLinkActive)}
+                      className={({ isActive }) => cx(styles.navLink, (isActive || (item === "staff" && section === "staff-new")) && styles.navLinkActive)}
                       onClick={() => setMenuOpen(false)}
                     >
                       <Icon size={16} aria-hidden="true" />
@@ -320,7 +320,7 @@ export default function RoleShell({ role, lang, section, sevas = [], loading, cr
             ) : (
               <>
                 <ChevronRight size={14} aria-hidden="true" />
-                <span className={styles.crumbCurrent} aria-current="page">Overview</span>
+                <span className={styles.crumbCurrent} aria-current="page">{meta.label}</span>
               </>
             )}
           </nav>

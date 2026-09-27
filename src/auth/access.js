@@ -26,12 +26,14 @@ const ROLE_AREAS = {
   bhakta: [],
 };
 
-// Where to send someone after sign-in: the page they were headed to, if their role may open it
+// Where to send someone after sign-in: the page they were headed to, if their role may open it.
+// Staff always land in their console unless they were headed to a console page they may open.
 export function getPostLoginPath(role, lang = "en", from) {
   const home = getRoleHomePath(role, lang);
   const pathname = from?.pathname;
   if (!pathname || /^\/[^/]+\/(login|register|unauthorized)(\/|$)/.test(pathname)) return home;
+  const areas = ROLE_AREAS[normalizeRole(role)] || [];
   const area = pathname.match(/^\/[^/]+\/(admin|manager|priest)(\/|$)/)?.[1];
-  if (area && !(ROLE_AREAS[normalizeRole(role)] || []).includes(area)) return home;
+  if (area ? !areas.includes(area) : areas.length > 0) return home;
   return `${pathname}${from.search || ""}${from.hash || ""}`;
 }

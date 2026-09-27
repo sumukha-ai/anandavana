@@ -33,6 +33,7 @@ function validate({ email, password }) {
 function describeError(err, lang, t) {
   if (err.code === "network") return t("errorNetwork");
   if (err.status === 400 || err.status === 401) return t("errorCredentials");
+  if (err.status === 403 && /disabled/i.test(err.message)) return t("errorDisabled");
   // Server messages are English only, so Kannada readers get our reviewed copy instead
   return lang === "en" && err.message ? err.message : t("errorGeneric");
 }

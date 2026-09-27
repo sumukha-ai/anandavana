@@ -6,18 +6,22 @@ import { getRoleHomePath, normalizeRole } from "../auth/access";
 import { useAuth } from "../auth/AuthContext";
 import { normalizeLang } from "../i18n/config";
 import {
+  Building2,
   CalendarCheck,
   ChevronDown,
   HandHeart,
+  Images,
   Languages,
   LayoutGrid,
   LayoutDashboard,
   LogIn,
   LogOut,
+  ScrollText,
   Sparkles,
   UsersRound,
 } from "lucide-react";
 import { useI18n } from "../i18n/useI18n";
+import { FamilyTreeIcon, TempleIcon } from "./icons/NavIcons";
 
 const ICON = { size: 17, strokeWidth: 1.75, "aria-hidden": true };
 
@@ -34,6 +38,8 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAccountOpen, setIsAccountOpen] = useState(false);
+  const [openGroup, setOpenGroup] = useState(null);
+  const groupCloseTimer = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
   const { lang: rawLang } = useParams();
@@ -49,6 +55,7 @@ export default function Navbar() {
     setMenuPath(location.pathname);
     setIsMobileMenuOpen(false);
     setIsAccountOpen(false);
+    setOpenGroup(null);
   }
   const accountButtonRef = useRef(null);
 
@@ -59,19 +66,40 @@ export default function Navbar() {
   const initials = initialsOf(displayName) || "•";
 
   // The public site stays the same for everyone; signing in only adds the account menu
+  // Top-level entries are either a single link or a group revealed on hover/focus
   const navItems = useMemo(
     () => [
-      { to: `/${lang}/guru-parampare`, label: t("guruParampare") },
-      { to: `/${lang}/sadguru-vamsha-vruksha`, label: t("sadguruVamshaVruksha") },
-      { to: `/${lang}/institutions`, label: t("institutions") },
-      { to: `/${lang}/events`, label: t("events") },
-      { to: `/${lang}/seva-booking`, label: t("sevaBooking") },
-      { to: `/${lang}/donate`, label: t("donate") },
-      { to: `/${lang}/publications`, label: t("publications") },
-      { to: `/${lang}/gallery`, label: t("gallery") },
+      {
+        id: "sevas",
+        label: t("groupSevas"),
+        items: [
+          { to: `/${lang}/seva-booking`, label: t("sevaBooking"), hint: t("sevaBookingHint"), icon: TempleIcon },
+          { to: `/${lang}/donate`, label: t("donate"), hint: t("donateHint"), icon: HandHeart },
+        ],
+      },
+      {
+        id: "about",
+        label: t("groupAbout"),
+        items: [
+          { to: `/${lang}/guru-parampare`, label: t("guruParampare"), hint: t("guruParampareHint"), icon: ScrollText },
+          {
+            to: `/${lang}/sadguru-vamsha-vruksha`,
+            label: t("sadguruVamshaVruksha"),
+            hint: t("sadguruVamshaVrukshaHint"),
+            icon: FamilyTreeIcon,
+          },
+          { to: `/${lang}/institutions`, label: t("institutions"), hint: t("institutionsHint"), icon: Building2 },
+          { to: `/${lang}/gallery`, label: t("gallery"), hint: t("galleryHint"), icon: Images },
+        ],
+      },
+      { id: "events", to: `/${lang}/events`, label: t("events") },
+      { id: "publications", to: `/${lang}/publications`, label: t("publications") },
     ],
     [lang, t]
   );
+
+  const isGroupActive = (group) =>
+    group.items.some((item) => location.pathname === item.to || location.pathname.startsWith(`${item.to}/`));
 
   const accountItems = useMemo(() => {
     if (!isAuthenticated) return [];
@@ -127,6 +155,40 @@ export default function Navbar() {
     };
   }, [isAccountOpen]);
 
+  useEffect(() => {
+    if (!openGroup) return undefined;
+    const handleKey = (event) => {
+      if (event.key === "Escape") {
+        document.getElementById(`nav-trigger-${openGroup}`)?.focus();
+        setOpenGroup(null);
+      }
+    };
+    const handlePointer = (event) => {
+      if (!event.target.closest?.(`.${styles.navGroup}`)) setOpenGroup(null);
+    };
+    document.addEventListener("keydown", handleKey);
+    document.addEventListener("pointerdown", handlePointer);
+    return () => {
+      document.removeEventListener("keydown", handleKey);
+      document.removeEventListener("pointerdown", handlePointer);
+    };
+  }, [openGroup]);
+
+  useEffect(() => () => clearTimeout(groupCloseTimer.current), []);
+
+  // A short grace period lets the pointer travel from the trigger into the panel
+  const showGroup = (id) => {
+    clearTimeout(groupCloseTimer.current);
+    setOpenGroup(id);
+  };
+  const hideGroupSoon = () => {
+    clearTimeout(groupCloseTimer.current);
+    groupCloseTimer.current = setTimeout(() => setOpenGroup(null), 140);
+  };
+  const handleGroupBlur = (event) => {
+    if (!event.currentTarget.contains(event.relatedTarget)) setOpenGroup(null);
+  };
+
   const closeMenu = () => setIsMobileMenuOpen(false);
   const toggleMenu = () => setIsMobileMenuOpen((prev) => !prev);
 
@@ -165,17 +227,66 @@ export default function Navbar() {
         </Link>
 
         <nav className={styles.desktopNav} aria-label="Main navigation">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              className={({ isActive }) =>
-                isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
-              }
-            >
-              {item.label}
-            </NavLink>
-          ))}
+          <ul className={styles.navList}>
+            {navItems.map((item) =>
+              item.items ? (
+                <li
+                  key={item.id}
+                  className={styles.navGroup}
+                  onPointerEnter={(event) => event.pointerType === "mouse" && showGroup(item.id)}
+                  onPointerLeave={(event) => event.pointerType === "mouse" && hideGroupSoon()}
+                  onBlur={handleGroupBlur}
+                >
+                  <button
+                    id={`nav-trigger-${item.id}`}
+                    type="button"
+                    className={`${styles.navLink} ${styles.groupTrigger} ${isGroupActive(item) ? styles.active : ""} ${
+                      openGroup === item.id ? styles.groupTriggerOpen : ""
+                    }`}
+                    aria-expanded={openGroup === item.id}
+                    aria-controls={`nav-panel-${item.id}`}
+                    onClick={() => setOpenGroup((current) => (current === item.id ? null : item.id))}
+                  >
+                    <span>{item.label}</span>
+                    <ChevronDown size={14} strokeWidth={2.25} aria-hidden="true" className={styles.groupChevron} />
+                  </button>
+                  <div
+                    id={`nav-panel-${item.id}`}
+                    className={`${styles.groupPanel} ${openGroup === item.id ? styles.groupPanelOpen : ""}`}
+                    inert={openGroup === item.id ? undefined : true}
+                  >
+                    <ul className={styles.groupList}>
+                      {item.items.map(({ to, label, hint, icon: Icon }) => (
+                        <li key={to}>
+                          <NavLink
+                            to={to}
+                            className={({ isActive }) => `${styles.groupLink} ${isActive ? styles.groupLinkActive : ""}`}
+                          >
+                            <span className={styles.groupIcon}>
+                              <Icon {...ICON} />
+                            </span>
+                            <span className={styles.groupText}>
+                              <span className={styles.groupLabel}>{label}</span>
+                              <span className={styles.groupHint}>{hint}</span>
+                            </span>
+                          </NavLink>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </li>
+              ) : (
+                <li key={item.id}>
+                  <NavLink
+                    to={item.to}
+                    className={({ isActive }) => (isActive ? `${styles.navLink} ${styles.active}` : styles.navLink)}
+                  >
+                    {item.label}
+                  </NavLink>
+                </li>
+              )
+            )}
+          </ul>
 
           <Link
             to={switchLangPath}
@@ -298,18 +409,39 @@ export default function Navbar() {
           </div>
         ) : null}
 
-        {navItems.map((item) => (
-          <NavLink
-            key={item.to}
-            to={item.to}
-            className={({ isActive }) =>
-              isActive ? `${styles.mobileNavLink} ${styles.mobileNavLinkActive}` : styles.mobileNavLink
-            }
-            onClick={closeMenu}
-          >
-            {item.label}
-          </NavLink>
-        ))}
+        {navItems.map((item) =>
+          item.items ? (
+            <section key={item.id} className={styles.mobileGroup} aria-labelledby={`mobile-group-${item.id}`}>
+              <h2 id={`mobile-group-${item.id}`} className={styles.mobileGroupTitle}>
+                {item.label}
+              </h2>
+              {item.items.map(({ to, label, icon: Icon }) => (
+                <NavLink
+                  key={to}
+                  to={to}
+                  className={({ isActive }) =>
+                    `${styles.mobileNavLink} ${styles.mobileSubLink} ${isActive ? styles.mobileNavLinkActive : ""}`
+                  }
+                  onClick={closeMenu}
+                >
+                  <Icon {...ICON} />
+                  <span>{label}</span>
+                </NavLink>
+              ))}
+            </section>
+          ) : (
+            <NavLink
+              key={item.id}
+              to={item.to}
+              className={({ isActive }) =>
+                isActive ? `${styles.mobileNavLink} ${styles.mobileNavLinkActive}` : styles.mobileNavLink
+              }
+              onClick={closeMenu}
+            >
+              {item.label}
+            </NavLink>
+          )
+        )}
 
         <Link
           to={switchLangPath}

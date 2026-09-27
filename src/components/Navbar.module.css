@@ -177,10 +177,191 @@
 
 .navLink.active::after {
   opacity: 1;
+  transform: scaleX(1);
 }
 
-.navLink.active::after {
-  transform: scaleX(1);
+/* ---- Grouped navigation ---- */
+
+.navList {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin: 0 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.navGroup {
+  position: relative;
+}
+
+.groupTrigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  border: 0;
+  background: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.groupTrigger::after {
+  width: calc(100% - 1.2rem);
+}
+
+.groupChevron {
+  opacity: 0.75;
+  transition: transform 0.3s var(--ease-out);
+}
+
+.groupTriggerOpen {
+  opacity: 1 !important;
+}
+
+.groupTriggerOpen .groupChevron {
+  transform: rotate(180deg);
+}
+
+.groupPanel {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  z-index: 2;
+  width: 21rem;
+  /* Transparent top padding bridges the gap so hover survives the trip into the panel */
+  padding-top: 0.9rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, -6px);
+  transition:
+    opacity 0.16s var(--ease-out),
+    transform 0.26s var(--ease-out),
+    visibility 0s linear 0.26s;
+}
+
+.groupPanelOpen {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+  transition:
+    opacity 0.2s var(--ease-out),
+    transform 0.3s var(--ease-out),
+    visibility 0s;
+}
+
+.groupList {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0.45rem;
+  list-style: none;
+  border-radius: 18px;
+  background: #fffdf9;
+  box-shadow:
+    inset 0 0 0 1px rgba(139, 90, 43, 0.14),
+    0 2px 6px rgba(62, 39, 35, 0.06),
+    0 28px 56px -18px rgba(62, 39, 35, 0.32);
+}
+
+.groupLink {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 12px;
+  color: #3e2723;
+  text-decoration: none;
+  transition: background-color 0.2s var(--ease-out);
+}
+
+.groupLink:hover {
+  background: #f6efe3;
+}
+
+.groupLink:focus-visible {
+  outline-offset: -2px;
+}
+
+.groupIcon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 10px;
+  background: #f6efe3;
+  color: #8b5a2b;
+  transition: background-color 0.2s var(--ease-out), color 0.2s var(--ease-out);
+}
+
+.groupLink:hover .groupIcon {
+  background: #2c140c;
+  color: #d4af37;
+}
+
+.groupText {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.groupLabel {
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #2c140c;
+}
+
+.groupHint {
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: #7a5c3c;
+}
+
+.groupLinkActive {
+  background: #fbf0e6;
+}
+
+.groupLinkActive .groupLabel {
+  color: #8f4410;
+}
+
+.groupLinkActive .groupIcon {
+  background: #2c140c;
+  color: #d4af37;
+}
+
+.mobileGroup {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid rgba(139, 107, 71, 0.08);
+}
+
+.mobileGroupTitle {
+  margin: 0;
+  padding: 1rem 1.2rem 0.35rem;
+  font-family: var(--font-body);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8b6b47;
+}
+
+.mobileSubLink {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 0;
+}
+
+.mobileSubLink svg {
+  flex-shrink: 0;
+  color: #8b5a2b;
 }
 
 .mobileMenuBtn {
@@ -284,7 +465,7 @@
   background: rgba(212, 175, 55, 0.12);
 }
 
-@media (max-width: 1380px) {
+@media (max-width: 1240px) {
   .brandTitle {
     font-size: 0.9rem;
   }
@@ -298,7 +479,7 @@
   }
 }
 
-@media (max-width: 1320px) {
+@media (max-width: 1100px) {
   .desktopNav {
     display: none;
   }
@@ -730,7 +911,7 @@
   font-weight: 600;
 }
 
-@media (max-width: 1320px) {
+@media (max-width: 1100px) {
   .mobileMenuBtn {
     width: auto;
     min-width: 44px;
@@ -744,12 +925,19 @@
   }
 }
 
-@media (max-width: 1380px) {
+@media (max-width: 1240px) {
   .accountName {
     display: none;
   }
 
   .accountButton {
     padding-right: 0.55rem;
+  }
+}
+
+@media (max-width: 1240px) {
+  .navList {
+    gap: 1.4rem;
+    margin-right: 0.35rem;
   }
 }

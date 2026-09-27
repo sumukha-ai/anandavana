@@ -13,7 +13,7 @@ function usePreviewUrl(file, savedUrl) {
   return objectUrl || (savedUrl ? sevaImageUrl({ photo_url: savedUrl }, null) : null);
 }
 
-const TRACKED = ["name", "description", "name_kn", "description_kn", "amount", "enabled"];
+const TRACKED = ["name", "description", "name_kn", "description_kn", "online_booking", "amount", "enabled"];
 
 function isDirty(form, baseline) {
   if (form.photo) return true;
@@ -86,12 +86,23 @@ export default function SevaEditorPage({ lang, role, isEdit, notFound, loading, 
               <Field label="Seva name" aside="English">
                 <input className={styles.input} name="name" value={sevaForm.name} onChange={onSevaChange} required placeholder="e.g. Rudrabhisheka" />
               </Field>
-              <Field label="Amount" hint="Leave empty for sevas booked only at the kshetra.">
-                <span className={styles.inputAffix}>
-                  <span className={styles.affix}>₹</span>
-                  <input className={styles.input} type="number" min="0" step="0.01" name="amount" value={sevaForm.amount} onChange={onSevaChange} placeholder="0" inputMode="decimal" />
-                </span>
-              </Field>
+              <div className={styles.fieldWide}>
+                <Switch
+                  name="online_booking"
+                  checked={sevaForm.online_booking}
+                  onChange={onSevaChange}
+                  title="Online booking"
+                  description={sevaForm.online_booking ? "Devotees can book and pay for this seva on the site" : "Booked only at the kshetra"}
+                />
+              </div>
+              {sevaForm.online_booking ? (
+                <Field label="Amount">
+                  <span className={styles.inputAffix}>
+                    <span className={styles.affix}>₹</span>
+                    <input className={styles.input} type="number" min="1" step="0.01" name="amount" value={sevaForm.amount} onChange={onSevaChange} required placeholder="0" inputMode="decimal" />
+                  </span>
+                </Field>
+              ) : null}
               <Field label="Description" aside={`${sevaForm.description.length} characters`} wide>
                 <textarea className={styles.textarea} name="description" value={sevaForm.description} onChange={onSevaChange} rows={4} required placeholder="What the seva is, and what it offers the devotee" />
               </Field>
@@ -124,14 +135,14 @@ export default function SevaEditorPage({ lang, role, isEdit, notFound, loading, 
               </div>
             </FormSection>
 
-            <FormSection title="Availability" description="Turning a seva off hides it from online booking. Existing bookings stay.">
+            <FormSection title="Enable / Disable" description="Disabling a seva hides it from the public catalog. Existing bookings stay.">
               <div className={styles.fieldWide}>
                 <Switch
                   name="enabled"
                   checked={sevaForm.enabled}
                   onChange={onSevaChange}
-                  title="Open for online booking"
-                  description={sevaForm.enabled ? "Devotees can book this seva on the site" : "Hidden from the public catalog"}
+                  title={sevaForm.enabled ? "Enabled" : "Disabled"}
+                  description={sevaForm.enabled ? "Shown on the site" : "Hidden from the public catalog"}
                 />
               </div>
             </FormSection>
@@ -155,7 +166,7 @@ export default function SevaEditorPage({ lang, role, isEdit, notFound, loading, 
                   </div>
                   <h3>{previewName || "Seva name"}</h3>
                   <p>{previewText || "The description appears here."}</p>
-                  <span className={styles.previewAmount}>{formatAmount(sevaForm.amount)}</span>
+                  <span className={styles.previewAmount}>{sevaForm.online_booking ? formatAmount(sevaForm.amount) : "Book at the kshetra"}</span>
                 </div>
               </div>
             </Panel>

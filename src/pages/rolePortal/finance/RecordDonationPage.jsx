@@ -9,6 +9,7 @@ import styles from "../Console.module.css";
 import own from "./Finance.module.css";
 import { DONATION_CHANNEL_LABELS, inr } from "./financeUtils";
 import { openReceiptWindow, printDonationReceipt } from "./printReceipt";
+import { CASH_LIMIT_80G, useTrust } from "../../donate/taxExemption";
 
 const emptyForm = {
   fund_id: "",
@@ -40,6 +41,7 @@ export default function RecordDonationPage({ lang, role, token, notify }) {
   const [saving, setSaving] = useState(false);
   const [printAfter, setPrintAfter] = useState(true);
   const listPath = sectionPath(lang, role, "finance");
+  const trust = useTrust();
 
   useEffect(() => {
     apiRequest("/donation-funds?all=1", { token })
@@ -68,7 +70,7 @@ export default function RecordDonationPage({ lang, role, token, notify }) {
     try {
       const data = await apiRequest("/donations/offline", { method: "POST", token, body });
       notify("success", "Donation recorded", `Receipt ${data.donation.receipt_number} · ${inr(data.donation.amount)}`);
-      if (printAfter && !printDonationReceipt(data.donation, receiptWindow)) {
+      if (printAfter && !printDonationReceipt(data.donation, receiptWindow, trust)) {
         notify("error", "Pop-up blocked", "Allow pop-ups for this site to print receipts.");
       }
       navigate(listPath);
@@ -80,6 +82,11 @@ export default function RecordDonationPage({ lang, role, token, notify }) {
   };
 
   const selectedFund = funds?.find((fund) => String(fund.id) === String(form.fund_id));
+  const panHint = !trust?.tax_80g
+    ? undefined
+    : form.channel === "cash" && Number(form.amount) > CASH_LIMIT_80G
+      ? `Cash above ${inr(CASH_LIMIT_80G)} cannot be claimed under 80G`
+      : "Needed for the donor to claim 80G";
 
   return (
     <div className={own.financeRoot}>
@@ -144,7 +151,7 @@ export default function RecordDonationPage({ lang, role, token, notify }) {
                   <Field label="Email" aside="Optional">
                     <input className={styles.input} type="email" name="donor_email" value={form.donor_email} onChange={update} maxLength={120} autoComplete="off" />
                   </Field>
-                  <Field label="PAN" aside="Optional">
+                  <Field label="PAN" aside="Optional" hint={panHint}>
                     <input className={cx(styles.input, styles.mono)} name="pan" value={form.pan} onChange={update} pattern="[A-Z]{5}[0-9]{4}[A-Z]" maxLength={10} placeholder="ABCDE1234F" title="10 characters, like ABCDE1234F" autoComplete="off" />
                   </Field>
                   <Field label="Dedication" aside="Optional">

@@ -8,6 +8,7 @@ import shop from "../shop/Shop.module.css";
 import checkout from "../shop/Checkout.module.css";
 import { Breadcrumbs, ErrorState } from "../shop/ShopParts";
 import { OFFICE_PHONE, OFFICE_TEL, formatPrice, interpolate } from "../shop/shopUtils";
+import { useTrust } from "./taxExemption";
 import { collectPayment, useLivePayments } from "../shop/cashfree";
 import styles from "./Donate.module.css";
 
@@ -56,6 +57,7 @@ function Field({ id, label, optional, hint, error, wide, children }) {
 
 export default function DonatePage() {
   const { t, lang } = useI18n("donate");
+  const trust = useTrust(lang);
   const { token, user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -379,7 +381,7 @@ export default function DonatePage() {
                       maxLength={1000}
                     />
                   </Field>
-                  <Field id="pan" label={t("pan")} optional={t("optional")} hint={t("panHint")} error={errors.pan}>
+                  <Field id="pan" label={t("pan")} optional={t("optional")} hint={trust?.tax_80g ? t("panHint80g") : t("panHint")} error={errors.pan}>
                     <input
                       id="pan"
                       name="pan"

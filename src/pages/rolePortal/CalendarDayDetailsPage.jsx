@@ -43,7 +43,7 @@ export default function CalendarDayDetailsPage({ bookings, date, lang, role, loa
   return (
     <Page>
       <PageHeader
-        back={{ to: sectionPath(lang, role, "calendar"), label: "Seva calendar" }}
+        back={{ to: sectionPath(lang, role, "bookings"), label: "Booked sevas" }}
         title={title}
         description={relativeDay(date) ? `${relativeDay(date)} · the full sheet for every seva booked on this day.` : "The full sheet for every seva booked on this day."}
         actions={
@@ -118,8 +118,8 @@ export default function CalendarDayDetailsPage({ bookings, date, lang, role, loa
             title="No sevas booked for this day"
             text="Use the arrows to step through nearby days, or go back to the calendar to pick another date."
             action={
-              <NavLink to={sectionPath(lang, role, "calendar")} className={cx(styles.btn, styles.btnSecondary)}>
-                Back to calendar
+              <NavLink to={sectionPath(lang, role, "bookings")} className={cx(styles.btn, styles.btnSecondary)}>
+                Back to booked sevas
               </NavLink>
             }
           />

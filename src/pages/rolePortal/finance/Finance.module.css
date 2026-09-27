@@ -176,6 +176,41 @@
   border-top: 1px solid var(--c-border);
 }
 
+.drawerWide {
+  width: min(48rem, 100%);
+}
+
+/* A bhakta receipt shown inside the console: keep the store's tokens, drop its page layout */
+.drawerBody .receiptSheet {
+  min-height: 0;
+  padding: 0;
+  background: transparent;
+}
+
+/* Printing with a receipt open prints only the receipt */
+@media print {
+  .financeRoot:has(.receiptLayer) > :not(.receiptLayer),
+  .receiptLayer .drawerScrim,
+  .receiptLayer .drawerHead,
+  .receiptLayer .drawerFoot {
+    display: none !important;
+  }
+
+  .receiptLayer,
+  .receiptLayer .drawer {
+    position: static;
+    width: auto;
+    border: 0;
+    box-shadow: none;
+    animation: none;
+  }
+
+  .receiptLayer .drawerBody {
+    overflow: visible;
+    padding: 0;
+  }
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

@@ -82,15 +82,19 @@ function AppLayout() {
             <Route path="checkout/:sevaId" element={<CheckoutPage />} />
           </Route>
           <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
-            <Route path="admin" element={<RolePortal role="admin" section="overview" />} />
+            {/* Overview is switched off: <Route path="admin" element={<RolePortal role="admin" section="overview" />} /> */}
+            <Route path="admin" element={<Navigate to="bookings" replace />} />
             <Route path="admin/staff" element={<RolePortal role="admin" section="staff" />} />
+            <Route path="admin/staff-new" element={<RolePortal role="admin" section="staff-new" />} />
             <Route path="admin/seva-editor" element={<RolePortal role="admin" section="seva-editor" />} />
             <Route path="admin/seva-editor/:sevaId" element={<RolePortal role="admin" section="seva-editor" />} />
             <Route path="admin/sevas" element={<RolePortal role="admin" section="sevas" />} />
             <Route path="admin/bookings" element={<RolePortal role="admin" section="bookings" />} />
-            <Route path="admin/calendar" element={<RolePortal role="admin" section="calendar" />} />
+            <Route path="admin/calendar" element={<Navigate to="../bookings" relative="path" replace />} />
             <Route path="admin/calendar/:bookingDate" element={<RolePortal role="admin" section="calendar-detail" />} />
-            <Route path="admin/users" element={<RolePortal role="admin" section="users" />} />
+            <Route path="admin/bhaktas" element={<RolePortal role="admin" section="bhaktas" />} />
+            <Route path="admin/bhaktas/:bhaktaId" element={<RolePortal role="admin" section="bhakta-detail" />} />
+            <Route path="admin/users" element={<Navigate to="../staff" relative="path" replace />} />
             <Route path="admin/lookups" element={<RolePortal role="admin" section="lookups" />} />
             <Route path="admin/events" element={<RolePortal role="admin" section="events" />} />
             <Route path="admin/events/new" element={<RolePortal role="admin" section="event-editor" />} />
@@ -101,14 +105,19 @@ function AppLayout() {
             <Route path="admin/finance/seva/new" element={<RolePortal role="admin" section="finance-seva-entry" />} />
             <Route path="admin/finance/donation/new" element={<RolePortal role="admin" section="finance-donation-entry" />} />
             <Route path="admin/finance/causes" element={<RolePortal role="admin" section="finance-causes" />} />
+            <Route path="admin/trust" element={<RolePortal role="admin" section="trust" />} />
           </Route>
           <Route element={<ProtectedRoute allowedRoles={["admin", "manager"]} />}>
-            <Route path="manager" element={<RolePortal role="manager" section="overview" />} />
+            {/* Overview is switched off: <Route path="manager" element={<RolePortal role="manager" section="overview" />} /> */}
+            <Route path="manager" element={<Navigate to="bookings" replace />} />
             <Route path="manager/sevas" element={<RolePortal role="manager" section="sevas" />} />
             <Route path="manager/bookings" element={<RolePortal role="manager" section="bookings" />} />
-            <Route path="manager/calendar" element={<RolePortal role="manager" section="calendar" />} />
+            <Route path="manager/calendar" element={<Navigate to="../bookings" relative="path" replace />} />
             <Route path="manager/calendar/:bookingDate" element={<RolePortal role="manager" section="calendar-detail" />} />
-            <Route path="manager/users" element={<RolePortal role="manager" section="users" />} />
+            <Route path="manager/bhaktas" element={<RolePortal role="manager" section="bhaktas" />} />
+            <Route path="manager/bhaktas/:bhaktaId" element={<RolePortal role="manager" section="bhakta-detail" />} />
+            <Route path="manager/staff" element={<RolePortal role="manager" section="staff" />} />
+            <Route path="manager/users" element={<Navigate to="../staff" relative="path" replace />} />
             <Route path="manager/events" element={<RolePortal role="manager" section="events" />} />
             <Route path="manager/events/new" element={<RolePortal role="manager" section="event-editor" />} />
             <Route path="manager/events/:eventId" element={<RolePortal role="manager" section="event-editor" />} />
@@ -116,10 +125,11 @@ function AppLayout() {
             <Route path="manager/gallery/:eventId" element={<RolePortal role="manager" section="gallery-event" />} />
           </Route>
           <Route element={<ProtectedRoute allowedRoles={["admin", "manager", "priest"]} />}>
-            <Route path="priest" element={<RolePortal role="priest" section="overview" />} />
+            {/* Overview is switched off: <Route path="priest" element={<RolePortal role="priest" section="overview" />} /> */}
+            <Route path="priest" element={<Navigate to="bookings" replace />} />
             <Route path="priest/sevas" element={<RolePortal role="priest" section="sevas" />} />
             <Route path="priest/bookings" element={<RolePortal role="priest" section="bookings" />} />
-            <Route path="priest/calendar" element={<RolePortal role="priest" section="calendar" />} />
+            <Route path="priest/calendar" element={<Navigate to="../bookings" relative="path" replace />} />
             <Route path="priest/calendar/:bookingDate" element={<RolePortal role="priest" section="calendar-detail" />} />
           </Route>
 

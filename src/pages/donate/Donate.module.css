@@ -370,6 +370,33 @@ textarea.input {
   color: var(--danger);
 }
 
+.taxNote {
+  margin-top: 0.5rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: 10px;
+  background: var(--success-soft);
+  color: var(--ink-2);
+  font-size: 0.87rem;
+  line-height: 1.55;
+}
+
+.taxNoteWarn {
+  margin-top: 0.5rem;
+}
+
+.signatory {
+  display: grid;
+  justify-items: end;
+  gap: 0.1rem;
+  font-weight: 600;
+}
+
+.signatory span {
+  color: var(--ink-2);
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+
 .statusBody {
   max-width: 56ch;
   color: var(--ink-2);
