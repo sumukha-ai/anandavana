@@ -46,11 +46,11 @@ export function LotusRule({ tone = "antique", align = "center", className = "" }
   );
 }
 
-/** The traditional salutation to the Gurus that opens a text or a gathering. */
+/** The Samsthana's salutation to the Sadguru that opens a text or a gathering. */
 export function Invocation({ tone = "antique", className = "" }) {
   return (
     <p className={`${styles.invocation} ${styles[`tone-${tone}`]} ${className}`} lang="kn">
-      ॥ ಶ್ರೀ ಗುರುಭ್ಯೋ ನಮಃ ॥
+      ॥ ಶ್ರೀ ಶೇಷಾಚಲ ಸದ್ಗುರುರ್ವಿಜಯತೆ ತರಾಮ್ ॥
     </p>
   );
 }
