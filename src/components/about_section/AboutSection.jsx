@@ -1,10 +1,9 @@
-import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styles from "./AboutSection.module.css";
-import aboutImg from "../../../assets/bg5.JPG";
-import AOS from "aos";
-import "aos/dist/aos.css";
-import { Sparkles, HeartHandshake, ShieldCheck } from "lucide-react";
+import aboutImg from "../../../assets/lineage/kshetra.webp";
+import { AnnadanaIcon, ArchFrame, ChatraIcon, DeepaIcon, LotusRule } from "../ornaments/Ornaments";
+
+const POINT_ICONS = [DeepaIcon, AnnadanaIcon, ChatraIcon];
 
 const EN_CONTENT = {
   title: "The spirit of Anandavana",
@@ -57,95 +56,32 @@ export default function AboutSection() {
   const language = lang === "kn" ? "kn" : "en";
   const content = language === "kn" ? KN_CONTENT : EN_CONTENT;
 
-  useEffect(() => {
-    AOS.init({
-      duration: 950,
-      once: true,
-      offset: 90,
-      easing: "ease-out-cubic",
-    });
-  }, []);
-
   return (
-    <section className={styles.aboutSection}>
-      <div className={styles.bgGlow}></div>
-      <div className={styles.pattern}></div>
-
+    <section className={styles.aboutSection} aria-labelledby="about-title">
       <div className={styles.container}>
-        <div
-          className={styles.sectionHeader}
-          data-aos="fade-up"
-          lang={language}
-        >
-          <h2 className={styles.title}>{content.title}</h2>
-          <p className={styles.subtitle}>{content.subtitle}</p>
-        </div>
+        <div className={styles.split}>
+          <ArchFrame src={aboutImg} alt={content.imageAlt} className={styles.arch} position="center 30%" />
 
-        <div className={styles.splitLayout}>
-          <div className={styles.imageColumn} data-aos="fade-right">
-            <div className={styles.imageFrame}>
-              <img
-                src={aboutImg}
-                alt={content.imageAlt}
-                loading="lazy"
-                className={styles.aboutImage}
-              />
-              <div className={styles.imageOverlay}></div>
-            </div>
-          </div>
-
-          <div className={styles.contentColumn} data-aos="fade-left">
-            <div className={styles.textCard} lang={language}>
-              <div className={styles.contentIntro}>
-                <p className={styles.mainText}>{content.mainText}</p>
-              </div>
-
-              <div className={styles.pointsGrid}>
-                <div
-                  className={styles.pointCard}
-                  data-aos="fade-up"
-                  data-aos-delay="80"
-                >
-                  <div className={styles.iconWrap}>
-                    <Sparkles size={20} strokeWidth={1.8} />
-                  </div>
-                  <div>
-                    <h3 className={styles.pointTitle}>{content.points[0].title}</h3>
-                    <p className={styles.pointText}>{content.points[0].text}</p>
-                  </div>
-                </div>
-
-                <div
-                  className={styles.pointCard}
-                  data-aos="fade-up"
-                  data-aos-delay="160"
-                >
-                  <div className={styles.iconWrap}>
-                    <HeartHandshake size={20} strokeWidth={1.8} />
-                  </div>
-                  <div>
-                    <h3 className={styles.pointTitle}>{content.points[1].title}</h3>
-                    <p className={styles.pointText}>{content.points[1].text}</p>
-                  </div>
-                </div>
-
-                <div
-                  className={styles.pointCard}
-                  data-aos="fade-up"
-                  data-aos-delay="240"
-                >
-                  <div className={styles.iconWrap}>
-                    <ShieldCheck size={20} strokeWidth={1.8} />
-                  </div>
-                  <div>
-                    <h3 className={styles.pointTitle}>{content.points[2].title}</h3>
-                    <p className={styles.pointText}>{content.points[2].text}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div className={styles.textColumn} lang={language}>
+            <h2 id="about-title" className={styles.title}>{content.title}</h2>
+            <p className={styles.subtitle}>{content.subtitle}</p>
+            <LotusRule align="start" className={styles.rule} />
+            <p className={styles.mainText}>{content.mainText}</p>
           </div>
         </div>
+
+        <ul className={styles.offerings} lang={language}>
+          {content.points.map((point, index) => {
+            const Icon = POINT_ICONS[index];
+            return (
+              <li key={point.title} className={styles.offering}>
+                <Icon size={30} strokeWidth={1.3} className={styles.offeringIcon} />
+                <h3 className={styles.offeringTitle}>{point.title}</h3>
+                <p className={styles.offeringText}>{point.text}</p>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </section>
   );

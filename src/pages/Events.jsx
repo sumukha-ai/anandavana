@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, CalendarDays, Clock3, Images, Phone } from "lucide-react";
 import { useI18n } from "../i18n/useI18n";
+import { LotusRule } from "../components/ornaments/Ornaments";
 import shop from "./shop/Shop.module.css";
 import styles from "./Events.module.css";
 import { Breadcrumbs, ErrorState } from "./shop/ShopParts";
@@ -22,12 +23,13 @@ export function WhenChip({ event, today, t }) {
   return <span className={`${styles.chip} ${styles.chipSoon}`}>{label}</span>;
 }
 
-function DateBadge({ event, lang }) {
-  const { day, month } = dateBadge(event, lang);
+function DateBadge({ event, lang, className = "" }) {
+  const { day, month, weekday } = dateBadge(event, lang);
   return (
-    <span className={styles.dateBadge} aria-hidden="true">
-      <strong>{day}</strong>
-      <span>{month}</span>
+    <span className={`${styles.dateBadge} ${className}`} aria-hidden="true">
+      <span className={styles.dateMonth}>{month}</span>
+      <strong className={styles.dateDay}>{day}</strong>
+      {weekday ? <span className={styles.dateWeekday}>{weekday}</span> : null}
     </span>
   );
 }
@@ -36,31 +38,31 @@ function EventCard({ event, lang, t, today, past }) {
   const path = `/${lang}/events/${event.slug}`;
   const days = eventDayCount(event);
   return (
-    <article className={`${shop.card} ${styles.card}`}>
-      <div className={shop.cardMedia}>
-        <img src={eventCover(event)} alt="" loading="lazy" width="1200" height="900" />
-        <DateBadge event={event} lang={lang} />
-        {past && event.image_count ? (
-          <span className={styles.photoCount}>
-            <Images size={14} aria-hidden="true" />
-            {event.image_count === 1 ? t("onePhoto") : interpolate(t("photos"), { n: event.image_count })}
-          </span>
-        ) : null}
-      </div>
-      <div className={shop.cardBody}>
+    <article className={styles.card}>
+      <DateBadge event={event} lang={lang} />
+      <div className={styles.cardBody}>
         <div className={styles.cardMeta}>
           <span className={styles.category}>{t(`category.${event.category}`, t("category.other"))}</span>
           {!past ? <WhenChip event={event} today={today} t={t} /> : null}
         </div>
-        <h3 className={shop.cardTitle}>
+        <h3 className={styles.cardTitle}>
           <Link to={path}>{event.title}</Link>
         </h3>
         <p className={styles.cardDate}>
           <CalendarDays size={15} aria-hidden="true" />
           {formatEventRange(event, lang)}
           {days > 1 ? <span className={styles.muted}> · {interpolate(t("days"), { n: days })}</span> : null}
+          {past && event.image_count ? (
+            <span className={styles.photoCount}>
+              <Images size={14} aria-hidden="true" />
+              {event.image_count === 1 ? t("onePhoto") : interpolate(t("photos"), { n: event.image_count })}
+            </span>
+          ) : null}
         </p>
-        {event.summary ? <p className={shop.cardText}>{event.summary}</p> : null}
+        {event.summary ? <p className={styles.cardText}>{event.summary}</p> : null}
+      </div>
+      <div className={styles.cardMedia}>
+        <img src={eventCover(event)} alt="" loading="lazy" width="1200" height="900" />
       </div>
     </article>
   );
@@ -74,10 +76,15 @@ function FeaturedEvent({ event, lang, t, today }) {
         <img src={eventCover(event)} alt="" width="1600" height="1000" />
       </Link>
       <div className={styles.featuredBody}>
-        <p className={styles.eyebrow}>{isHappeningNow(event, today) ? t("happeningNow") : t("nextUp")}</p>
-        <div className={styles.cardMeta}>
-          <span className={styles.category}>{t(`category.${event.category}`, t("category.other"))}</span>
-          <WhenChip event={event} today={today} t={t} />
+        <div className={styles.featuredHead}>
+          <DateBadge event={event} lang={lang} className={styles.dateBadgeLarge} />
+          <div className={styles.featuredMeta}>
+            <p className={styles.featuredStatus}>{isHappeningNow(event, today) ? t("happeningNow") : t("nextUp")}</p>
+            <div className={styles.cardMeta}>
+              <span className={styles.category}>{t(`category.${event.category}`, t("category.other"))}</span>
+              <WhenChip event={event} today={today} t={t} />
+            </div>
+          </div>
         </div>
         <h2 className={styles.featuredTitle}>
           <Link to={path}>{event.title}</Link>
@@ -104,14 +111,14 @@ function FeaturedEvent({ event, lang, t, today }) {
 
 function GridSkeleton({ count = 3 }) {
   return (
-    <div className={shop.grid} aria-busy="true">
+    <div className={styles.list} aria-busy="true">
       {Array.from({ length: count }, (_, index) => (
-        <div key={index} className={shop.skeletonCard} aria-hidden="true">
-          <div className={`${shop.skeleton} ${shop.skeletonMedia}`} />
-          <div className={shop.skeletonLines}>
-            <div className={`${shop.skeleton} ${shop.skeletonLine}`} style={{ width: "40%" }} />
-            <div className={`${shop.skeleton} ${shop.skeletonLine}`} style={{ width: "70%" }} />
-            <div className={`${shop.skeleton} ${shop.skeletonLine}`} />
+        <div key={index} className={styles.skeletonRow} aria-hidden="true">
+          <div className={`${shop.skeleton} ${styles.skeletonLeaf}`} />
+          <div className={styles.skeletonLines}>
+            <div className={`${shop.skeleton} ${styles.skeletonLine}`} style={{ width: "30%" }} />
+            <div className={`${shop.skeleton} ${styles.skeletonLine}`} style={{ width: "65%" }} />
+            <div className={`${shop.skeleton} ${styles.skeletonLine}`} style={{ width: "85%" }} />
           </div>
         </div>
       ))}
@@ -137,12 +144,13 @@ export default function Events() {
   const pastGroups = groupByYear(past.events);
 
   return (
-    <div className={shop.shop} lang={lang}>
+    <div className={`${shop.shop} ${styles.page}`} lang={lang}>
       <div className={shop.container}>
         <Breadcrumbs items={[{ label: t("home"), to: `/${lang}` }, { label: t("events") }]} />
-        <header className={shop.pageHeader}>
-          <h1 className={shop.pageTitle}>{t("title")}</h1>
-          <p className={shop.pageIntro}>{t("intro")}</p>
+        <header className={`${shop.pageHeader} ${styles.pageHeader}`}>
+          <h1 className={`${shop.pageTitle} ${styles.pageTitle}`}>{t("title")}</h1>
+          <p className={`${shop.pageIntro} ${styles.pageIntro}`}>{t("intro")}</p>
+          <LotusRule align="start" className={styles.headerRule} />
         </header>
 
         {upcoming.status === "loading" ? (
@@ -169,8 +177,8 @@ export default function Events() {
 
         {rest.length ? (
           <section className={styles.section}>
-            <h2 className={shop.sectionTitle}>{t("comingUp")}</h2>
-            <div className={shop.grid}>
+            <h2 className={`${shop.sectionTitle} ${styles.sectionTitle}`}>{t("comingUp")}</h2>
+            <div className={styles.list}>
               {rest.map((event) => (
                 <EventCard key={event.id} event={event} lang={lang} t={t} today={upcoming.today} />
               ))}
@@ -180,19 +188,19 @@ export default function Events() {
 
         {past.status === "loading" ? (
           <section className={styles.section}>
-            <h2 className={shop.sectionTitle}>{t("pastTitle")}</h2>
+            <h2 className={`${shop.sectionTitle} ${styles.sectionTitle}`}>{t("pastTitle")}</h2>
             <GridSkeleton />
           </section>
         ) : past.status === "ready" && pastGroups.length ? (
           <section className={styles.section}>
             <div className={styles.sectionHead}>
-              <h2 className={shop.sectionTitle}>{t("pastTitle")}</h2>
+              <h2 className={`${shop.sectionTitle} ${styles.sectionTitle}`}>{t("pastTitle")}</h2>
               <p className={styles.sectionIntro}>{t("pastIntro")}</p>
             </div>
             {pastGroups.map((group) => (
               <div key={group.year} className={styles.yearGroup}>
                 <h3 className={styles.yearLabel}>{group.year}</h3>
-                <div className={shop.grid}>
+                <div className={styles.list}>
                   {group.events.map((event) => (
                     <EventCard key={event.id} event={event} lang={lang} t={t} today={past.today} past />
                   ))}

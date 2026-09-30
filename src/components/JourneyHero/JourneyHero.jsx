@@ -4,6 +4,8 @@ import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import styles from "./JourneyHero.module.css";
 import guruImg from "../../../assets/sheshachalaru_lingu.jpg.jpeg";
+import { Invocation, LotusRule } from "../ornaments/Ornaments";
+import { useI18n } from "../../i18n/useI18n";
 
 import frame0001 from "../../../assets/frames/frame-0001.webp";
 import frame0002 from "../../../assets/frames/frame-0002.webp";
@@ -211,14 +213,16 @@ const FRAME_IMAGES = [
 
 const CONTENT = {
   en: {
-    topLine: "SRI KSHETRA",
-    bottomLine: "ANANDAVANA",
+    topLine: "Sri Kshetra",
+    bottomLine: "Anandavana",
+    scrollCue: "Scroll to enter the kshetra",
     guruAlt: "Guru of Sri Kshetra Anandavana",
     outro: " ",
   },
   kn: {
     topLine: "ಶ್ರೀ ಕ್ಷೇತ್ರ",
     bottomLine: "ಆನಂದವನ",
+    scrollCue: "ಕ್ಷೇತ್ರವನ್ನು ಪ್ರವೇಶಿಸಲು ಕೆಳಗೆ ಸರಿಸಿ",
     guruAlt: "ಶ್ರೀ ಕ್ಷೇತ್ರ ಆನಂದವನದ ಗುರು",
     outro: " ",
   },
@@ -233,6 +237,7 @@ export default function JourneyHero() {
   const { lang } = useParams();
   const language = lang === "kn" ? "kn" : "en";
   const content = CONTENT[language];
+  const { t: tNav } = useI18n("navbar");
 
   const wrapperRef = useRef(null);
   const pinRef = useRef(null);
@@ -449,7 +454,7 @@ export default function JourneyHero() {
               <div className={styles.loadingBar}>
                 <span
                   className={styles.loadingProgress}
-                  style={{ width: `${loadingProgress}%` }}
+                  style={{ transform: `scaleX(${loadingProgress / 100})` }}
                 />
               </div>
             </div>
@@ -463,8 +468,20 @@ export default function JourneyHero() {
           lang={language}
         >
           <div className={styles.heroContent}>
-            <p className={styles.topLine}>{content.topLine}</p>
-            <h1 className={styles.bottomLine}>{content.bottomLine}</h1>
+            <Invocation tone="gold" className={styles.invocation} />
+            <h1 className={styles.heroTitle}>
+              <span className={styles.topLine}>{content.topLine}</span>
+              <span className={styles.bottomLine}>{content.bottomLine}</span>
+            </h1>
+            <LotusRule tone="gold" className={styles.heroRule} />
+            <p className={styles.heroSub}>
+              {tNav("brandTitle")}
+              <span className={styles.heroSubPlace}>{tNav("brandSubtitle")}</span>
+            </p>
+          </div>
+          <div className={styles.scrollCue} aria-hidden="true">
+            <span className={styles.scrollCueLine} />
+            <span className={styles.scrollCueText}>{content.scrollCue}</span>
           </div>
         </div>
 

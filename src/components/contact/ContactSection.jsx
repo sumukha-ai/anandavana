@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import styles from "./ContactSection.module.css";
-import { MapPin, Phone, Mail } from "lucide-react";
+import { ArrowUpRight, MapPin, Phone, Mail } from "lucide-react";
+import { LotusRule } from "../ornaments/Ornaments";
 
 const EN_CONTENT = {
   title: "Visit Anandavana",
@@ -34,72 +35,63 @@ export default function ContactSection() {
   const content = language === "kn" ? KN_CONTENT : EN_CONTENT;
 
   return (
-    <section className={styles.contactSection}>
+    <section className={styles.contactSection} aria-labelledby="visit-title">
       <div className={styles.container}>
-        <div className={styles.sectionHeader} lang={language}>
-          <h2 className={styles.title}>{content.title}</h2>
+        <div className={styles.infoColumn} lang={language}>
+          <h2 id="visit-title" className={styles.title}>{content.title}</h2>
           <p className={styles.subtitle}>{content.subtitle}</p>
-        </div>
+          <LotusRule align="start" className={styles.rule} />
 
-        <div className={styles.contactGrid}>
-          <div className={styles.mapWrap}>
-            <iframe
-              title={content.mapTitle}
-              src="https://www.google.com/maps?q=Anandavana%20Agadi%20Haveri%20Karnataka&z=15&output=embed"
-              loading="lazy"
-              allowFullScreen
-              referrerPolicy="no-referrer-when-downgrade"
-              className={styles.mapFrame}
-            ></iframe>
-          </div>
-
-          <div className={styles.infoCard} lang={language}>
+          <dl className={styles.infoList}>
             <div className={styles.infoItem}>
-              <div className={styles.iconWrap}>
-                <MapPin size={20} strokeWidth={1.8} />
-              </div>
-              <div>
-                <h3 className={styles.infoTitle}>{content.addressLabel}</h3>
-                <p className={styles.infoText}>{content.addressValue}</p>
-              </div>
+              <dt className={styles.infoTitle}>
+                <MapPin size={17} strokeWidth={1.7} aria-hidden="true" />
+                {content.addressLabel}
+              </dt>
+              <dd className={styles.infoText}>{content.addressValue}</dd>
             </div>
-
             <div className={styles.infoItem}>
-              <div className={styles.iconWrap}>
-                <Phone size={20} strokeWidth={1.8} />
-              </div>
-              <div>
-                <h3 className={styles.infoTitle}>{content.phoneLabel}</h3>
-                <a href="tel:+919741585030" className={styles.infoLink}>
-                  {content.phoneValue}
-                </a>
-              </div>
+              <dt className={styles.infoTitle}>
+                <Phone size={17} strokeWidth={1.7} aria-hidden="true" />
+                {content.phoneLabel}
+              </dt>
+              <dd className={styles.infoText}>
+                <a href="tel:+919741585030" className={styles.infoLink}>{content.phoneValue}</a>
+              </dd>
             </div>
-
             <div className={styles.infoItem}>
-              <div className={styles.iconWrap}>
-                <Mail size={20} strokeWidth={1.8} />
-              </div>
-              <div>
-                <h3 className={styles.infoTitle}>{content.emailLabel}</h3>
-                <a
-                  href="mailto:shreekshethraanandavana@gmail.com"
-                  className={styles.infoLink}
-                >
+              <dt className={styles.infoTitle}>
+                <Mail size={17} strokeWidth={1.7} aria-hidden="true" />
+                {content.emailLabel}
+              </dt>
+              <dd className={styles.infoText}>
+                <a href="mailto:shreekshethraanandavana@gmail.com" className={styles.infoLink}>
                   {content.emailValue}
                 </a>
-              </div>
+              </dd>
             </div>
+          </dl>
 
-            <a
-              href="https://www.google.com/maps/search/?api=1&query=Anandavana+Agadi+Haveri+Karnataka"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.mapButton}
-            >
-              {content.mapButton}
-            </a>
-          </div>
+          <a
+            href="https://www.google.com/maps/search/?api=1&query=Anandavana+Agadi+Haveri+Karnataka"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.mapButton}
+          >
+            <span>{content.mapButton}</span>
+            <ArrowUpRight size={17} aria-hidden="true" />
+          </a>
+        </div>
+
+        <div className={styles.mapWrap}>
+          <iframe
+            title={content.mapTitle}
+            src="https://www.google.com/maps?q=Anandavana%20Agadi%20Haveri%20Karnataka&z=15&output=embed"
+            loading="lazy"
+            allowFullScreen
+            referrerPolicy="no-referrer-when-downgrade"
+            className={styles.mapFrame}
+          ></iframe>
         </div>
       </div>
     </section>

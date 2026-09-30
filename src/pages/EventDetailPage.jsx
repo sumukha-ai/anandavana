@@ -39,7 +39,7 @@ export default function EventDetailPage() {
 
   if (status === "loading") {
     return (
-      <div className={shop.shop} lang={lang}>
+      <div className={`${shop.shop} ${styles.page}`} lang={lang}>
         <div className={shop.container}>
           <Breadcrumbs items={[...crumbs, { label: "…" }]} />
           <div className={styles.detailHero} aria-busy="true">
@@ -56,7 +56,7 @@ export default function EventDetailPage() {
 
   if (status !== "ready" || !event) {
     return (
-      <div className={shop.shop} lang={lang}>
+      <div className={`${shop.shop} ${styles.page}`} lang={lang}>
         <div className={shop.narrow}>
           {status === "error" ? (
             <ErrorState title={t("loadErrorTitle")} body={t("loadErrorBody")} onRetry={retry} t={t}>
@@ -87,7 +87,7 @@ export default function EventDetailPage() {
     .filter(Boolean);
 
   return (
-    <div className={shop.shop} lang={lang}>
+    <div className={`${shop.shop} ${styles.page}`} lang={lang}>
       <div className={shop.container}>
         <Breadcrumbs items={[...crumbs, { label: event.title }]} />
 
@@ -152,7 +152,7 @@ export default function EventDetailPage() {
             <div className={styles.prose}>
               {paragraphs.length ? (
                 <>
-                  <h2 className={shop.sectionTitle}>{t("about")}</h2>
+                  <h2 className={`${shop.sectionTitle} ${styles.sectionTitle}`}>{t("about")}</h2>
                   {paragraphs.map((text, index) => (
                     <p key={index}>{text}</p>
                   ))}
@@ -163,7 +163,7 @@ export default function EventDetailPage() {
             <div className={styles.aside}>
               {event.highlights?.length ? (
                 <div>
-                  <h2 className={shop.sectionTitle}>{t("highlights")}</h2>
+                  <h2 className={`${shop.sectionTitle} ${styles.sectionTitle}`}>{t("highlights")}</h2>
                   <ul className={styles.highlights}>
                     {event.highlights.map((item, index) => (
                       <li key={index}>
@@ -176,7 +176,7 @@ export default function EventDetailPage() {
               ) : null}
               {event.details?.length ? (
                 <div>
-                  <h2 className={shop.sectionTitle}>{t("details")}</h2>
+                  <h2 className={`${shop.sectionTitle} ${styles.sectionTitle}`}>{t("details")}</h2>
                   <dl className={styles.details}>
                     {event.details.map((item, index) => (
                       <div key={index}>
@@ -203,7 +203,7 @@ export default function EventDetailPage() {
         {images.length ? (
           <section className={styles.section}>
             <div className={styles.sectionHead}>
-              <h2 className={shop.sectionTitle}>{t("gallery")}</h2>
+              <h2 className={`${shop.sectionTitle} ${styles.sectionTitle}`}>{t("gallery")}</h2>
               <p className={styles.sectionIntro}>{images.length === 1 ? t("onePhoto") : interpolate(t("photos"), { n: images.length })}</p>
             </div>
             <PhotoGrid images={images} t={t} label={event.title} />

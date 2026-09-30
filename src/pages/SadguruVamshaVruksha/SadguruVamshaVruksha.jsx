@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import PageHero from "../../components/PageHero/PageHero";
 import bgImg from "../../../assets/pancyatana.jpg.jpeg";
 import styles from "./SadguruVamshaVruksha.module.css";
+import { LotusMark, LotusRule } from "../../components/ornaments/Ornaments";
 
 import guru1 from "../../../assets/sheshachalaru_lingu.jpg.jpeg";
 import guru2 from "../../../assets/sheshachalaru_lingu.jpg.jpeg";
@@ -131,46 +132,45 @@ export default function SadguruVamshaVruksha() {
 
       <section className={styles.pageSection}>
         <div className={styles.introWrap} lang={language}>
+          <LotusRule />
           <h2 className={styles.pageTitle}>{pageContent.pageTitle}</h2>
           <p className={styles.pageIntro}>{pageContent.pageIntro}</p>
         </div>
 
-        <div className={styles.timeline}>
+        {/* Generations descend along one gilt spine, alternating sides on wide screens */}
+        <ol className={styles.tree}>
           {lineage.map((member, index) => (
-            <article
+            <li
               key={member.id}
-              className={`${styles.guruRow} ${
-                index % 2 !== 0 ? styles.reverse : ""
-              }`}
+              className={`${styles.generation} ${index % 2 !== 0 ? styles.reverse : ""}`}
             >
-              <div className={styles.imageCol}>
-                <div className={styles.imageFrame}>
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className={styles.guruImage}
-                    loading={index === 0 ? "eager" : "lazy"}
-                  />
-                  <span className={styles.guruId}>{member.id}</span>
-                </div>
+              <div className={styles.medallion}>
+                <img
+                  src={member.image}
+                  alt={member.name}
+                  className={styles.portrait}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                />
               </div>
 
-              <div className={styles.contentCol}>
-                <div className={styles.contentCard} lang={language}>
-                  <h3 className={styles.guruName}>{member.name}</h3>
-                  <p className={styles.role}>{member.role}</p>
-                  <p className={styles.description}>{member.description}</p>
+              <div className={styles.content} lang={language}>
+                <h3 className={styles.guruName}>{member.name}</h3>
+                <p className={styles.role}>{member.role}</p>
+                <p className={styles.description}>{member.description}</p>
 
-                  {member.quote ? (
-                    <blockquote className={styles.quote}>
-                      “{member.quote}”
-                    </blockquote>
-                  ) : null}
-                </div>
+                {member.quote ? (
+                  <blockquote className={styles.quote}>
+                    <LotusMark className={styles.quoteMark} width={32} />
+                    <p>{member.quote}</p>
+                  </blockquote>
+                ) : null}
               </div>
-            </article>
+            </li>
           ))}
-        </div>
+        </ol>
+
+        <LotusRule className={styles.closingRule} />
       </section>
     </>
   );

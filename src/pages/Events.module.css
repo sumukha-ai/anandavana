@@ -1,7 +1,83 @@
-/* Events: public festival listing and event detail. Built on the shop layer tokens (Shop.module.css .shop). */
+/* Events: public festival listing and event detail. Built on the shop layer (Shop.module.css .shop),
+   retoned here to the matha's paper, gilt hairlines and sacred type. */
+
+/* ---------- Page tone (overrides the shop tokens for these pages only) ---------- */
+
+.page.page {
+  --ink: var(--accent-deep);
+  --ink-2: var(--text-body);
+  --ink-3: var(--text-muted);
+  --line: var(--line-gold);
+  --line-strong: rgba(154, 116, 32, 0.5);
+  --canvas: var(--bg-primary);
+  --surface: #fbf6ec;
+  --brand: var(--accent-saffron);
+  --brand-hover: #9b4a15;
+  --accent: var(--accent-saffron);
+  --accent-ink: #8f4410;
+  --accent-soft: rgba(184, 92, 30, 0.08);
+  --radius: 3px;
+  --radius-sm: 999px;
+  --shadow-card: none;
+  --shadow-lift: none;
+  --leaf-bg: #fbf6ec;
+
+  background-color: var(--bg-primary);
+  background-image: var(--kolam-antique);
+}
+
+.page .pageHeader {
+  margin-bottom: clamp(2.25rem, 5vw, 3rem);
+}
+
+.page .pageTitle {
+  font-family: var(--font-sacred);
+  font-weight: 400;
+  font-size: clamp(2.3rem, 4.6vw, 3.4rem);
+  line-height: 1.08;
+  color: var(--accent-deep);
+}
+
+.page .pageTitle:lang(kn) {
+  line-height: 1.32;
+}
+
+.page .pageIntro {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text-body);
+}
+
+.page .pageIntro:lang(kn) {
+  line-height: 1.95;
+}
+
+.headerRule {
+  margin-top: 0.5rem;
+}
+
+.page .sectionTitle {
+  margin: 0;
+  font-family: var(--font-sacred);
+  font-weight: 400;
+  font-size: clamp(1.6rem, 2.6vw, 2rem);
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: var(--accent-deep);
+}
+
+.page .sectionTitle:lang(kn) {
+  line-height: 1.35;
+}
+
+/* Long button labels must wrap rather than push past a narrow screen */
+.page .actions a,
+.page .emptyUpcoming a {
+  white-space: normal;
+}
 
 .section {
-  margin-top: clamp(2.75rem, 6vw, 4rem);
+  margin-top: clamp(3rem, 6vw, 4.5rem);
   display: grid;
   gap: 1.25rem;
 }
@@ -12,59 +88,62 @@
 }
 
 .sectionIntro {
-  color: var(--ink-2);
-  font-size: 0.95rem;
+  max-width: 62ch;
+  color: var(--text-body);
+  font-size: 1rem;
+  line-height: 1.7;
 }
 
 .muted {
-  color: var(--ink-3);
+  color: var(--text-muted);
 }
 
-/* ---------- Chips ---------- */
+/* ---------- Status marks ---------- */
 
 .cardMeta {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem 0.75rem;
 }
 
 .category {
   font-size: 0.74rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--accent-ink);
+  color: #8f4410;
 }
 
 .category:lang(kn) {
   letter-spacing: 0;
   text-transform: none;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
 }
 
 .chip {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  min-height: 1.6rem;
-  padding: 0 0.6rem;
-  border-radius: 999px;
-  background: #f1ece5;
-  color: var(--ink-2);
-  font-size: 0.76rem;
-  font-weight: 650;
+  min-height: 1.5rem;
+  padding: 0 0.5rem;
+  border: 1px solid var(--line-gold);
+  border-radius: 2px;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
 .chipSoon {
-  background: var(--accent-soft);
-  color: var(--accent-ink);
+  border-color: rgba(143, 68, 16, 0.35);
+  color: #8f4410;
 }
 
 .chipLive {
-  background: var(--success-soft);
-  color: var(--success);
+  border-color: rgba(29, 107, 58, 0.4);
+  color: #1d6b3a;
 }
 
 .liveDot {
@@ -81,55 +160,117 @@
   }
 }
 
-/* ---------- Cards ---------- */
-
-.card .cardMeta {
-  position: relative;
-  z-index: 2;
-}
+/* ---------- Panchanga leaf: the date block ---------- */
 
 .dateBadge {
-  position: absolute;
-  top: 0.8rem;
-  left: 0.8rem;
-  min-width: 3.4rem;
+  flex: none;
+  box-sizing: border-box;
+  width: 4.6rem;
+  margin: 4px;
   display: grid;
   justify-items: center;
-  padding: 0.45rem 0.55rem 0.4rem;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 2px 10px rgba(31, 26, 23, 0.14);
-  line-height: 1.05;
-  color: var(--ink);
+  padding: 0.45rem 0.35rem 0.4rem;
+  background: var(--leaf-bg);
+  border: 1px solid var(--line-gold);
+  outline: 1px solid var(--line-gold);
+  outline-offset: 3px;
+  text-align: center;
+  font-variant-numeric: tabular-nums lining-nums;
+  color: var(--accent-deep);
 }
 
-.dateBadge strong {
-  font-size: 1.35rem;
-  font-weight: 750;
-  font-variant-numeric: tabular-nums;
-}
-
-.dateBadge span {
+.dateMonth {
   font-size: 0.72rem;
-  font-weight: 650;
+  font-weight: 600;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--accent-ink);
+  line-height: 1.3;
+  color: #8f4410;
 }
 
-.photoCount {
+.dateMonth:lang(kn) {
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: 0.78rem;
+}
+
+.dateDay {
+  margin: 0.1rem 0 0.15rem;
+  font-family: var(--font-sacred);
+  font-weight: 400;
+  font-size: 2.1rem;
+  line-height: 1.05;
+}
+
+.dateWeekday {
+  width: 100%;
+  padding-top: 0.2rem;
+  border-top: 1px solid var(--line-gold);
+  font-size: 0.72rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+/* ---------- Event rows (a ledger, not cards) ---------- */
+
+.list {
+  display: grid;
+  border-top: 1px solid var(--line-gold);
+}
+
+.card {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) clamp(7.5rem, 16vw, 11rem);
+  gap: 1rem clamp(1rem, 3vw, 2.25rem);
+  align-items: start;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--line-gold);
+}
+
+.cardBody {
+  min-width: 0;
+  display: grid;
+  gap: 0.5rem;
+  align-content: start;
+}
+
+.cardTitle {
+  margin: 0;
+  font-family: var(--font-sacred);
+  font-weight: 400;
+  font-size: clamp(1.3rem, 2vw, 1.55rem);
+  line-height: 1.25;
+  color: var(--accent-deep);
+}
+
+.cardTitle:lang(kn) {
+  line-height: 1.4;
+}
+
+.cardTitle a {
+  transition: color 0.2s var(--ease-out);
+}
+
+/* The whole row is the link's hit area */
+.cardTitle a::after {
+  content: "";
   position: absolute;
-  right: 0.8rem;
-  bottom: 0.8rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.3rem 0.6rem;
-  border-radius: 999px;
-  background: rgba(31, 26, 23, 0.72);
-  color: #fff;
-  font-size: 0.76rem;
-  font-weight: 600;
+  inset: 0;
+  z-index: 1;
+}
+
+.card:hover .cardTitle a {
+  color: #8f4410;
+}
+
+.cardTitle a:focus-visible {
+  outline: none;
+}
+
+.cardTitle a:focus-visible::after {
+  outline: 2px solid var(--accent-saffron);
+  outline-offset: 2px;
 }
 
 .cardDate {
@@ -137,84 +278,224 @@
   align-items: center;
   gap: 0.45rem;
   flex-wrap: wrap;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 600;
-  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  color: var(--accent-deep);
 }
 
 .cardDate svg {
-  color: var(--accent);
+  color: var(--gold-antique);
 }
 
-/* ---------- Featured (next event) ---------- */
+.photoCount {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-left: 0.4rem;
+  padding-left: 0.75rem;
+  border-left: 1px solid var(--line-gold);
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.cardText {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-width: 62ch;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--text-body);
+}
+
+.cardText:lang(kn) {
+  line-height: 1.95;
+}
+
+.cardMedia {
+  padding: 4px;
+  background: var(--leaf-bg);
+  border: 1px solid var(--line-gold);
+  transition: border-color 0.25s var(--ease-out);
+}
+
+.cardMedia img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 1px;
+  background: #e9dcc6;
+}
+
+.card:hover .cardMedia {
+  border-color: var(--gold-antique);
+}
+
+/* Row skeletons */
+
+.skeletonRow {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1rem clamp(1rem, 3vw, 2.25rem);
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--line-gold);
+}
+
+.skeletonLeaf {
+  width: 4.6rem;
+  height: 5.6rem;
+  margin: 4px;
+  border-radius: 0;
+}
+
+.skeletonLines {
+  display: grid;
+  align-content: start;
+  gap: 0.7rem;
+  padding-top: 0.3rem;
+}
+
+.skeletonLine {
+  height: 0.9rem;
+}
+
+/* ---------- Featured (next event): a temple-wood panel ---------- */
 
 .featured {
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: calc(var(--radius) + 4px);
-  overflow: hidden;
-  box-shadow: var(--shadow-card);
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  padding: clamp(0.85rem, 2.2vw, 1.5rem);
+  background-color: var(--bg-temple);
+  background-image: var(--kolam-gold);
+  color: var(--ink-on-temple);
+  border: 1px solid rgba(224, 178, 79, 0.42);
+  outline: 1px solid var(--line-gold);
+  outline-offset: 5px;
 }
 
 .featuredMedia {
   position: relative;
-  min-height: 100%;
   aspect-ratio: 16 / 11;
-  background: #efe8dd;
+  background: #3a1d10;
+  border: 1px solid rgba(224, 178, 79, 0.45);
   overflow: hidden;
 }
 
 .featuredMedia img {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  inset: 5px;
+  width: calc(100% - 10px);
+  height: calc(100% - 10px);
   object-fit: cover;
-  transition: transform 0.8s var(--ease-out);
+  transition: transform 1.2s var(--ease-out);
 }
 
 .featured:hover .featuredMedia img {
-  transform: scale(1.03);
+  transform: scale(1.02);
 }
 
 .featuredBody {
+  min-width: 0;
   display: grid;
   align-content: center;
   justify-items: start;
-  gap: 0.9rem;
-  padding: clamp(1.5rem, 4vw, 3rem);
+  gap: 1rem;
+  padding: clamp(0.25rem, 2vw, 1.5rem) clamp(0.25rem, 2vw, 1.5rem) clamp(0.5rem, 2vw, 1.5rem) 0;
 }
 
-.eyebrow {
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-3);
+.featuredHead {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
 }
 
-.eyebrow:lang(kn) {
-  letter-spacing: 0;
-  text-transform: none;
-  font-size: 0.88rem;
+.featuredMeta {
+  min-width: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.featuredStatus {
+  font-family: var(--font-sacred);
+  font-style: italic;
+  font-size: 1.15rem;
+  line-height: 1.3;
+  color: var(--gold-leaf);
+}
+
+.featuredStatus:lang(kn) {
+  font-style: normal;
+  line-height: 1.5;
+}
+
+.featured .dateBadgeLarge {
+  --leaf-bg: transparent;
+  width: 5.2rem;
+  border-color: rgba(224, 178, 79, 0.55);
+  outline-color: rgba(224, 178, 79, 0.3);
+  color: #fff7e8;
+}
+
+.featured .dateBadgeLarge .dateMonth {
+  color: var(--gold-leaf);
+}
+
+.featured .dateBadgeLarge .dateDay {
+  font-size: 2.5rem;
+}
+
+.featured .dateBadgeLarge .dateWeekday {
+  border-top-color: rgba(224, 178, 79, 0.3);
+  color: var(--ink-on-temple-soft);
+}
+
+.featured .category {
+  color: var(--gold-leaf);
+}
+
+.featured .chip {
+  border-color: rgba(224, 178, 79, 0.42);
+  color: var(--ink-on-temple);
+}
+
+.featured .chipSoon {
+  color: var(--gold-leaf);
+}
+
+.featured .chipLive {
+  border-color: rgba(168, 220, 176, 0.5);
+  color: #b4e2bb;
 }
 
 .featuredTitle {
-  font-family: var(--font-display);
-  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
-  font-weight: 700;
+  font-family: var(--font-sacred);
+  font-size: clamp(1.9rem, 3.2vw, 2.7rem);
+  font-weight: 400;
   line-height: 1.12;
-  color: var(--ink);
+  color: #fff7e8;
+  text-wrap: balance;
 }
 
 .featuredTitle:lang(kn) {
   line-height: 1.35;
 }
 
+.featuredTitle a {
+  transition: color 0.2s var(--ease-out);
+}
+
 .featuredTitle a:hover {
-  color: var(--accent-ink);
+  color: var(--gold-leaf);
+}
+
+.featured a:focus-visible {
+  outline: 2px solid var(--gold-leaf);
+  outline-offset: 3px;
 }
 
 .featuredDate,
@@ -222,39 +503,45 @@
   display: flex;
   align-items: flex-start;
   gap: 0.55rem;
-  color: var(--ink);
+  font-variant-numeric: tabular-nums;
 }
 
 .featuredDate {
   font-size: 1.08rem;
-  font-weight: 650;
+  font-weight: 600;
+  color: var(--ink-on-temple);
 }
 
 .featuredTimings {
-  font-size: 0.95rem;
-  color: var(--ink-2);
+  font-size: 1rem;
+  color: var(--ink-on-temple-soft);
 }
 
 .featuredDate svg,
 .featuredTimings svg {
   flex: none;
-  margin-top: 0.15rem;
-  color: var(--accent);
+  margin-top: 0.2rem;
+  color: var(--gold-leaf);
 }
 
 .featuredSummary {
   max-width: 48ch;
-  color: var(--ink-2);
-  line-height: 1.7;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--ink-on-temple-soft);
+}
+
+.featuredSummary:lang(kn) {
+  line-height: 1.95;
 }
 
 .featuredAction {
-  margin-top: 0.4rem;
+  margin-top: 0.5rem;
 }
 
 .featuredSkeleton {
   height: clamp(320px, 38vw, 440px);
-  border-radius: calc(var(--radius) + 4px);
+  border-radius: 0;
 }
 
 /* ---------- Empty upcoming ---------- */
@@ -263,33 +550,41 @@
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 1.1rem 1.4rem;
-  padding: clamp(1.4rem, 3vw, 2rem);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
+  gap: 1.1rem 1.6rem;
+  margin: 6px;
+  padding: clamp(1.5rem, 3.5vw, 2.25rem);
+  background: #fbf6ec;
+  border: 1px solid var(--line-gold);
+  outline: 1px solid var(--line-gold);
+  outline-offset: 5px;
 }
 
 .emptyIcon {
-  width: 3rem;
-  height: 3rem;
+  width: 3.1rem;
+  height: 3.1rem;
   display: grid;
   place-items: center;
+  border: 1px solid var(--line-gold);
   border-radius: 50%;
-  background: var(--accent-soft);
-  color: var(--accent-ink);
+  color: var(--accent-saffron);
 }
 
 .emptyTitle {
-  font-weight: 700;
-  font-size: 1.05rem;
-  color: var(--ink);
+  font-family: var(--font-sacred);
+  font-weight: 400;
+  font-size: 1.4rem;
+  line-height: 1.3;
+  color: var(--accent-deep);
+}
+
+.emptyTitle:lang(kn) {
+  line-height: 1.4;
 }
 
 .emptyBody {
-  margin-top: 0.25rem;
-  color: var(--ink-2);
-  line-height: 1.6;
+  margin-top: 0.35rem;
+  color: var(--text-body);
+  line-height: 1.75;
   max-width: 60ch;
 }
 
@@ -297,55 +592,68 @@
 
 .yearGroup {
   display: grid;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .yearGroup + .yearGroup {
-  margin-top: 1.5rem;
+  margin-top: 2rem;
 }
 
 .yearLabel {
   display: flex;
   align-items: center;
   gap: 1rem;
-  font-size: 0.95rem;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  color: var(--ink-3);
+  font-family: var(--font-sacred);
+  font-size: 1.45rem;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums lining-nums;
+  color: var(--gold-antique);
 }
 
 .yearLabel::after {
   content: "";
   flex: 1;
   height: 1px;
-  background: var(--line);
+  background: linear-gradient(90deg, var(--line-gold), transparent);
+}
+
+.yearGroup .list {
+  border-top: 0;
 }
 
 /* ---------- Detail page ---------- */
 
 .detailHero {
-  margin-top: 1.25rem;
+  margin-top: 1.5rem;
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
-  gap: clamp(1.5rem, 4vw, 3.5rem);
+  gap: clamp(1.75rem, 4.5vw, 4rem);
   align-items: start;
 }
 
+/* The cover photograph, mounted in a double gilt frame */
 .detailMedia {
   position: relative;
+  margin: 6px;
   aspect-ratio: 4 / 3;
-  border-radius: 18px;
-  overflow: hidden;
-  background: #efe8dd;
+  padding: 6px;
+  background: #fbf6ec;
+  border: 1px solid var(--line-gold);
+  outline: 1px solid var(--line-gold);
+  outline-offset: 5px;
 }
 
 .detailMedia img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 1px;
+  background: #e9dcc6;
 }
 
 .detailInfo {
+  min-width: 0;
   display: grid;
   gap: 1.1rem;
   align-content: start;
@@ -353,66 +661,70 @@
 }
 
 .detailTitle {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 3.6vw, 2.9rem);
-  font-weight: 700;
+  font-family: var(--font-sacred);
+  font-size: clamp(2.1rem, 3.8vw, 3rem);
+  font-weight: 400;
   line-height: 1.1;
-  letter-spacing: -0.01em;
-  color: var(--ink);
+  color: var(--accent-deep);
+  text-wrap: balance;
 }
 
 .detailTitle:lang(kn) {
-  line-height: 1.3;
+  line-height: 1.32;
 }
 
 .detailLede {
   max-width: 52ch;
-  color: var(--ink-2);
-  font-size: 1.02rem;
-  line-height: 1.7;
+  font-family: var(--font-sacred);
+  font-style: italic;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: #7a4a1f;
+}
+
+.detailLede:lang(kn) {
+  font-style: normal;
+  font-size: 1.08rem;
+  line-height: 1.85;
 }
 
 .factList {
   width: 100%;
   display: grid;
-  gap: 0;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: var(--surface);
+  border-top: 1px solid var(--line-gold);
+  border-bottom: 1px solid var(--line-gold);
 }
 
 .fact {
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 0.85rem;
-  padding: 0.95rem 1.1rem;
+  padding: 0.95rem 0;
 }
 
 .fact + .fact {
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--line-gold);
 }
 
 .factIcon {
-  width: 2.2rem;
-  height: 2.2rem;
   display: grid;
   place-items: center;
-  border-radius: 10px;
-  background: var(--accent-soft);
-  color: var(--accent-ink);
+  width: 1.5rem;
+  height: 1.6rem;
+  color: var(--accent-saffron);
 }
 
 .factLabel {
-  font-size: 0.78rem;
-  font-weight: 650;
-  color: var(--ink-3);
+  font-size: 0.85rem;
+  color: var(--text-muted);
 }
 
 .factValue {
-  margin-top: 0.1rem;
+  margin-top: 0.15rem;
   font-weight: 600;
-  color: var(--ink);
-  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent-deep);
+  line-height: 1.6;
   white-space: pre-line;
 }
 
@@ -423,28 +735,37 @@
 }
 
 .detailBody {
-  margin-top: clamp(2.5rem, 5vw, 3.75rem);
+  margin-top: clamp(3rem, 6vw, 4.5rem);
+  padding-top: clamp(2rem, 4vw, 3rem);
+  border-top: 1px solid var(--line-gold);
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
-  gap: clamp(1.5rem, 4vw, 3.5rem);
+  gap: clamp(1.75rem, 4.5vw, 4rem);
   align-items: start;
 }
 
 .prose {
+  min-width: 0;
   display: grid;
   gap: 1rem;
 }
 
 .prose p {
-  color: var(--ink-2);
-  font-size: 1.02rem;
-  line-height: 1.8;
+  max-width: 65ch;
+  color: var(--text-body);
+  font-size: 1.05rem;
+  line-height: 1.85;
   white-space: pre-line;
 }
 
+.prose p:lang(kn) {
+  line-height: 1.95;
+}
+
 .aside {
+  min-width: 0;
   display: grid;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
 .aside > div {
@@ -454,49 +775,54 @@
 
 .highlights {
   display: grid;
-  gap: 0.6rem;
+  list-style: none;
 }
 
 .highlights li {
   display: flex;
   align-items: flex-start;
-  gap: 0.6rem;
-  color: var(--ink);
-  line-height: 1.5;
+  gap: 0.65rem;
+  padding: 0.7rem 0;
+  color: var(--accent-deep);
+  line-height: 1.6;
+}
+
+.highlights li + li {
+  border-top: 1px solid var(--line-gold);
 }
 
 .highlights svg {
   flex: none;
-  margin-top: 0.2rem;
-  color: var(--accent);
+  margin-top: 0.25rem;
+  color: var(--gold-antique);
 }
 
 .details {
   display: grid;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: var(--surface);
+  border-top: 1px solid var(--line-gold);
+  border-bottom: 1px solid var(--line-gold);
 }
 
 .details > div {
   display: grid;
   grid-template-columns: minmax(7rem, 0.4fr) 1fr;
   gap: 1rem;
-  padding: 0.85rem 1.1rem;
+  padding: 0.85rem 0;
 }
 
 .details > div + div {
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--line-gold);
 }
 
 .details dt {
-  color: var(--ink-3);
-  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-size: 0.92rem;
 }
 
 .details dd {
-  color: var(--ink);
+  color: var(--accent-deep);
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
   overflow-wrap: anywhere;
   white-space: pre-line;
 }
@@ -505,51 +831,57 @@
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  color: var(--accent-ink);
+  color: #8f4410;
   text-decoration: underline;
+  text-decoration-thickness: 1px;
   text-underline-offset: 3px;
 }
 
-/* ---------- Gallery ---------- */
+/* ---------- Photo grid (shared with the Gallery page) ---------- */
 
 .gallery {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1.1rem 0.85rem;
+  gap: 1.5rem 1rem;
   list-style: none;
 }
 
 .galleryFigure {
   display: grid;
-  gap: 0.5rem;
+  gap: 0.6rem;
   align-content: start;
 }
 
+/* Each photograph sits in a gilt mount */
 .galleryItem {
   position: relative;
   display: block;
   width: 100%;
   aspect-ratio: 4 / 3;
-  overflow: hidden;
-  border-radius: 12px;
-  background: #efe8dd;
+  padding: 5px;
+  background: #fbf6ec;
+  border: 1px solid var(--line-gold);
+  border-radius: 2px;
   cursor: zoom-in;
+  transition: border-color 0.25s var(--ease-out);
 }
 
 .galleryItem img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s var(--ease-out);
+  border-radius: 1px;
+  background: #e9dcc6;
 }
 
-.galleryItem:hover img {
-  transform: scale(1.05);
+.galleryItem:hover {
+  border-color: var(--gold-antique);
 }
 
 .galleryItem:focus-visible {
-  outline: 3px solid var(--accent);
-  outline-offset: 2px;
+  outline: 2px solid var(--accent-saffron);
+  outline-offset: 3px;
 }
 
 .galleryCaption {
@@ -557,10 +889,21 @@
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  font-size: 0.88rem;
-  line-height: 1.55;
-  color: var(--ink-2);
+  padding: 0 0.15rem;
+  font-family: var(--font-sacred);
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text-body);
 }
+
+.galleryCaption:lang(kn) {
+  font-style: normal;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+/* ---------- Lightbox: a deep temple-wood scrim ---------- */
 
 .lightbox {
   position: fixed;
@@ -568,17 +911,27 @@
   z-index: 2000;
   display: grid;
   grid-template-rows: auto 1fr auto;
-  background: rgba(14, 10, 8, 0.94);
-  color: #fff;
+  background: rgba(26, 12, 6, 0.94);
+  color: var(--ink-on-temple);
 }
 
 .lightboxTop {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
   padding: 0.9rem 1rem;
-  font-size: 0.9rem;
+  border-bottom: 1px solid rgba(224, 178, 79, 0.18);
+  font-size: 0.92rem;
   font-variant-numeric: tabular-nums;
+  color: var(--ink-on-temple-soft);
+}
+
+.lightboxLabel {
+  font-family: var(--font-sacred);
+  font-weight: 400;
+  font-size: 1.05rem;
+  color: #fff7e8;
 }
 
 .lightboxStage {
@@ -586,43 +939,57 @@
   display: grid;
   place-items: center;
   min-height: 0;
-  padding: 0 4rem;
+  padding: 1rem 4.5rem;
 }
 
 .lightboxStage img {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  border-radius: 6px;
-}
-
-.lightboxLabel {
-  font-weight: 650;
+  border-radius: 1px;
+  outline: 1px solid rgba(224, 178, 79, 0.35);
+  outline-offset: 6px;
 }
 
 .lightboxCaption {
   max-width: 70ch;
   margin: 0 auto;
-  line-height: 1.6;
   min-height: 3.25rem;
-  padding: 0.9rem 1rem 1.25rem;
+  padding: 1rem 1rem 1.25rem;
   text-align: center;
-  color: rgba(255, 255, 255, 0.85);
+  font-family: var(--font-sacred);
+  font-style: italic;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--ink-on-temple);
+}
+
+.lightboxCaption:lang(kn) {
+  font-style: normal;
+  line-height: 1.8;
 }
 
 .lightboxButton {
+  flex: none;
   width: 2.75rem;
   height: 2.75rem;
   display: grid;
   place-items: center;
+  border: 1px solid rgba(224, 178, 79, 0.45);
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-  transition: background 0.15s ease;
+  background: rgba(26, 12, 6, 0.5);
+  color: #fff7e8;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .lightboxButton:hover {
-  background: rgba(255, 255, 255, 0.2);
+  border-color: var(--gold-leaf);
+  background: rgba(224, 178, 79, 0.14);
+}
+
+.lightboxButton:focus-visible {
+  outline: 2px solid var(--gold-leaf);
+  outline-offset: 3px;
 }
 
 .lightboxPrev,
@@ -633,11 +1000,11 @@
 }
 
 .lightboxPrev {
-  left: 0.75rem;
+  left: 0.9rem;
 }
 
 .lightboxNext {
-  right: 0.75rem;
+  right: 0.9rem;
 }
 
 /* ---------- Responsive ---------- */
@@ -649,12 +1016,37 @@
     grid-template-columns: 1fr;
   }
 
+  .featuredBody {
+    padding: 0 0.25rem 0.5rem;
+  }
+
   .gallery {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 640px) {
+  .card {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .cardMedia {
+    grid-column: 2;
+    width: min(100%, 15rem);
+  }
+
+  .dateBadge {
+    width: 4rem;
+  }
+
+  .dateDay {
+    font-size: 1.8rem;
+  }
+
+  .featuredHead {
+    align-items: flex-start;
+  }
+
   .emptyUpcoming {
     grid-template-columns: 1fr;
     justify-items: start;
@@ -665,7 +1057,7 @@
   }
 
   .lightboxStage {
-    padding: 0 0.5rem;
+    padding: 1rem 0.75rem;
   }
 
   .lightboxPrev,
@@ -686,8 +1078,7 @@
     animation: none;
   }
 
-  .featured:hover .featuredMedia img,
-  .galleryItem:hover img {
+  .featured:hover .featuredMedia img {
     transform: none;
   }
 }

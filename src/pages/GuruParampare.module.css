@@ -1,55 +1,100 @@
-.pageSection {
-  background: #ffffff;
-  padding: clamp(4rem, 7vw, 7rem) 0;
+/* ---- Opening ---- */
+
+.introSection {
+  padding: clamp(4.5rem, 8vw, 6.5rem) 0 clamp(3.5rem, 6vw, 5rem);
+  background-color: var(--bg-primary);
+  background-image: var(--kolam-antique);
 }
 
 .introWrap {
-  width: min(900px, calc(100% - 2rem));
-  margin: 0 auto 3.5rem;
+  width: min(46rem, calc(100% - 2.5rem));
+  margin: 0 auto;
   text-align: center;
 }
 
-.kicker {
-  display: inline-block;
-  margin-bottom: 0.85rem;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.26em;
-  text-transform: uppercase;
-  color: #b85c1e;
-}
-
 .pageTitle {
-  margin: 0 0 0.9rem;
-  font-family: var(--font-display, "Playfair Display", serif);
-  font-size: clamp(1.9rem, 4vw, 3.2rem);
-  line-height: 1.12;
-  color: #3f180b;
+  margin: 1.25rem 0 0;
+  font-family: var(--font-sacred);
+  font-weight: 400;
+  font-size: clamp(2.1rem, 4.2vw, 3.3rem);
+  line-height: 1.1;
+  color: var(--accent-deep);
 }
 
 .pageIntro {
-  max-width: 700px;
-  margin: 0 auto;
-  font-size: 1rem;
-  line-height: 1.9;
-  color: rgba(44, 20, 12, 0.72);
+  max-width: 58ch;
+  margin: 1.1rem auto 0;
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: var(--text-body);
 }
 
-.timeline {
-  width: min(1180px, calc(100% - 2rem));
-  margin: 0 auto;
-  display: grid;
-  gap: 2rem;
+/* ---- One band per Guru: temple-wood for the founder, then ivory and sandal ---- */
+
+.guruBand {
+  --arch-bg: var(--bg-primary);
+  --arch-line: var(--line-gold);
+  --arch-finial: var(--gold-antique);
+
+  position: relative;
+  padding: clamp(4rem, 8vw, 6.5rem) 0;
+}
+
+.bandIvory {
+  background-color: var(--bg-primary);
+  background-image: var(--kolam-antique);
+}
+
+.bandSandal {
+  --arch-bg: var(--bg-sandal);
+
+  background-color: var(--bg-sandal);
+}
+
+.bandTemple {
+  --arch-bg: var(--bg-temple);
+  --arch-line: rgba(224, 178, 79, 0.42);
+  --arch-finial: var(--gold-leaf);
+
+  padding-top: clamp(5rem, 9vw, 7.5rem);
+  background-color: var(--bg-temple);
+  background-image:
+    radial-gradient(ellipse 70% 60% at 35% 45%, rgba(184, 92, 30, 0.18), transparent 70%),
+    var(--kolam-gold);
+  color: var(--ink-on-temple);
+}
+
+.bandTemple ::selection {
+  background: rgba(224, 178, 79, 0.4);
+  color: #fff7e8;
+}
+
+.toran {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 .guruRow {
+  width: min(1100px, calc(100% - 2.5rem));
+  margin: 0 auto;
   display: grid;
-  grid-template-columns: 0.95fr 1.05fr;
-  gap: clamp(1.2rem, 2.8vw, 2.8rem);
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(2.5rem, 6vw, 5.5rem);
   align-items: center;
 }
 
-.reverse .imageCol {
+.arch {
+  width: min(100%, 380px);
+  justify-self: center;
+}
+
+.reverse {
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+}
+
+.reverse .arch {
   order: 2;
 }
 
@@ -57,164 +102,155 @@
   order: 1;
 }
 
-.imageCol,
 .contentCol {
   min-width: 0;
 }
 
-.imageFrame {
-  position: relative;
-  aspect-ratio: 3 / 4;   /* Portrait ratio — adjust to match your images */
-  border-radius: 30px;
-  overflow: hidden;
-  background: #f7f1ea;
-  border: 1px solid rgba(132, 72, 34, 0.12);
-  box-shadow:
-    0 22px 50px rgba(82, 43, 22, 0.08),
-    0 8px 18px rgba(82, 43, 22, 0.04);
-}
-
-.guruImage {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;   /* Keep contain so nothing is cropped */
-  display: block;
-}
-
-.guruId {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 52px;
-  height: 52px;
-  padding: 0 0.85rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.92);
-  color: #6a3116;
-  font-size: 0.9rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  box-shadow: 0 10px 24px rgba(58, 27, 13, 0.12);
-}
-
-.contentCard {
-  padding: clamp(1.4rem, 2.8vw, 2.2rem);
-  border-radius: 28px;
-  background: #fffdfa;
-  border: 1px solid rgba(132, 72, 34, 0.1);
-  box-shadow:
-    0 18px 42px rgba(82, 43, 22, 0.06),
-    0 6px 14px rgba(82, 43, 22, 0.03);
+.guruName {
+  margin: 0;
+  font-family: var(--font-sacred);
+  font-weight: 400;
+  font-size: clamp(1.85rem, 3.3vw, 2.6rem);
+  line-height: 1.15;
+  color: var(--accent-deep);
 }
 
 .role {
-  margin: 0.35rem 0 1rem;
-  font-family: var(--font-display);
-  font-size: 1.02rem;
+  margin: 0.55rem 0 0;
+  font-family: var(--font-sacred);
   font-style: italic;
-  font-weight: 500;
+  font-size: clamp(1.08rem, 1.5vw, 1.22rem);
   line-height: 1.45;
-  color: #9b4a15;
+  color: #8f4410;
 }
 
-.role:lang(kn) {
-  font-style: normal;
-}
-
-.guruName {
-  margin: 0;
-  font-family: var(--font-display, "Playfair Display", serif);
-  font-size: clamp(1.5rem, 2.8vw, 2.3rem);
-  line-height: 1.15;
-  color: #421b0d;
+.rule {
+  margin: 1.5rem 0;
 }
 
 .description {
-  margin: 0 0 1rem;
-  font-size: 1rem;
-  line-height: 1.9;
-  color: #2c140c;
+  margin: 0;
+  max-width: 62ch;
+  font-size: 1.04rem;
+  line-height: 1.85;
+  color: var(--text-body);
 }
 
+/* A saying set beneath a lotus, not a coloured bar */
 .quote {
+  margin: 2rem 0 0;
+  padding-top: 1.5rem;
+  max-width: 62ch;
+  border-top: 1px solid var(--line-gold);
+}
+
+.quoteMark {
+  display: block;
+  margin-bottom: 0.6rem;
+  color: var(--gold-antique);
+}
+
+.quote p {
   margin: 0;
-  padding-left: 1rem;
-  border-left: 3px solid rgba(184, 92, 30, 0.22);
-  font-size: 0.98rem;
-  line-height: 1.8;
-  color: rgba(44, 20, 12, 0.72);
+  max-width: 28ch;
+  font-family: var(--font-sacred);
   font-style: italic;
+  font-size: clamp(1.35rem, 2.3vw, 1.8rem);
+  line-height: 1.4;
+  color: var(--accent-deep);
+}
+
+/* ---- Founder on the temple-wood band ---- */
+
+.bandTemple .guruName {
+  color: #fff7e8;
+}
+
+.bandTemple .role {
+  color: var(--gold-leaf);
+}
+
+.bandTemple .description {
+  color: var(--ink-on-temple-soft);
+}
+
+.bandTemple .quote {
+  border-top-color: rgba(224, 178, 79, 0.22);
+}
+
+.bandTemple .quoteMark {
+  color: var(--gold-leaf);
+}
+
+.bandTemple .quote p {
+  color: #fff1d6;
+}
+
+/* ---- Kannada ---- */
+
+.pageTitle:lang(kn),
+.guruName:lang(kn) {
+  line-height: 1.35;
+}
+
+.role:lang(kn),
+.quote p:lang(kn) {
+  font-style: normal;
+}
+
+.description:lang(kn),
+.pageIntro:lang(kn) {
+  line-height: 1.95;
 }
 
 @media (max-width: 900px) {
-  .guruRow {
+  .guruRow,
+  .reverse {
     grid-template-columns: 1fr;
+    gap: 2.75rem;
   }
 
-  .reverse .imageCol,
+  .reverse .arch,
   .reverse .contentCol {
     order: initial;
   }
 
-  .imageFrame {
-    min-height: 320px;
+  .arch {
+    width: min(100%, 320px);
+  }
+
+  .contentCol {
+    max-width: 62ch;
+    margin-inline: auto;
   }
 }
 
 @media (max-width: 640px) {
-  .pageSection {
-    padding: 3.5rem 0;
-  }
-
   .introWrap,
-  .timeline {
+  .guruRow {
     width: calc(100% - 2rem);
   }
 
-  .pageTitle {
-    font-size: clamp(1.6rem, 7vw, 2.3rem);
+  .guruBand {
+    padding: 3.5rem 0;
   }
 
-  .pageIntro {
-    font-size: 0.96rem;
+  .bandTemple {
+    padding-top: 4.5rem;
+  }
+
+  .arch {
+    width: min(82%, 280px);
+  }
+
+  .pageIntro,
+  .description {
+    font-size: 1rem;
     line-height: 1.8;
   }
 
-  .timeline {
-    gap: 1.5rem;
-  }
-
-  .imageFrame,
-  .contentCard {
-    border-radius: 22px;
-  }
-
-  .imageFrame {
-    min-height: 260px;
-  }
-
-  .guruId {
-    top: 0.85rem;
-    left: 0.85rem;
-    min-width: 46px;
-    height: 46px;
-    font-size: 0.82rem;
-  }
-
-  .contentCard {
-    padding: 1rem;
-  }
-
-  .guruName {
-    font-size: 1.35rem;
-  }
-
-  .description,
-  .quote {
-    font-size: 0.94rem;
-    line-height: 1.75;
+  .description:lang(kn),
+  .pageIntro:lang(kn) {
+    line-height: 1.95;
   }
 }

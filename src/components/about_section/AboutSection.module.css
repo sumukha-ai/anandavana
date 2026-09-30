@@ -1,317 +1,180 @@
 .aboutSection {
   position: relative;
-  overflow: hidden;
-  padding: clamp(4.5rem, 7vw, 7rem) 0;
-  background: #ffffff;
-  color: #2c140c;
-}
-
-.bgGlow {
-  position: absolute;
-  top: -60px;
-  left: -40px;
-  width: 280px;
-  height: 280px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(201, 112, 42, 0.08), transparent 70%);
-  filter: blur(20px);
-  pointer-events: none;
-}
-
-.pattern {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.03;
-  background-image: radial-gradient(rgba(120, 63, 28, 0.4) 0.6px, transparent 0.6px);
-  background-size: 8px 8px;
+  padding: clamp(5rem, 9vw, 8.5rem) 0 clamp(4.5rem, 8vw, 7rem);
+  background-color: var(--bg-primary);
+  background-image: var(--kolam-antique);
+  color: var(--text-main);
 }
 
 .container {
-  position: relative;
-  z-index: 2;
-  width: min(1180px, calc(100% - 2rem));
+  width: min(1140px, calc(100% - 2.5rem));
   margin: 0 auto;
 }
 
-.sectionHeader {
-  max-width: 700px;
-  margin: 0 auto 2.6rem;
-  text-align: center;
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(2.5rem, 6vw, 6rem);
+  align-items: center;
 }
 
-.kicker {
-  display: inline-block;
-  margin-bottom: 0.8rem;
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: #b85c1e;
+.arch {
+  width: min(100%, 420px);
+  justify-self: center;
+}
+
+.textColumn {
+  min-width: 0;
 }
 
 .title {
-  font-family: var(--font-display, "Playfair Display", serif);
-  font-size: clamp(1.8rem, 3.1vw, 2.95rem);
-  line-height: 1.12;
-  color: #3f180b;
-  margin-bottom: 0.75rem;
-  text-transform: none;
-  text-wrap: balance;
+  margin: 0;
+  font-family: var(--font-sacred);
+  font-weight: 400;
+  font-size: clamp(2.2rem, 4.2vw, 3.4rem);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--accent-deep);
 }
 
 .subtitle {
-  max-width: 560px;
-  margin: 0 auto;
-  font-size: 0.98rem;
-  line-height: 1.8;
-  color: rgba(44, 20, 12, 0.68);
+  margin: 1rem 0 0;
+  max-width: 34ch;
+  font-family: var(--font-sacred);
+  font-style: italic;
+  font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+  line-height: 1.5;
+  color: #7a4a1f;
 }
 
-.splitLayout {
-  display: grid;
-  grid-template-columns: 0.92fr 1.08fr;
-  gap: clamp(1.25rem, 2.8vw, 2.8rem);
-  align-items: stretch;
-}
-
-.imageColumn {
-  position: relative;
-}
-
-.imageFrame {
-  position: relative;
-  height: 100%;
-  min-height: 540px;
-  border-radius: 30px;
-  overflow: hidden;
-  background: #f8f3ee;
-  border: 1px solid rgba(132, 72, 34, 0.12);
-  box-shadow:
-    0 20px 50px rgba(82, 43, 22, 0.08),
-    0 8px 18px rgba(82, 43, 22, 0.04);
-}
-
-.aboutImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.imageOverlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(22, 10, 4, 0.03) 0%,
-    rgba(22, 10, 4, 0.1) 50%,
-    rgba(22, 10, 4, 0.3) 100%
-  );
-}
-
-.imageBadge {
-  position: absolute;
-  left: 1.15rem;
-  bottom: 1.15rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.65rem;
-  padding: 0.82rem 1rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.9);
-  color: #5a2712;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 10px 24px rgba(58, 27, 13, 0.12);
-}
-
-.badgeDot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #c66b2d, #e0a15b);
-  box-shadow: 0 0 0 4px rgba(198, 107, 45, 0.12);
-}
-
-.contentColumn {
-  position: relative;
-}
-
-.textCard {
-  height: 100%;
-  border-radius: 30px;
-  padding: clamp(1.35rem, 2.8vw, 2.15rem);
-  background: #ffffff;
-  border: 1px solid rgba(132, 72, 34, 0.1);
-  box-shadow:
-    0 18px 42px rgba(82, 43, 22, 0.06),
-    0 6px 14px rgba(82, 43, 22, 0.03);
-}
-
-.contentIntro {
-  margin-bottom: 1.5rem;
-}
-
-.contentLabel {
-  display: inline-block;
-  margin-bottom: 0.75rem;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: #b85c1e;
+.rule {
+  margin-top: 1.75rem;
+  margin-bottom: 1.75rem;
 }
 
 .mainText {
   margin: 0;
-  font-size: clamp(1rem, 1.22vw, 1.06rem);
-  line-height: 1.95;
-  color: #2c140c;
-  max-width: 60ch;
-}
-
-.pointsGrid {
-  display: grid;
-  gap: 0.85rem;
-}
-
-.pointCard {
-  display: grid;
-  grid-template-columns: 48px 1fr;
-  gap: 0.9rem;
-  align-items: start;
-  padding: 0.95rem;
-  border-radius: 18px;
-  background: #fffdfa;
-  border: 1px solid rgba(132, 72, 34, 0.08);
-  transition:
-    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 220ms ease,
-    border-color 220ms ease;
-}
-
-.pointCard:hover {
-  transform: translateY(-3px);
-  border-color: rgba(184, 92, 30, 0.2);
-  box-shadow: 0 12px 24px rgba(82, 43, 22, 0.06);
-}
-
-.iconWrap {
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #b85c1e;
-  background: linear-gradient(180deg, #fff1df 0%, #ffe6c4 100%);
-  border: 1px solid rgba(184, 92, 30, 0.1);
-  flex-shrink: 0;
-}
-
-.pointTitle {
-  margin: 0 0 0.3rem;
-  font-family: var(--font-display, "Playfair Display", serif);
+  max-width: 62ch;
   font-size: 1.05rem;
-  line-height: 1.2;
-  color: #4a1f0f;
+  line-height: 1.9;
+  color: var(--text-body);
 }
 
-.pointText {
+.mainText:lang(en)::first-letter {
+  float: left;
+  margin: 0.08em 0.12em 0 0;
+  font-family: var(--font-sacred);
+  font-size: 3.6em;
+  line-height: 0.8;
+  color: var(--accent-saffron);
+}
+
+/* Three offerings of the kshetra, set as a colonnade rather than cards */
+.offerings {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: clamp(4rem, 7vw, 6rem) 0 0;
+  padding: clamp(2.25rem, 4vw, 3rem) 0 0;
+  border-top: 1px solid var(--line-gold);
+  list-style: none;
+}
+
+.offering {
+  padding: 0 clamp(1.25rem, 3vw, 2.5rem);
+  text-align: center;
+}
+
+.offering + .offering {
+  border-left: 1px solid var(--line-gold);
+}
+
+.offeringIcon {
+  display: block;
+  margin: 0 auto 1.1rem;
+  color: var(--accent-saffron);
+}
+
+.offeringTitle {
   margin: 0;
-  font-size: 0.93rem;
-  line-height: 1.68;
-  color: rgba(44, 20, 12, 0.76);
+  font-family: var(--font-sacred);
+  font-weight: 400;
+  font-size: 1.4rem;
+  line-height: 1.25;
+  color: var(--accent-deep);
 }
 
-@media (max-width: 980px) {
-  .splitLayout {
+.offeringText {
+  margin: 0.6rem auto 0;
+  max-width: 30ch;
+  font-size: 0.97rem;
+  line-height: 1.7;
+  color: var(--text-body);
+}
+
+.subtitle:lang(kn) {
+  font-style: normal;
+}
+
+.title:lang(kn) {
+  line-height: 1.3;
+}
+
+.mainText:lang(kn) {
+  line-height: 2;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .arch {
+      animation: archReveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 35%;
+    }
+  }
+}
+
+@keyframes archReveal {
+  from {
+    clip-path: inset(18% 0 0 0 round 999px 999px 6px 6px);
+    opacity: 0.4;
+  }
+  to {
+    clip-path: inset(-20px -20px 0 -20px);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 900px) {
+  .split {
     grid-template-columns: 1fr;
   }
 
-  .imageFrame {
-    min-height: 380px;
+  .arch {
+    width: min(100%, 340px);
   }
 
-  .mainText {
-    max-width: 100%;
+  .offerings {
+    grid-template-columns: 1fr;
+    padding-top: 0;
+  }
+
+  .offering {
+    padding: 2rem 0;
+  }
+
+  .offering + .offering {
+    border-left: 0;
+    border-top: 1px solid var(--line-gold);
   }
 }
 
 @media (max-width: 640px) {
-  .aboutSection {
-    padding: 4rem 0;
-  }
-
   .container {
     width: calc(100% - 2rem);
   }
 
-  .sectionHeader {
-    margin-bottom: 1.9rem;
-  }
-
-  .title {
-    font-size: clamp(1.55rem, 7vw, 2.15rem);
-  }
-
-  .subtitle {
-    font-size: 0.92rem;
-    line-height: 1.75;
-  }
-
-  .imageFrame,
-  .textCard {
-    border-radius: 22px;
-  }
-
-  .imageFrame {
-    min-height: 300px;
-  }
-
-  .imageBadge {
-    left: 0.9rem;
-    bottom: 0.9rem;
-    font-size: 0.72rem;
-    padding: 0.7rem 0.88rem;
-  }
-
-  .textCard {
-    padding: 1rem;
-  }
-
-  .contentIntro {
-    margin-bottom: 1.2rem;
-  }
-
   .mainText {
-    font-size: 0.97rem;
-    line-height: 1.86;
-  }
-
-  .pointCard {
-    grid-template-columns: 44px 1fr;
-    gap: 0.8rem;
-    padding: 0.85rem;
-  }
-
-  .iconWrap {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-  }
-
-  .pointTitle {
     font-size: 1rem;
-  }
-
-  .pointText {
-    font-size: 0.9rem;
-    line-height: 1.62;
+    line-height: 1.85;
   }
 }

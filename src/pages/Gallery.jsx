@@ -8,6 +8,7 @@ import { useI18n } from '../i18n/useI18n';
 import { interpolate } from './shop/shopUtils';
 import { formatEventRange, useGalleryAlbums } from './events/eventUtils';
 import PhotoGrid from './events/PhotoGrid';
+import { LotusRule } from '../components/ornaments/Ornaments';
 
 const KSHETRA_IMAGES = [
   { id: 1, src: "https://i.ibb.co/ynzXxDnY/AGADI-PH-CAM-15-1.jpg", title: "Temple View" },
@@ -38,65 +39,66 @@ export default function Gallery() {
   return (
     <>
       <PageHero title={t('galleryTitle')} bgImage={bgImg} />
-      <div className={styles['gallery-container']} lang={lang}>
-        <div className={styles['gallery-header']}>
-          <p>{t('galleryIntro')}</p>
-        </div>
+      <div className={styles.page}>
+        <div className={styles['gallery-container']} lang={lang}>
+          <div className={styles['gallery-header']}>
+            <p>{t('galleryIntro')}</p>
+            <LotusRule className={styles.headerRule} />
+          </div>
 
-        <div className={styles.albums}>
-          {status === 'loading' ? <AlbumSkeleton /> : null}
-          {status === 'error' ? (
-            <div className={styles.loadError} role="alert">
-              <span>{t('galleryLoadError')}</span>
-              <button type="button" className={styles.retry} onClick={retry}>
-                <RotateCcw size={15} aria-hidden="true" />
-                {te('retry')}
-              </button>
-            </div>
-          ) : null}
-          {albums.map((album) => (
-            <section key={album.id} className={styles.album} aria-labelledby={`album-${album.id}`}>
-              <header className={styles.albumHead}>
-                <div>
-                  <h2 id={`album-${album.id}`} className={styles.albumTitle}>
-                    {album.title}
-                  </h2>
-                  <p className={styles.albumMeta}>
-                    <CalendarDays size={15} aria-hidden="true" />
-                    {formatEventRange(album, lang)}
-                    <span aria-hidden="true">·</span>
-                    {album.images.length === 1 ? te('onePhoto') : interpolate(te('photos'), { n: album.images.length })}
-                  </p>
-                </div>
-                <Link to={`/${lang}/events/${album.slug}`} className={styles.albumLink}>
-                  {t('galleryAboutEvent')}
-                  <ArrowRight size={15} aria-hidden="true" />
-                </Link>
-              </header>
-              <PhotoGrid images={album.images} t={te} label={album.title} />
-            </section>
-          ))}
-        </div>
-
-        <section className={styles.album} aria-labelledby="album-kshetra">
-          <header className={styles.albumHead}>
-            <h2 id="album-kshetra" className={styles.albumTitle}>
-              {t('galleryKshetra')}
-            </h2>
-          </header>
-          <div className={styles['masonry-grid']}>
-            {KSHETRA_IMAGES.map((img) => (
-              <figure key={img.id} className={styles['masonry-item']}>
-                <div className={styles['image-wrapper']}>
-                  <img src={img.src} alt={img.title} loading="lazy" />
-                  <figcaption className={styles['image-overlay']}>
-                    <span className={styles['image-title']}>{img.title}</span>
-                  </figcaption>
-                </div>
-              </figure>
+          <div className={styles.albums}>
+            {status === 'loading' ? <AlbumSkeleton /> : null}
+            {status === 'error' ? (
+              <div className={styles.loadError} role="alert">
+                <span>{t('galleryLoadError')}</span>
+                <button type="button" className={styles.retry} onClick={retry}>
+                  <RotateCcw size={15} aria-hidden="true" />
+                  {te('retry')}
+                </button>
+              </div>
+            ) : null}
+            {albums.map((album) => (
+              <section key={album.id} className={styles.album} aria-labelledby={`album-${album.id}`}>
+                <header className={styles.albumHead}>
+                  <div>
+                    <h2 id={`album-${album.id}`} className={styles.albumTitle}>
+                      {album.title}
+                    </h2>
+                    <p className={styles.albumMeta}>
+                      <CalendarDays size={15} aria-hidden="true" />
+                      {formatEventRange(album, lang)}
+                      <span aria-hidden="true">·</span>
+                      {album.images.length === 1 ? te('onePhoto') : interpolate(te('photos'), { n: album.images.length })}
+                    </p>
+                  </div>
+                  <Link to={`/${lang}/events/${album.slug}`} className={styles.albumLink}>
+                    {t('galleryAboutEvent')}
+                    <ArrowRight size={15} aria-hidden="true" />
+                  </Link>
+                </header>
+                <PhotoGrid images={album.images} t={te} label={album.title} />
+              </section>
             ))}
           </div>
-        </section>
+
+          <section className={styles.album} aria-labelledby="album-kshetra">
+            <header className={styles.albumHead}>
+              <h2 id="album-kshetra" className={styles.albumTitle}>
+                {t('galleryKshetra')}
+              </h2>
+            </header>
+            <div className={styles['masonry-grid']}>
+              {KSHETRA_IMAGES.map((img) => (
+                <figure key={img.id} className={styles['masonry-item']}>
+                  <div className={styles['image-wrapper']}>
+                    <img src={img.src} alt={img.title} loading="lazy" />
+                  </div>
+                  <figcaption className={styles['image-title']}>{img.title}</figcaption>
+                </figure>
+              ))}
+            </div>
+          </section>
+        </div>
       </div>
     </>
   );

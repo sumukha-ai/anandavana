@@ -1,219 +1,219 @@
-.pageSection {
-  background: #ffffff;
-  padding: clamp(4rem, 7vw, 7rem) 0;
-  color: #2c140c;
+/* The institutions of the matha: each one a band of its own, alternating
+   ivory and sandal, a shrine-niche photograph beside its name. */
+
+.page {
+  position: relative;
   overflow: hidden;
 }
 
+.toran {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+}
+
+.band {
+  --arch-line: var(--line-gold);
+  --arch-finial: var(--gold-antique);
+  padding: clamp(4.5rem, 8vw, 7rem) 0;
+  background-image: var(--kolam-antique);
+  color: var(--text-body);
+}
+
+.bandIvory {
+  --arch-bg: var(--bg-primary);
+  --plate-bg: #fbf6ec;
+  background-color: var(--bg-primary);
+}
+
+.bandSandal {
+  --arch-bg: var(--bg-sandal);
+  --plate-bg: #f7efe1;
+  background-color: var(--bg-sandal);
+}
+
+.band + .band {
+  border-top: 1px solid var(--line-gold);
+}
+
 .container {
-  width: min(1200px, calc(100% - 2rem));
+  width: min(1140px, calc(100% - 2.5rem));
   margin: 0 auto;
 }
 
-.introBlock {
-  max-width: 720px;
-  margin: 0 auto 4rem;
-  text-align: center;
-}
-
-.kicker {
-  display: inline-block;
-  margin-bottom: 0.8rem;
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: #b85c1e;
-}
-
-.pageTitle {
-  font-family: var(--font-display, "Playfair Display", serif);
-  font-size: clamp(2rem, 4vw, 3.2rem);
-  line-height: 1.15;
-  color: #421b0d;
-  margin-bottom: 1rem;
-}
-
-.pageIntro {
-  font-size: 1.05rem;
-  line-height: 1.85;
-  color: rgba(44, 20, 12, 0.72);
-}
-
-.institutionsWrapper {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(4rem, 8vw, 6rem);
-}
-
-.institutionRow {
+.row {
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: clamp(2rem, 4vw, 4rem);
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(2.5rem, 6vw, 6rem);
   align-items: center;
 }
 
 .reverseRow {
-  grid-template-columns: 1.2fr 1fr;
-}
-
-.reverseRow .textContent {
-  order: 2;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
 }
 
 .reverseRow .imageContent {
-  order: 1;
+  order: 2;
 }
+
+/* ---- Photographs ---- */
+
+.imageContent {
+  position: relative;
+  min-width: 0;
+  display: grid;
+  justify-items: center;
+  padding-top: 12px; /* room for the arch finial */
+}
+
+.arch {
+  width: min(100%, 400px);
+}
+
+/* A second photograph, mounted like a plate in a double gilt frame */
+.plate {
+  width: min(78%, 320px);
+  margin: -3.5rem 0 0 auto;
+  position: relative;
+  z-index: 2;
+  padding: 6px;
+  background: var(--plate-bg);
+  border: 1px solid var(--line-gold);
+  outline: 1px solid var(--line-gold);
+  outline-offset: 5px;
+}
+
+.reverseRow .plate {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.plate img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 1px;
+  background: #e9dcc6;
+}
+
+/* ---- Text ---- */
 
 .textContent {
   min-width: 0;
 }
 
-.textInner {
-  padding: 2rem;
-  background: #fffdfa;
-  border-radius: 24px;
-  border: 1px solid rgba(132, 72, 34, 0.08);
-  box-shadow: 0 12px 30px rgba(82, 43, 22, 0.04);
-}
-
 .instTitle {
-  font-family: var(--font-display, "Playfair Display", serif);
-  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
-  line-height: 1.2;
-  color: #3f180b;
-  margin: 0 0 0.5rem;
+  margin: 0;
+  font-family: var(--font-sacred);
+  font-weight: 400;
+  font-size: clamp(2rem, 3.8vw, 3.1rem);
+  line-height: 1.1;
+  letter-spacing: -0.005em;
+  color: var(--accent-deep);
+  text-wrap: balance;
 }
 
 .instSubtitle {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #b85c1e;
-  margin: 0 0 1.5rem;
+  margin: 1rem 0 0;
+  max-width: 38ch;
+  font-family: var(--font-sacred);
+  font-style: italic;
+  font-size: clamp(1.1rem, 1.5vw, 1.28rem);
+  line-height: 1.5;
+  color: #7a4a1f;
+}
+
+.rule {
+  margin-top: 1.6rem;
+  margin-bottom: 1.6rem;
+}
+
+.instDescription {
+  max-width: 62ch;
 }
 
 .instDescription p {
-  margin: 0 0 1rem;
-  font-size: 1rem;
-  line-height: 1.8;
-  color: rgba(44, 20, 12, 0.8);
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: var(--text-body);
 }
 
-.instDescription p:last-child {
-  margin-bottom: 0;
+.instDescription p + p {
+  margin-top: 1.1rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--line-gold);
 }
 
-.imageContent {
-  min-width: 0;
+.instTitle:lang(kn) {
+  line-height: 1.32;
 }
 
-/* 
-  Dynamic Grid for the images 
-  If 3 images: 1 large on top, 2 smaller below
-*/
-.imageGrid {
-  display: grid;
-  gap: 1rem;
-  height: 100%;
+.instSubtitle:lang(kn) {
+  font-style: normal;
+  line-height: 1.7;
 }
 
-.gridThree {
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1.5fr 1fr;
+.instDescription:lang(kn) p {
+  line-height: 1.95;
 }
 
-.gridThree .imgWrapper:first-child {
-  grid-column: 1 / -1;
+/* One quiet fade as each band arrives, where the browser can do it without script */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .row {
+      animation: bandFade linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+    }
+  }
 }
 
-/* If 2 images: side by side or stacked based on container */
-.gridTwo {
-  grid-template-columns: 1fr 1fr;
+@keyframes bandFade {
+  from {
+    opacity: 0.25;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-.imgWrapper {
-  position: relative;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 8px 24px rgba(82, 43, 22, 0.08);
-  background: #f0e9df;
-}
+/* ---- Responsive ---- */
 
-/* Force an aspect ratio so grids look balanced even with missing images */
-.gridThree .imgWrapper {
-  aspect-ratio: 16/10;
-}
-.gridThree .imgWrapper:first-child {
-  aspect-ratio: 16/8;
-}
-
-.gridOne {
-  grid-template-columns: 1fr;
-}
-
-.gridOne .imgWrapper {
-  aspect-ratio: 4/3;
-}
-
-.gridTwo .imgWrapper {
-  aspect-ratio: 4/5;
-}
-
-.instImage {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.imgWrapper:hover .instImage {
-  transform: scale(1.05);
-}
-
-@media (max-width: 992px) {
-  .institutionRow,
+@media (max-width: 900px) {
+  .row,
   .reverseRow {
     grid-template-columns: 1fr;
   }
 
-  .reverseRow .textContent {
-    order: initial;
-  }
-  
   .reverseRow .imageContent {
-    order: initial;
+    order: 0;
+  }
+
+  .arch {
+    width: min(100%, 340px);
+  }
+
+  .plate,
+  .reverseRow .plate {
+    width: min(100%, 340px);
+    margin: 2rem auto 0;
   }
 }
 
 @media (max-width: 640px) {
-  .pageSection {
-    padding: 3.5rem 0;
+  .band {
+    padding: 3.75rem 0;
   }
-  
-  .textInner {
-    padding: 1.5rem;
-  }
-  
-  .gridThree {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto;
-  }
-  
-  .gridThree .imgWrapper,
-  .gridThree .imgWrapper:first-child,
-  .gridOne {
-  grid-template-columns: 1fr;
-}
 
-.gridOne .imgWrapper {
-  aspect-ratio: 4/3;
-}
+  .container {
+    width: calc(100% - 2rem);
+  }
 
-.gridTwo .imgWrapper {
-    aspect-ratio: 16/10;
-    grid-column: 1 / -1;
+  .instDescription p {
+    font-size: 1rem;
   }
 }

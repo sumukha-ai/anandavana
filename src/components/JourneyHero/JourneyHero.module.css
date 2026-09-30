@@ -72,9 +72,11 @@
   height: clamp(72px, 8.4vw, 118px);
   border-radius: 50%;
   overflow: hidden;
-  border: 2px solid rgba(255, 230, 180, 0.52);
+  border: 2px solid rgba(20, 8, 2, 0.4);
   background: rgba(255, 248, 231, 0.08);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+  outline: 1.5px solid rgba(224, 178, 79, 0.85);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgba(20, 8, 2, 0.18), 0 12px 28px rgba(0, 0, 0, 0.35);
 }
 
 .guruImage {
@@ -125,8 +127,10 @@
   display: block;
   height: 100%;
   border-radius: inherit;
+  width: 100%;
+  transform-origin: left center;
   background: linear-gradient(90deg, #c57a29 0%, #f0ca7b 100%);
-  transition: width 0.24s ease;
+  transition: transform 0.24s ease;
 }
 
 .contentBlock {
@@ -177,28 +181,102 @@
   width: min(100%, 860px);
 }
 
+.heroTitle {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--font-sacred);
+  font-weight: 400;
+  color: #fff7e8;
+  text-shadow: 0 2px 3px rgba(20, 8, 2, 0.35), 0 12px 36px rgba(20, 8, 2, 0.55);
+}
+
+.invocation {
+  margin-bottom: clamp(1rem, 2.4vh, 1.6rem);
+  text-shadow: 0 2px 12px rgba(20, 8, 2, 0.7);
+}
+
 .topLine {
-  font-family: var(--font-body, "Inter", sans-serif);
-  font-size: clamp(0.95rem, 1.15vw, 1.3rem);
-  font-weight: 600;
-  letter-spacing: 0.38em;
-  text-transform: uppercase;
-  color: #e0b24f;
-  margin: 0 0 0.65rem;
-  margin-right: -0.38em;
-  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.58);
+  font-style: italic;
+  font-size: clamp(1.35rem, 2.4vw, 2rem);
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  color: var(--gold-leaf);
 }
 
 .bottomLine {
-  font-family: var(--font-display, "Playfair Display", serif);
-  font-size: clamp(2.6rem, 8vw, 6rem);
-  line-height: 0.96;
-  font-weight: 700;
-  color: #fffaf0;
-  letter-spacing: 0.02em;
-  text-shadow: 0 10px 24px rgba(0, 0, 0, 0.54);
-  max-width: 11ch;
-  margin: 0 auto;
+  margin-top: 0.1em;
+  font-size: clamp(3rem, 9.5vw, 6rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.heroRule {
+  margin-top: clamp(1.1rem, 2.6vh, 1.7rem);
+  filter: drop-shadow(0 2px 6px rgba(20, 8, 2, 0.6));
+}
+
+.heroSub {
+  margin: clamp(0.8rem, 2vh, 1.1rem) auto 0;
+  max-width: 34ch;
+  font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+  line-height: 1.55;
+  font-weight: 500;
+  color: rgba(255, 244, 226, 0.9);
+  text-shadow: 0 2px 10px rgba(20, 8, 2, 0.75);
+}
+
+.heroSubPlace {
+  display: block;
+  margin-top: 0.15rem;
+  font-family: var(--font-sacred);
+  font-style: italic;
+  font-weight: 400;
+  color: rgba(255, 236, 200, 0.82);
+}
+
+.scrollCue {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(1.25rem, 4vh, 2.25rem);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.scrollCueLine {
+  position: relative;
+  width: 1px;
+  height: 2.75rem;
+  overflow: hidden;
+  background: rgba(224, 178, 79, 0.28);
+}
+
+.scrollCueLine::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 45%;
+  background: var(--gold-leaf);
+  animation: cueFall 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+.scrollCueText {
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: rgba(255, 244, 226, 0.72);
+  text-shadow: 0 1px 8px rgba(20, 8, 2, 0.8);
+  white-space: nowrap;
+}
+
+@keyframes cueFall {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(230%); }
 }
 
 .textCard {
@@ -314,13 +392,13 @@
 
   .guruBadge {
     left: 50%;
-    transform: translateX(-50%) scale(1.5);
-    top: max(1.2rem, calc(7rem + env(safe-area-inset-top)));
+    transform: translateX(-50%);
+    top: calc(5.75rem + env(safe-area-inset-top));
   }
 
   .guruCircle {
-    width: 68px;
-    height: 68px;
+    width: 76px;
+    height: 76px;
   }
 
   /* Fixed Mobile Centering */
@@ -345,16 +423,11 @@
   }
 
   .topLine {
-    font-size: 0.9rem;
-    letter-spacing: 0.24em;
-    margin-right: -0.24em; /* visually offsets the letter-spacing to truly center */
-    margin-bottom: 0.72rem;
+    font-size: 1.3rem;
   }
 
   .bottomLine {
-    font-size: clamp(2.35rem, 12vw, 3.9rem);
-    max-width: 100%;
-    margin: 0 auto;
+    font-size: clamp(2.6rem, 13vw, 4rem);
   }
 
   .textCard {
@@ -379,7 +452,7 @@
 @media (max-width: 420px) {
   .scrollWrapper { height: 320vh; }
   .guruCircle { width: 60px; height: 60px; }
-  .bottomLine { font-size: clamp(2.1rem, 11vw, 3rem); }
+  .bottomLine { font-size: clamp(2.4rem, 12.5vw, 3.2rem); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -388,15 +461,18 @@
     transform: none;
   }
   .bgCanvas { transform: none; }
+  .scrollCueLine::after { animation: none; height: 100%; opacity: 0.6; }
 }
-/* Kannada: tracking breaks conjuncts apart, so set it solid */
+/* Kannada: the sacred face carries it upright, with room for conjuncts */
 .topLine:lang(kn) {
-  letter-spacing: 0.02em;
-  margin-right: 0;
-  text-transform: none;
+  font-style: normal;
 }
 
 .bottomLine:lang(kn) {
   letter-spacing: 0;
-  line-height: 1.25;
+  line-height: 1.3;
+}
+
+.heroSubPlace:lang(kn) {
+  font-style: normal;
 }

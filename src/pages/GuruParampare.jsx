@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import PageHero from "../components/PageHero/PageHero";
 import bgImg from "../../assets/pancyatana.jpg.jpeg";
 import styles from "./GuruParampare.module.css";
+import { ArchFrame, LotusMark, LotusRule, Toran } from "../components/ornaments/Ornaments";
 
 import guru1 from "../../assets/sheshachala_maharajaru.jpg.jpeg";
 import guru2 from "../../assets/N.bhavan2.jpg.jpeg";
@@ -49,7 +50,7 @@ const EN_GURUS = [
   },
   {
     id: "03",
-    name: "Shakara Bhagawan",
+    name: "Shankara Bhagawan",
     role: "Symbol of Selfless Action (Karma)",
     image: guru3,
     description:
@@ -224,48 +225,51 @@ export default function GuruParampare() {
     <>
       <PageHero title={pageContent.heroTitle} bgImage={bgImg} />
 
-      <section className={styles.pageSection}>
+      <section className={styles.introSection}>
         <div className={styles.introWrap} lang={language}>
+          <LotusRule />
           <h2 className={styles.pageTitle}>{pageContent.pageTitle}</h2>
           <p className={styles.pageIntro}>{pageContent.pageIntro}</p>
         </div>
+      </section>
 
-        <div className={styles.timeline}>
-          {gurus.map((guru, index) => (
-            <article
-              key={guru.id}
-              className={`${styles.guruRow} ${
-                index % 2 !== 0 ? styles.reverse : ""
-              }`}
-            >
-              <div className={styles.imageCol}>
-                <div className={styles.imageFrame}>
-                  <img
-                    src={guru.image}
-                    alt={guru.name}
-                    className={styles.guruImage}
-                    loading={index === 0 ? "eager" : "lazy"}
-                  />
-                  <span className={styles.guruId}>{guru.id}</span>
-                </div>
-              </div>
+      {gurus.map((guru, index) => {
+        const band =
+          index === 0 ? styles.bandTemple : index % 2 === 0 ? styles.bandIvory : styles.bandSandal;
 
-              <div className={styles.contentCol}>
-                <div className={styles.contentCard} lang={language}>
-                  <h3 className={styles.guruName}>{guru.name}</h3>
-                  <p className={styles.role}>{guru.role}</p>
-                  <p className={styles.description}>{guru.description}</p>
-                  {guru.quote ? (
-                    <blockquote className={styles.quote}>
-                      “{guru.quote}”
-                    </blockquote>
-                  ) : null}
-                </div>
+        return (
+          <section key={guru.id} className={`${styles.guruBand} ${band}`}>
+            {index === 0 ? <Toran tone="gold" className={styles.toran} /> : null}
+
+            <article className={`${styles.guruRow} ${index % 2 !== 0 ? styles.reverse : ""}`}>
+              <ArchFrame
+                src={guru.image}
+                alt={guru.name}
+                className={styles.arch}
+                position="center 10%"
+                loading={index === 0 ? "eager" : "lazy"}
+              />
+
+              <div className={styles.contentCol} lang={language}>
+                <h3 className={styles.guruName}>{guru.name}</h3>
+                <p className={styles.role}>{guru.role}</p>
+                <LotusRule
+                  tone={index === 0 ? "gold" : "antique"}
+                  align="start"
+                  className={styles.rule}
+                />
+                <p className={styles.description}>{guru.description}</p>
+                {guru.quote ? (
+                  <blockquote className={styles.quote}>
+                    <LotusMark className={styles.quoteMark} width={36} />
+                    <p>{guru.quote}</p>
+                  </blockquote>
+                ) : null}
               </div>
             </article>
-          ))}
-        </div>
-      </section>
+          </section>
+        );
+      })}
     </>
   );
 }

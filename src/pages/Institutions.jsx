@@ -1,7 +1,5 @@
-import { useEffect } from "react";
 import PageHero from "../components/PageHero/PageHero";
-import AOS from "aos";
-import "aos/dist/aos.css";
+import { ArchFrame, LotusRule, Toran } from "../components/ornaments/Ornaments";
 import styles from "./Institutions.module.css";
 import bgImg from "../../assets/bg1.jpeg";
 import { useI18n } from "../i18n/useI18n";
@@ -66,79 +64,50 @@ const INSTITUTIONS = {
 export default function Institutions() {
   const { t, lang } = useI18n("pages");
   const institutionsData = INSTITUTIONS[lang] || INSTITUTIONS.en;
-  useEffect(() => {
-    AOS.init({
-      duration: 900,
-      once: true,
-      offset: 100,
-      easing: "ease-out-cubic",
-    });
-  }, []);
 
   return (
     <>
       <PageHero title={t("institutionsTitle")} bgImage={bgImg} />
 
-      <section className={styles.pageSection}>
-        <div className={styles.container}>
-          <div className={styles.institutionsWrapper}>
-            {institutionsData.map((inst, index) => {
-              const isEven = index % 2 === 0;
+      <div className={styles.page}>
+        <Toran tone="antique" className={styles.toran} />
+        {institutionsData.map((inst, index) => {
+          const [primary, ...more] = inst.images;
+          const isEven = index % 2 === 0;
 
-              return (
-                <article
-                  key={inst.id}
-                  className={`${styles.institutionRow} ${
-                    !isEven ? styles.reverseRow : ""
-                  }`}
-                >
-                  <div
-                    className={styles.textContent}
-                    data-aos={isEven ? "fade-right" : "fade-left"}
-                  >
-                    <div className={styles.textInner} lang={lang}>
-                      <h2 className={styles.instTitle}>{inst.title}</h2>
-                      <p className={styles.instSubtitle}>{inst.subtitle}</p>
+          return (
+            <article
+              key={inst.id}
+              className={`${styles.band} ${isEven ? styles.bandIvory : styles.bandSandal}`}
+              aria-labelledby={`inst-${inst.id}`}
+            >
+              <div className={`${styles.container} ${styles.row} ${!isEven ? styles.reverseRow : ""}`}>
+                <div className={styles.imageContent}>
+                  <ArchFrame src={primary.src} alt={primary.alt} className={styles.arch} position="center 35%" />
+                  {more.map((img) => (
+                    <figure key={img.alt} className={styles.plate}>
+                      <img src={img.src} alt={img.alt} loading="lazy" decoding="async" />
+                    </figure>
+                  ))}
+                </div>
 
-                      <div className={styles.instDescription}>
-                        {inst.description.map((paragraph) => (
-                          <p key={paragraph.slice(0, 24)}>{paragraph}</p>
-                        ))}
-                      </div>
-                    </div>
+                <div className={styles.textContent} lang={lang}>
+                  <h2 id={`inst-${inst.id}`} className={styles.instTitle}>
+                    {inst.title}
+                  </h2>
+                  <p className={styles.instSubtitle}>{inst.subtitle}</p>
+                  <LotusRule align="start" className={styles.rule} />
+                  <div className={styles.instDescription}>
+                    {inst.description.map((paragraph) => (
+                      <p key={paragraph.slice(0, 24)}>{paragraph}</p>
+                    ))}
                   </div>
-
-                  <div
-                    className={styles.imageContent}
-                    data-aos={isEven ? "fade-left" : "fade-right"}
-                  >
-                    <div
-                      className={`${styles.imageGrid} ${
-                        inst.images.length === 1
-                          ? styles.gridOne
-                          : inst.images.length === 2
-                            ? styles.gridTwo
-                            : styles.gridThree
-                      }`}
-                    >
-                      {inst.images.map((img) => (
-                        <div key={img.alt} className={styles.imgWrapper}>
-                          <img
-                            src={img.src}
-                            alt={img.alt}
-                            loading="lazy"
-                            className={styles.instImage}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
     </>
   );
 }

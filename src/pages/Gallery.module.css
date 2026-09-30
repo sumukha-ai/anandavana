@@ -1,48 +1,70 @@
+/* Gallery: event albums and views of the kshetra, each photograph set in a gilt mount. */
+
+.page {
+  background-color: var(--bg-primary);
+  background-image: var(--kolam-antique);
+}
+
 .gallery-container {
+  /* Tokens the shared event photo grid and lightbox read (Events.module.css) */
+  --ink: var(--accent-deep);
+  --ink-2: var(--text-body);
+  --ink-3: var(--text-muted);
+  --line: var(--line-gold);
+  --accent: var(--accent-saffron);
+  --accent-ink: #8f4410;
+  --mount-bg: #fbf6ec;
+
   width: min(1200px, calc(100% - 2rem));
   margin: 0 auto;
-  padding: clamp(3rem, 7vw, 5rem) 0 clamp(4rem, 8vw, 6rem);
+  padding: clamp(3.5rem, 7vw, 5.5rem) 0 clamp(4.5rem, 8vw, 6.5rem);
 }
 
 .gallery-header {
   text-align: center;
-  margin-bottom: 3rem;
-}
-
-.gallery-header h1 {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: clamp(3rem, 6vw, 4.5rem);
 }
 
 .gallery-header p {
   max-width: 40rem;
   margin: 0 auto;
-  font-family: var(--font-display);
+  font-family: var(--font-sacred);
+  font-style: italic;
   font-size: clamp(1.15rem, 2.2vw, 1.4rem);
   line-height: 1.6;
-  color: var(--text-body);
+  color: #7a4a1f;
 }
+
+.gallery-header p:lang(kn) {
+  font-style: normal;
+  line-height: 1.8;
+}
+
+.headerRule {
+  margin-top: 1.75rem;
+}
+
+/* ---------- Views of the kshetra ---------- */
 
 .masonry-grid {
   columns: 3 280px;
-  column-gap: 1.25rem;
+  column-gap: 1.5rem;
 }
 
 .masonry-item {
   break-inside: avoid;
-  margin: 0 0 1.25rem;
-  position: relative;
-  overflow: hidden;
-  border-radius: 14px;
-  background-color: #efe6d6;
-  box-shadow: var(--shadow-soft);
+  margin: 0 0 1.75rem;
+  padding: 6px 6px 0;
+  background: var(--mount-bg);
+  border: 1px solid var(--line-gold);
+  border-radius: 2px;
 }
 
-
 .image-wrapper {
-  width: 100%;
-  height: 100%;
   position: relative;
+  overflow: hidden;
+  border-radius: 1px;
+  background-color: #e9dcc6;
 }
 
 .image-wrapper img {
@@ -51,68 +73,42 @@
   min-height: 200px;
   object-fit: cover;
   display: block;
-  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform 1.2s var(--ease-out);
 }
 
 .masonry-item:hover .image-wrapper img {
-  transform: scale(1.05);
-}
-
-.image-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(to top, rgba(28, 14, 6, 0.82) 0%, rgba(28, 14, 6, 0) 100%);
-  padding: 3rem 1.5rem 1.5rem;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  display: flex;
-  align-items: flex-end;
-}
-
-.masonry-item:hover .image-overlay {
-  opacity: 1;
+  transform: scale(1.03);
 }
 
 .image-title {
-  color: white;
-  font-weight: 500;
-  font-size: 1.1rem;
-  letter-spacing: 0.5px;
-}
-@media (hover: none) {
-  .image-overlay {
-    opacity: 1;
-    padding: 2.5rem 1.1rem 1rem;
-  }
+  display: block;
+  padding: 0.7rem 0.4rem 0.8rem;
+  font-family: var(--font-sacred);
+  font-style: italic;
+  font-size: 1.05rem;
+  line-height: 1.45;
+  text-align: center;
+  color: var(--accent-deep);
 }
 
+.image-title:lang(kn) {
+  font-style: normal;
+}
 
 /* ---------- Event albums (photos uploaded from the staff console) ---------- */
 
-.gallery-container {
-  /* Tokens the shared event photo grid and lightbox read (Events.module.css) */
-  --ink: #1f1a17;
-  --ink-2: #544b44;
-  --ink-3: #7d7269;
-  --line: #ebe5dc;
-  --accent: #b85c1e;
-  --accent-ink: #8f4410;
-}
-
 .albums {
   display: grid;
-  gap: clamp(2.5rem, 6vw, 4rem);
+  gap: clamp(3rem, 7vw, 5rem);
 }
 
 .album {
   display: grid;
-  gap: 1.25rem;
+  gap: 1.5rem;
 }
 
 .albums + .album {
-  margin-top: clamp(2.5rem, 6vw, 4rem);
+  margin-top: clamp(3rem, 7vw, 5rem);
 }
 
 .albumHead {
@@ -121,48 +117,69 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: 0.75rem 1.5rem;
-  padding-bottom: 0.9rem;
-  border-bottom: 1px solid var(--line);
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line-gold);
 }
 
 .albumTitle {
-  font-family: var(--font-display);
-  font-size: clamp(1.45rem, 2.6vw, 1.9rem);
-  font-weight: 700;
+  margin: 0;
+  font-family: var(--font-sacred);
+  font-size: clamp(1.6rem, 2.8vw, 2.1rem);
+  font-weight: 400;
   line-height: 1.2;
-  color: var(--ink);
+  color: var(--accent-deep);
 }
 
 .albumTitle:lang(kn) {
-  line-height: 1.4;
+  line-height: 1.35;
 }
 
 .albumMeta {
-  margin-top: 0.35rem;
+  margin: 0.4rem 0 0;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.45rem;
-  font-size: 0.9rem;
-  color: var(--ink-3);
+  font-size: 0.92rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
 }
 
 .albumMeta svg {
-  color: var(--accent);
+  color: var(--gold-antique);
 }
 
 .albumLink {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  font-size: 0.92rem;
-  font-weight: 650;
-  color: var(--accent-ink);
+  min-height: 2.75rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #8f4410;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+  text-decoration-color: rgba(143, 68, 16, 0.35);
 }
 
 .albumLink:hover {
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  text-decoration-color: currentColor;
+}
+
+.albumLink svg {
+  transition: transform 0.3s var(--ease-out);
+}
+
+.albumLink:hover svg {
+  transform: translateX(3px);
+}
+
+.albumLink:focus-visible,
+.retry:focus-visible {
+  outline: 2px solid var(--accent-saffron);
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
 .loadError {
@@ -170,32 +187,34 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
-  padding: 1rem 1.2rem;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: #fff;
-  color: var(--ink-2);
+  gap: 0.75rem 1.5rem;
+  padding: 1.1rem 0;
+  border-top: 1px solid var(--line-gold);
+  border-bottom: 1px solid var(--line-gold);
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-body);
 }
 
 .retry {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  font-weight: 650;
-  color: var(--accent-ink);
+  min-height: 2.75rem;
+  font-weight: 600;
+  color: #8f4410;
 }
 
 .skeleton {
-  background: linear-gradient(90deg, #efe9e0 0%, #f7f3ed 50%, #efe9e0 100%);
+  background: linear-gradient(90deg, #efe4d2 0%, #f7efe2 50%, #efe4d2 100%);
   background-size: 200% 100%;
   animation: shimmer 1.4s ease-in-out infinite;
-  border-radius: 12px;
+  border-radius: 2px;
 }
 
 .skeletonTitle {
   width: min(320px, 60%);
-  height: 1.8rem;
+  height: 1.9rem;
 }
 
 .skeletonPhoto {
@@ -215,5 +234,9 @@
 @media (prefers-reduced-motion: reduce) {
   .skeleton {
     animation: none;
+  }
+
+  .masonry-item:hover .image-wrapper img {
+    transform: none;
   }
 }

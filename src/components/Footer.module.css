@@ -1,15 +1,25 @@
 .footer {
   margin-top: auto;
-  background: var(--accent-deep);
+  background-color: var(--bg-temple);
+  background-image: var(--kolam-gold);
   color: rgba(255, 244, 226, 0.78);
-  border-top: 3px solid var(--accent-gold);
+  border-top: 1px solid var(--gold-leaf);
   font-size: 0.94rem;
+}
+
+.benediction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: clamp(2rem, 4vw, 2.75rem) 1rem 0;
+  text-align: center;
 }
 
 .inner {
   width: min(var(--max-width), calc(100% - 2rem));
   margin: 0 auto;
-  padding: clamp(3rem, 6vw, 4.5rem) 0 clamp(2.25rem, 4vw, 3rem);
+  padding: clamp(2.5rem, 5vw, 3.5rem) 0 clamp(2.25rem, 4vw, 3rem);
   display: grid;
   grid-template-columns: 1.3fr 1fr 1fr 1fr;
   gap: clamp(2rem, 4vw, 3.5rem);
@@ -27,22 +37,28 @@
   flex-shrink: 0;
   border-radius: 50%;
   background: #fff;
+  outline: 1px solid rgba(224, 178, 79, 0.7);
+  outline-offset: 3px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
 }
 
 .brandTitle {
-  font-family: var(--font-display);
-  font-size: 1.12rem;
-  font-weight: 700;
+  font-family: var(--font-sacred);
+  font-size: 1.2rem;
+  font-weight: 400;
   line-height: 1.3;
   color: #fff4e2;
 }
 
 .brandSubtitle {
   margin-top: 0.3rem;
+  font-family: var(--font-sacred);
+  font-style: italic;
   color: #e0b24f;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+}
+
+.brandSubtitle:lang(kn) {
+  font-style: normal;
 }
 
 .column {
@@ -54,9 +70,9 @@
 
 .heading {
   margin-bottom: 0.3rem;
-  font-family: var(--font-display);
-  font-size: 1.05rem;
-  font-weight: 600;
+  font-family: var(--font-sacred);
+  font-size: 1.15rem;
+  font-weight: 400;
   color: #fff4e2;
 }
 
@@ -102,6 +118,11 @@ a.line:hover,
 
 .footer :focus-visible {
   outline-color: #e0b24f;
+}
+
+.footer ::selection {
+  background: rgba(224, 178, 79, 0.4);
+  color: #fff7e8;
 }
 
 .baseline {

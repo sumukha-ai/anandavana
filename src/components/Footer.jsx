@@ -3,6 +3,7 @@ import { Mail, MapPin, Phone } from "lucide-react";
 import styles from "./Footer.module.css";
 import logoImg from "../../assets/logo.png";
 import { useI18n } from "../i18n/useI18n";
+import { Invocation, LotusRule, Toran } from "./ornaments/Ornaments";
 
 const MAPS_URL = "https://www.google.com/maps/search/?api=1&query=Anandavana+Agadi+Haveri+Karnataka";
 
@@ -21,6 +22,11 @@ export default function Footer() {
 
   return (
     <footer className={styles.footer} lang={lang}>
+      <Toran tone="gold" />
+      <div className={styles.benediction}>
+        <Invocation tone="gold" />
+        <LotusRule tone="gold" />
+      </div>
       <div className={styles.inner}>
         <div className={styles.brand}>
           <img src={logoImg} alt="" className={styles.logo} width="56" height="56" />

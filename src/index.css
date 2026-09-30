@@ -35,12 +35,30 @@
   /* Typography Variables */
   --font-body: 'Inter', 'Noto Sans Kannada', system-ui, -apple-system, sans-serif;
   --font-display: 'Playfair Display', 'Noto Serif Kannada', Georgia, serif;
+
+  /* Devotional voice of the public pages: Tiro Kannada is one book face drawn
+     for Kannada and Latin together, so both languages read as the same hand */
+  --font-sacred: 'Tiro Kannada', 'Noto Serif Kannada', Georgia, serif;
+
+  /* Matha surfaces */
+  --bg-sandal: #f2e8d8;       /* Sandalwood paper for alternating sections */
+  --bg-temple: #2a130b;       /* Temple-wood band */
+  --ink-on-temple: #f6ead3;   /* Text on the temple-wood band */
+  --ink-on-temple-soft: rgba(246, 234, 211, 0.74);
+  --gold-leaf: #e0b24f;       /* Gold ornament on dark */
+  --gold-antique: #9a7420;    /* Gold ornament on ivory (lines, never body text) */
+  --line-gold: rgba(154, 116, 32, 0.32);
+
+  /* Kolam: a dot grid threaded by one looping line, as drawn at a threshold */
+  --kolam-antique: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill='%239a7420' fill-opacity='.2'%3E%3Ccircle cx='10' cy='10' r='1'/%3E%3Ccircle cx='30' cy='10' r='1'/%3E%3Ccircle cx='10' cy='30' r='1'/%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3Cpath d='M20 8c4 5 7 8 12 12-5 4-8 7-12 12-4-5-7-8-12-12 5-4 8-7 12-12z' fill='none' stroke='%239a7420' stroke-opacity='.11' stroke-width='.9'/%3E%3C/svg%3E");
+  --kolam-gold: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill='%23e0b24f' fill-opacity='.14'%3E%3Ccircle cx='10' cy='10' r='1'/%3E%3Ccircle cx='30' cy='10' r='1'/%3E%3Ccircle cx='10' cy='30' r='1'/%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3Cpath d='M20 8c4 5 7 8 12 12-5 4-8 7-12 12-4-5-7-8-12-12 5-4 8-7 12-12z' fill='none' stroke='%23e0b24f' stroke-opacity='.07' stroke-width='.9'/%3E%3C/svg%3E");
 }
 
 /* Kannada script: give it its own faces and room to breathe */
 :lang(kn) {
   --font-body: 'Noto Sans Kannada', 'Inter', system-ui, sans-serif;
   --font-display: 'Noto Serif Kannada', 'Playfair Display', Georgia, serif;
+  --font-sacred: 'Tiro Kannada', 'Noto Serif Kannada', Georgia, serif;
 }
 
 html, body, #root {
