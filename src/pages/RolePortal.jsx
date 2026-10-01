@@ -18,6 +18,7 @@ import GalleryEventPage from "./rolePortal/GalleryEventPage";
 import GalleryPage from "./rolePortal/GalleryPage";
 import LookupsPage from "./rolePortal/LookupsPage";
 // import OverviewPage from "./rolePortal/OverviewPage";
+import { ReceiptProvider } from "./rolePortal/Links";
 import RoleShell from "./rolePortal/RoleShell";
 import SevaCatalogPage from "./rolePortal/SevaCatalogPage";
 import SevaEditorPage from "./rolePortal/SevaEditorPage";
@@ -492,7 +493,7 @@ export default function RolePortal({ role, section = "bookings" }) {
       toasts={toasts}
       onDismissToast={dismiss}
     >
-      {renderPage()}
+      <ReceiptProvider>{renderPage()}</ReceiptProvider>
     </RoleShell>
   );
 }

@@ -181,7 +181,11 @@ export default function OrderConfirmedPage() {
           <div className={styles.confirmItem}>
             <img src={sevaImage({ id: sevaId, ...booking.seva })} alt="" width="120" height="90" />
             <div>
-              <p className={styles.orderName}>{booking.seva?.name || t("item")}</p>
+              <p className={styles.orderName}>
+                <Link to={`/${lang}/dashboard/bookings/${booking.id}`} className={shop.quietLink}>
+                  {booking.seva?.name || t("item")}
+                </Link>
+              </p>
               <PaymentBadge status={booking.payment_status} t={t} />
             </div>
             <Price amount={booking.amount ?? booking.seva?.amount} t={t} />
@@ -189,7 +193,15 @@ export default function OrderConfirmedPage() {
           <dl className={styles.facts}>
             <div>
               <dt>{t("bookedFor")}</dt>
-              <dd>{booking.bhakta_profile?.name || "—"}</dd>
+              <dd>
+                {booking.bhakta_profile?.name ? (
+                  <Link to={`/${lang}/dashboard/profile`} className={shop.quietLink}>
+                    {booking.bhakta_profile.name}
+                  </Link>
+                ) : (
+                  "—"
+                )}
+              </dd>
             </div>
             <div>
               <dt>{t("sevaDate")}</dt>

@@ -1376,6 +1376,38 @@
   font-weight: 550;
 }
 
+/* Names that open a bhakta profile, and seva names that open a receipt. They
+   keep the surrounding text's colour and weight; a quiet underline marks them. */
+.personLink,
+.receiptLink {
+  display: inline;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--c-border-strong);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  transition: text-decoration-color 0.15s ease, color 0.15s ease;
+}
+
+.personLink:hover,
+.receiptLink:hover {
+  color: var(--c-text);
+  text-decoration-color: currentColor;
+}
+
+.personLink:focus-visible,
+.receiptLink:focus-visible {
+  outline: 2px solid var(--c-accent-text);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
 .cellStack {
   display: grid;
   line-height: 1.35;
@@ -2390,6 +2422,14 @@ button.calDaySelected:hover {
   border-bottom: 1px solid var(--c-border);
 }
 
+.bookingActions {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
 .bookingIndex {
   width: 2rem;
   height: 2rem;
@@ -2903,8 +2943,15 @@ button.calDaySelected:hover {
   .scrim,
   .toasts,
   .pageActions,
-  .backLink {
+  .backLink,
+  .bookingActions button,
+  .addressToggle {
     display: none !important;
+  }
+
+  .personLink,
+  .receiptLink {
+    text-decoration: none;
   }
 
   .content {

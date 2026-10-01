@@ -27,6 +27,8 @@ import {
   shortDate,
 } from "./rolePortalConfig";
 import { Avatar, EmptyState, Kpis, Page, PageHeader, Panel, PaymentBadge, Skeleton, SkeletonRows } from "./ui";
+import { PersonLink, ReceiptLink } from "./Links";
+import { bhaktaIdOf } from "./receiptContext";
 import { cx } from "./cx";
 import styles from "./Console.module.css";
 
@@ -280,8 +282,14 @@ export default function OverviewPage({ role, lang, user, loaded, bookings, sevas
                     <tr key={booking.id}>
                       <td>
                         <div className={styles.cellStack}>
-                          <strong className={styles.cellMain}>{booking.seva?.name || "Seva"}</strong>
-                          <span>{booking.bhakta_profile?.name || "Devotee"}</span>
+                          <strong className={styles.cellMain}>
+                            <ReceiptLink booking={booking}>{booking.seva?.name || "Seva"}</ReceiptLink>
+                          </strong>
+                          <span>
+                            <PersonLink lang={lang} role={role} bhaktaId={bhaktaIdOf(booking)}>
+                              {booking.bhakta_profile?.name || "Devotee"}
+                            </PersonLink>
+                          </span>
                         </div>
                       </td>
                       <td className={styles.nowrap} data-label="Date">

@@ -187,9 +187,14 @@
   background: transparent;
 }
 
+.receiptHost {
+  display: contents;
+}
+
 /* Printing with a receipt open prints only the receipt */
 @media print {
   .financeRoot:has(.receiptLayer) > :not(.receiptLayer),
+  .receiptHost:has(> .receiptLayer) > :not(.receiptLayer),
   .receiptLayer .drawerScrim,
   .receiptLayer .drawerHead,
   .receiptLayer .drawerFoot {

@@ -93,7 +93,11 @@ export default function OrdersPage() {
                   <img className={styles.orderThumb} src={sevaImage({ id: sevaId, ...booking.seva })} alt="" width="120" height="90" loading="lazy" />
                   <div className={styles.orderMain}>
                     <div className={styles.orderTop}>
-                      <p className={styles.orderName}>{booking.seva?.name || t("item")}</p>
+                      <p className={styles.orderName}>
+                        <Link to={`/${lang}/dashboard/bookings/${booking.id}`} className={shop.quietLink}>
+                          {booking.seva?.name || t("item")}
+                        </Link>
+                      </p>
                       <PaymentBadge status={booking.payment_status} t={t} />
                     </div>
                     <dl className={styles.orderMeta}>
@@ -102,7 +106,15 @@ export default function OrdersPage() {
                           <UserRound size={15} aria-hidden="true" />
                           <span className={styles.srOnly}>{t("bookedFor")}</span>
                         </dt>
-                        <dd>{booking.bhakta_profile?.name || "—"}</dd>
+                        <dd>
+                          {booking.bhakta_profile?.name ? (
+                            <Link to={`/${lang}/dashboard/profile`} className={shop.quietLink}>
+                              {booking.bhakta_profile.name}
+                            </Link>
+                          ) : (
+                            "—"
+                          )}
+                        </dd>
                       </div>
                       <div>
                         <dt>

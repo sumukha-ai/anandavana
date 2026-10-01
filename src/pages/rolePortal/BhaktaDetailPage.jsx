@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { CalendarDays, HandCoins, History, IndianRupee, ListFilter, Phone, UserRoundX, Users } from "lucide-react";
 import { dateKey, displayLookup, relativeDay, sectionPath } from "./rolePortalConfig";
 import { Avatar, Badge, EmptyState, Kpis, Page, PageHeader, Panel, Segmented, Skeleton, SkeletonRows } from "./ui";
+import { ReceiptLink } from "./Links";
 import { cx } from "./cx";
 import styles from "./Console.module.css";
 import own from "./Bhakta.module.css";
@@ -40,6 +41,7 @@ function buildHistory(data) {
     kind: "seva",
     date: booking.paid_on || localDay(booking.created_at),
     title: booking.seva?.name || "Seva",
+    booking,
     sevaDate: booking.seva_date,
     person: booking.bhakta_profile,
     channel: booking.channel,
@@ -315,7 +317,15 @@ export default function BhaktaDetailPage({ lang, role, token, notify, bhaktaId, 
                         <div className={styles.cellStack}>
                           <span className={styles.cellRow}>
                             {entry.kind === "seva" ? <Badge tone="accent">Seva</Badge> : <Badge tone="success">Donation</Badge>}
-                            <strong className={styles.cellMain}>{entry.title}</strong>
+                            <strong className={styles.cellMain}>
+                              {entry.booking ? (
+                                <ReceiptLink booking={entry.booking} label={`${entry.title}, open receipt`}>
+                                  {entry.title}
+                                </ReceiptLink>
+                              ) : (
+                                entry.title
+                              )}
+                            </strong>
                           </span>
                           <HistoryDetail entry={entry} selfName={name} />
                           {entry.matchedBy ? <span>At the counter · matched by {entry.matchedBy}{entry.recordedBy ? ` · entered by ${entry.recordedBy}` : ""}</span> : null}

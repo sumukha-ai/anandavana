@@ -409,7 +409,11 @@ export default function Dashboard({ section = "overview" }) {
             <p id="next-seva" className={styles.nextLabel}>
               {t("nextSeva")}
             </p>
-            <p className={styles.nextName}>{next.seva?.name}</p>
+            <p className={styles.nextName}>
+              <Link to={`/${lang}/dashboard/bookings/${next.id}`} className={shop.quietLink}>
+                {next.seva?.name}
+              </Link>
+            </p>
             <div className={styles.nextMeta}>
               <span>
                 <CalendarDays size={16} aria-hidden="true" />
@@ -417,7 +421,9 @@ export default function Dashboard({ section = "overview" }) {
               </span>
               <span>
                 <UserRound size={16} aria-hidden="true" />
-                {next.bhakta_profile?.name}
+                <Link to={`/${lang}/dashboard/profile`} className={shop.quietLink}>
+                  {next.bhakta_profile?.name}
+                </Link>
               </span>
               <PaymentBadge status={next.payment_status} t={tShop} />
             </div>
@@ -465,7 +471,10 @@ export default function Dashboard({ section = "overview" }) {
                       <Link to={`/${lang}/dashboard/bookings/${booking.id}`}>{booking.seva?.name}</Link>
                     </p>
                     <p className={styles.rowSub}>
-                      {formatDate(booking.seva_date, lang, { day: "numeric", month: "short", year: "numeric" })} · {booking.bhakta_profile?.name}
+                      {formatDate(booking.seva_date, lang, { day: "numeric", month: "short", year: "numeric" })} ·{" "}
+                      <Link to={`/${lang}/dashboard/profile`} className={shop.quietLink}>
+                        {booking.bhakta_profile?.name}
+                      </Link>
                     </p>
                   </div>
                   <PaymentBadge status={booking.payment_status} t={tShop} />

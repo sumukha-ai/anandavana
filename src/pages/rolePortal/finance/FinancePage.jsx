@@ -11,6 +11,8 @@ import SevaReceipt from "../../shop/SevaReceipt";
 import DonationReceipt from "../../donate/DonationReceipt";
 import { useTrust } from "../../donate/taxExemption";
 import { Drawer, PeriodPicker } from "./FinanceParts";
+import { PersonLink } from "../Links";
+import { bhaktaIdOf } from "../receiptContext";
 import { DONATION_CHANNEL_LABELS, inr, longDate, periodLabel, rangeQuery, resolvePeriod } from "./financeUtils";
 import { useFinanceQuery } from "./useFinanceQuery";
 
@@ -185,7 +187,15 @@ export default function FinancePage({ lang, role, token, notify }) {
                         </td>
                         <td data-label="Devotee">
                           <div className={styles.cellStack}>
-                            <span className={styles.cellPrimary}>{entry.person || "—"}</span>
+                            <span className={styles.cellPrimary}>
+                              {entry.person ? (
+                                <PersonLink lang={lang} role={role} bhaktaId={entry.user_id ?? entry.bhakta_id ?? bhaktaIdOf(entry.booking) ?? entry.donation?.user_id ?? null}>
+                                  {entry.person}
+                                </PersonLink>
+                              ) : (
+                                "—"
+                              )}
+                            </span>
                             {entry.phone ? <span>{entry.phone}</span> : null}
                           </div>
                         </td>

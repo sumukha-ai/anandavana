@@ -194,6 +194,28 @@
   color: var(--accent);
 }
 
+/* A name that opens the profile, or a seva that opens its receipt. Keeps the
+   text's own colour; a soft saffron underline marks it as a link. */
+.quietLink {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: rgba(184, 92, 30, 0.35);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: color 0.15s ease, text-decoration-color 0.15s ease;
+}
+
+.quietLink:hover {
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+
+.quietLink:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
 /* ---------- Badges ---------- */
 
 .badge {

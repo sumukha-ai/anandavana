@@ -4,6 +4,8 @@ import { CalendarDays, ChevronDown, Download, FileText, MapPin } from "lucide-re
 import { dateKey, displayLookup, downloadCsv, parseDateKey, relativeDay, sectionMeta, shortDate, statusTone } from "./rolePortalConfig";
 import { EmptyState, Page, PageHeader, Panel, Segmented, SkeletonRows } from "./ui";
 import SevaCalendar from "./SevaCalendar";
+import { PersonLink, ReceiptButton } from "./Links";
+import { bhaktaIdOf } from "./receiptContext";
 import { cx } from "./cx";
 import styles from "./Console.module.css";
 
@@ -33,7 +35,7 @@ function groupBySeva(bookings) {
   return Object.values(groups).sort((a, b) => a.name.localeCompare(b.name));
 }
 
-function SevaGroup({ group, lang, showDate }) {
+function SevaGroup({ group, lang, role, showDate }) {
   const [open, setOpen] = useState(true);
   const [addressOpen, setAddressOpen] = useState(() => new Set());
   const columns = showDate ? 9 : 8;
@@ -84,7 +86,11 @@ function SevaGroup({ group, lang, showDate }) {
                   <Fragment key={booking.id}>
                     <tr className={cx(showAddress && styles.rowExpanded)}>
                       <td>
-                        <strong className={styles.cellMain}>{profile.name || "Devotee"}</strong>
+                        <strong className={styles.cellMain}>
+                          <PersonLink lang={lang} role={role} bhaktaId={bhaktaIdOf(booking)}>
+                            {profile.name || "Devotee"}
+                          </PersonLink>
+                        </strong>
                       </td>
                       <td className={styles.nowrap} data-label="Phone">
                         {profile.phone_number ? <a href={`tel:${profile.phone_number}`}>{profile.phone_number}</a> : "—"}
@@ -99,6 +105,7 @@ function SevaGroup({ group, lang, showDate }) {
                       <td data-label="Gotra">{details.gotra || "—"}</td>
                       <td data-label="Charana">{details.charana || "—"}</td>
                       <td className={cx(styles.num, styles.nowrap)}>
+                        <ReceiptButton booking={booking} />
                         <button type="button" className={styles.addressToggle} onClick={() => toggleAddress(booking.id)} aria-expanded={showAddress} aria-controls={addressId}>
                           <MapPin size={13} aria-hidden="true" />
                           {showAddress ? "Hide address" : "View address"}
@@ -240,7 +247,7 @@ export default function BookingsPage({ bookings, loaded, lang, role }) {
         {!loaded ? (
           <SkeletonRows rows={6} columns={[30, 16, 16, 16, 10]} />
         ) : groups.length ? (
-          groups.map((group) => <SevaGroup key={group.name} group={group} lang={lang} showDate={!singleDay} />)
+          groups.map((group) => <SevaGroup key={group.name} group={group} lang={lang} role={role} showDate={!singleDay} />)
         ) : (
           <EmptyState
             icon={CalendarDays}

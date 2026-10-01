@@ -2,6 +2,8 @@ import { NavLink } from "react-router-dom";
 import { CalendarX2, ChevronLeft, ChevronRight, Printer } from "lucide-react";
 import { dateKey, displayLookup, formatAmount, isPaidStatus, money, parseDateKey, relativeDay, sectionPath } from "./rolePortalConfig";
 import { EmptyState, Kpis, Page, PageHeader, Panel, PaymentBadge, SkeletonRows } from "./ui";
+import { PersonLink, ReceiptButton } from "./Links";
+import { bhaktaIdOf } from "./receiptContext";
 import { cx } from "./cx";
 import styles from "./Console.module.css";
 
@@ -90,10 +92,17 @@ export default function CalendarDayDetailsPage({ bookings, date, lang, role, loa
                   <div className={styles.bookingHead}>
                     <span className={styles.bookingIndex}>{counter}</span>
                     <div className={styles.listText}>
-                      <strong>{profile.name || "Devotee"}</strong>
+                      <strong>
+                        <PersonLink lang={lang} role={role} bhaktaId={bhaktaIdOf(booking)}>
+                          {profile.name || "Devotee"}
+                        </PersonLink>
+                      </strong>
                       <span>{profile.is_self ? "Booked for self" : "Booked for a family member"}</span>
                     </div>
-                    <PaymentBadge status={booking.payment_status} />
+                    <span className={styles.bookingActions}>
+                      <ReceiptButton booking={booking} />
+                      <PaymentBadge status={booking.payment_status} />
+                    </span>
                   </div>
                   <dl className={styles.dl}>
                     <Item label="Rashi" value={displayLookup(profile.rashi, lang)} />
