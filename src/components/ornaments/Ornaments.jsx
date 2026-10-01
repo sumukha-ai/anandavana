@@ -50,7 +50,7 @@ export function LotusRule({ tone = "antique", align = "center", className = "" }
 export function Invocation({ tone = "antique", className = "" }) {
   return (
     <p className={`${styles.invocation} ${styles[`tone-${tone}`]} ${className}`} lang="kn">
-      ॥ ಶ್ರೀ ಶೇಷಾಚಲ ಸದ್ಗುರುರ್ವಿಜಯತೆ ತರಾಮ್ ॥
+      ॥ ಶ್ರೀ ಶೇಷಾಚಲ ಸದ್ಗುರುರ್ವಿಜಯತೇ ತರಾಮ್ ॥
     </p>
   );
 }

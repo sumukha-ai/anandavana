@@ -60,13 +60,32 @@
 
 /* ---- Shrine-niche arch ---- */
 
-/* Tint from any ancestor with --arch-bg, --arch-line and --arch-finial */
+/* Tint from any ancestor with --arch-line and --arch-finial */
 .arch {
   position: relative;
   margin: 0;
   padding: clamp(6px, 0.8vw, 10px);
-  border: 1px solid var(--arch-line, var(--line-gold));
+  border: 1px solid transparent;
   border-radius: 999px 999px 6px 6px;
+}
+
+/* The gilt hairline, with a gap cut at the crown for the lotus so the
+   section's own ground (plain or patterned) shows through behind it. */
+.arch::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border: 1px solid var(--arch-line, var(--line-gold));
+  border-radius: inherit;
+  pointer-events: none;
+  -webkit-mask:
+    linear-gradient(#000 0 0) left top / calc(50% - 26px) 100% no-repeat,
+    linear-gradient(#000 0 0) right top / calc(50% - 26px) 100% no-repeat,
+    linear-gradient(#000 0 0) left bottom / 100% calc(100% - 14px) no-repeat;
+  mask:
+    linear-gradient(#000 0 0) left top / calc(50% - 26px) 100% no-repeat,
+    linear-gradient(#000 0 0) right top / calc(50% - 26px) 100% no-repeat,
+    linear-gradient(#000 0 0) left bottom / 100% calc(100% - 14px) no-repeat;
 }
 
 .archFinial {
@@ -78,7 +97,6 @@
   padding: 0 6px;
   transform: translateX(-50%);
   color: var(--arch-finial, var(--gold-antique));
-  background: var(--arch-bg, var(--bg-primary));
   box-sizing: content-box;
 }
 
