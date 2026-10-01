@@ -1,0 +1,464 @@
+/* Image cropper dialog. The photo stage is dark in both themes so the photo's
+   own colours read true; everything around it follows the console tokens. */
+
+.layer {
+  --crop-stage: #0e0e10;
+  --crop-veil: rgba(9, 9, 11, 0.64);
+  --crop-edge: rgba(255, 255, 255, 0.92);
+  --crop-line: rgba(255, 255, 255, 0.38);
+
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--c-scrim);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  animation: cropFade 0.18s ease both;
+}
+
+.dialog {
+  position: relative;
+  width: min(46rem, 100%);
+  max-height: calc(100dvh - 2.5rem);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: 14px;
+  box-shadow: var(--c-shadow-lg);
+  outline: none;
+  overflow: hidden;
+  animation: cropRise 0.22s var(--c-ease) both;
+}
+
+/* Header */
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.1rem 0.85rem;
+}
+
+.headText {
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  color: var(--c-text);
+  font-size: 1rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.sub {
+  max-width: 52ch;
+  margin: 0.2rem 0 0;
+  color: var(--c-text-3);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+/* Body */
+
+.body {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0 1.1rem 1rem;
+  overflow-y: auto;
+}
+
+/* Stage: the whole photo is visible; the window cuts the crop out of a dark veil. */
+
+.stage {
+  position: relative;
+  flex: none;
+  height: clamp(16rem, 54dvh, 28rem);
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--crop-stage);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  outline: none;
+  isolation: isolate;
+}
+
+.stageMoving {
+  cursor: grabbing;
+}
+
+.stage:focus-visible {
+  box-shadow: var(--c-ring);
+}
+
+.image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: none;
+  transform-origin: 0 0;
+  pointer-events: none;
+  will-change: transform;
+  transition:
+    transform 0.32s var(--c-ease),
+    width 0.32s var(--c-ease),
+    height 0.32s var(--c-ease);
+  animation: cropFade 0.24s ease both;
+}
+
+.stageMoving .image {
+  transition: none;
+}
+
+.window {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  /* The veil: a huge spread shadow around the window darkens everything outside the crop. */
+  box-shadow:
+    0 0 0 1px var(--crop-edge),
+    0 0 0 200vmax var(--crop-veil);
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.32s var(--c-ease),
+    width 0.32s var(--c-ease),
+    height 0.32s var(--c-ease);
+}
+
+/* While a corner is held the box follows the finger exactly. */
+.windowResizing {
+  transition: box-shadow 0.2s ease;
+}
+
+.stageMoving .window {
+  box-shadow:
+    0 0 0 1px var(--crop-edge),
+    0 0 0 200vmax rgba(9, 9, 11, 0.48);
+}
+
+.thirds {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  background:
+    linear-gradient(var(--crop-line), var(--crop-line)) 33.333% 0 / 1px 100% no-repeat,
+    linear-gradient(var(--crop-line), var(--crop-line)) 66.666% 0 / 1px 100% no-repeat,
+    linear-gradient(var(--crop-line), var(--crop-line)) 0 33.333% / 100% 1px no-repeat,
+    linear-gradient(var(--crop-line), var(--crop-line)) 0 66.666% / 100% 1px no-repeat;
+}
+
+.stageMoving .thirds {
+  opacity: 1;
+}
+
+.ratioTag {
+  position: absolute;
+  top: 0.6rem;
+  left: 50%;
+  translate: -50% 0;
+  display: inline-flex;
+  align-items: center;
+  height: 1.35rem;
+  padding: 0 0.45rem;
+  border-radius: 5px;
+  background: rgba(9, 9, 11, 0.55);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.72rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  transition: opacity 0.2s ease;
+}
+
+.stageMoving .ratioTag {
+  opacity: 0;
+}
+
+.handle {
+  position: absolute;
+  width: 2.75rem;
+  height: 2.75rem;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+.handle::before {
+  content: "";
+  position: absolute;
+  width: 1.15rem;
+  height: 1.15rem;
+  border: 0 solid var(--crop-edge);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
+  transition: transform 0.15s var(--c-ease);
+}
+
+/* Grows from the box corner itself, so the bracket never drifts off it. */
+.handle:hover::before,
+.windowResizing .handle::before {
+  transform: scale(1.2);
+}
+
+.nw {
+  top: -1.375rem;
+  left: -1.375rem;
+  cursor: nwse-resize;
+}
+
+.ne {
+  top: -1.375rem;
+  right: -1.375rem;
+  cursor: nesw-resize;
+}
+
+.sw {
+  bottom: -1.375rem;
+  left: -1.375rem;
+  cursor: nesw-resize;
+}
+
+.se {
+  bottom: -1.375rem;
+  right: -1.375rem;
+  cursor: nwse-resize;
+}
+
+/* Each bracket sits 3px outside its corner of the crop box. */
+.nw::before {
+  top: calc(50% - 3px);
+  left: calc(50% - 3px);
+  border-top-width: 3px;
+  border-left-width: 3px;
+  transform-origin: 3px 3px;
+}
+
+.ne::before {
+  top: calc(50% - 3px);
+  right: calc(50% - 3px);
+  border-top-width: 3px;
+  border-right-width: 3px;
+  transform-origin: calc(100% - 3px) 3px;
+}
+
+.sw::before {
+  bottom: calc(50% - 3px);
+  left: calc(50% - 3px);
+  border-bottom-width: 3px;
+  border-left-width: 3px;
+  transform-origin: 3px calc(100% - 3px);
+}
+
+.se::before {
+  bottom: calc(50% - 3px);
+  right: calc(50% - 3px);
+  border-bottom-width: 3px;
+  border-right-width: 3px;
+  transform-origin: calc(100% - 3px) calc(100% - 3px);
+}
+
+.loading {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Failed to decode */
+
+.failed {
+  display: grid;
+  justify-items: center;
+  gap: 0.4rem;
+  padding: 2.5rem 1rem;
+  border: 1px dashed var(--c-border-strong);
+  border-radius: 10px;
+  background: var(--c-surface-2);
+  color: var(--c-text-3);
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.failed strong {
+  color: var(--c-text);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.failed span:not(.failedIcon) {
+  max-width: 40ch;
+  margin-bottom: 0.5rem;
+}
+
+.failedIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: grid;
+  place-items: center;
+  margin-bottom: 0.25rem;
+  border: 1px solid var(--c-border);
+  border-radius: 10px;
+  background: var(--c-surface);
+  color: var(--c-text-2);
+  box-shadow: var(--c-shadow-md);
+}
+
+/* Controls */
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--c-text-3);
+  font-size: 0.78rem;
+}
+
+.meta {
+  margin: 0;
+  color: var(--c-text-3);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.coarse {
+  display: none;
+}
+
+.output {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Footer */
+
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.75rem 1.1rem;
+  border-top: 1px solid var(--c-border);
+  background: var(--c-surface-2);
+}
+
+.footActions {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+/* Touch screens: bigger targets, touch wording. */
+
+@media (hover: none) and (pointer: coarse) {
+  .fine {
+    display: none;
+  }
+
+  .coarse {
+    display: inline;
+  }
+
+  .controls button {
+    min-height: 2.75rem;
+  }
+}
+
+/* Phones: a full-screen sheet; the stage takes every spare pixel. */
+
+@media (max-width: 640px) {
+  .layer {
+    padding: 0;
+  }
+
+  .dialog {
+    width: 100%;
+    height: 100dvh;
+    max-height: none;
+    border: 0;
+    border-radius: 0;
+    animation-name: cropSheet;
+  }
+
+  .body {
+    padding: 0 0.75rem 0.75rem;
+    overflow: hidden;
+  }
+
+  .stage {
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 14rem;
+  }
+
+  .foot {
+    padding: 0.65rem 0.75rem calc(0.65rem + env(safe-area-inset-bottom));
+  }
+
+  .another {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .footActions {
+    width: 100%;
+  }
+
+  .footActions > * {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+@keyframes cropFade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes cropRise {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.975);
+  }
+}
+
+@keyframes cropSheet {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrim,
+  .dialog,
+  .image {
+    animation: none;
+  }
+
+  .image,
+  .window,
+  .thirds,
+  .ratioTag,
+  .handle::before {
+    transition: none;
+  }
+}

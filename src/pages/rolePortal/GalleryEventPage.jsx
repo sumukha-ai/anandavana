@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { ArrowLeft, ArrowRight, ExternalLink, FileQuestion, Images, LoaderCircle, Pencil, Save, Trash2, Upload, X } from "lucide-react";
 import { apiRequest } from "../../api/client";
@@ -8,6 +8,7 @@ import { sectionPath } from "./rolePortalConfig";
 import { Badge, EmptyState, Page, PageHeader, Panel, Skeleton } from "./ui";
 import { cx } from "./cx";
 import styles from "./Console.module.css";
+import { useObjectUrl } from "./useObjectUrl";
 import own from "./EventsConsole.module.css";
 
 const DESCRIPTION_MAX = 500;
@@ -15,8 +16,7 @@ const DESCRIPTION_MAX = 500;
 let stagedCounter = 0;
 
 function StagedPhoto({ item, index, onChange, onRemove, disabled }) {
-  const preview = useMemo(() => URL.createObjectURL(item.file), [item.file]);
-  useEffect(() => () => URL.revokeObjectURL(preview), [preview]);
+  const preview = useObjectUrl(item.file);
 
   return (
     <li className={own.photoCard}>

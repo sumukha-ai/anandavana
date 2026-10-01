@@ -1,15 +1,16 @@
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { FileQuestion, ImageOff, ImagePlus, LoaderCircle, Save } from "lucide-react";
+import { Crop, FileQuestion, ImageOff, ImagePlus, LoaderCircle, Save } from "lucide-react";
 import { sevaImageUrl } from "../sevaHelpers";
 import { formatAmount, sectionPath } from "./rolePortalConfig";
 import { Badge, EmptyState, Field, FormSection, Page, PageHeader, Panel, Segmented, Skeleton, Switch } from "./ui";
 import { cx } from "./cx";
+import ImageCropper from "./ImageCropper";
 import styles from "./Console.module.css";
+import { useObjectUrl } from "./useObjectUrl";
 
 function usePreviewUrl(file, savedUrl) {
-  const objectUrl = useMemo(() => (file ? URL.createObjectURL(file) : null), [file]);
-  useEffect(() => () => objectUrl && URL.revokeObjectURL(objectUrl), [objectUrl]);
+  const objectUrl = useObjectUrl(file);
   return objectUrl || (savedUrl ? sevaImageUrl({ photo_url: savedUrl }, null) : null);
 }
 
@@ -23,6 +24,9 @@ function isDirty(form, baseline) {
 export default function SevaEditorPage({ lang, role, isEdit, notFound, loading, sevaForm, sevaBaseline, onSevaChange, onSaveSeva, saving }) {
   const [previewLang, setPreviewLang] = useState("en");
   const [dragging, setDragging] = useState(false);
+  // The uncropped file stays around so the crop can be adjusted again.
+  const [source, setSource] = useState(null); // { original, crop } behind the current photo
+  const [cropping, setCropping] = useState(null); // { file, crop } while the cropper is open
   const preview = usePreviewUrl(sevaForm.photo, sevaForm.photo_url);
   const catalogPath = sectionPath(lang, role, "sevas");
   const back = { to: catalogPath, label: "Seva catalog" };
@@ -67,6 +71,19 @@ export default function SevaEditorPage({ lang, role, isEdit, notFound, loading, 
       </Page>
     );
   }
+
+  const setPhoto = (file) => onSevaChange({ target: { name: "photo", type: "file", files: file ? [file] : [] } });
+  const choosePhoto = (event) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+    setCropping({ file });
+  };
+  const applyCrop = ({ file, original, crop }) => {
+    setPhoto(file);
+    setSource({ original, crop });
+    setCropping(null);
+  };
 
   const previewName = previewLang === "kn" ? sevaForm.name_kn || sevaForm.name : sevaForm.name;
   const previewText = previewLang === "kn" ? sevaForm.description_kn || sevaForm.description : sevaForm.description;
@@ -117,14 +134,14 @@ export default function SevaEditorPage({ lang, role, isEdit, notFound, loading, 
               </Field>
             </FormSection>
 
-            <FormSection title="Image" description="A clear photo of the seva or the deity. It is cropped to a wide frame.">
+            <FormSection title="Image" description="A clear photo of the seva or the deity. You can crop it after choosing; the seva page shows it at 4 : 3.">
               <div
                 className={cx(styles.dropzone, styles.fieldWide, dragging && styles.dropzoneActive)}
                 onDragEnter={() => setDragging(true)}
                 onDragLeave={() => setDragging(false)}
                 onDrop={() => setDragging(false)}
               >
-                <input type="file" name="photo" accept="image/*" onChange={onSevaChange} aria-label="Upload seva image" />
+                <input type="file" name="photo" accept="image/*" onChange={choosePhoto} aria-label="Upload seva image" />
                 <span className={styles.dropzoneIcon}>
                   <ImagePlus size={17} aria-hidden="true" />
                 </span>
@@ -133,6 +150,14 @@ export default function SevaEditorPage({ lang, role, isEdit, notFound, loading, 
                 </span>
                 <span>{sevaForm.photo ? `${Math.round(sevaForm.photo.size / 1024)} KB · will upload on save` : sevaForm.photo_url ? "Uploading a new image replaces the current one" : "JPG, PNG or WebP"}</span>
               </div>
+              {sevaForm.photo && source ? (
+                <div className={styles.fieldWide}>
+                  <button type="button" className={cx(styles.btn, styles.btnSecondary, styles.btnSm)} onClick={() => setCropping({ file: source.original, crop: source.crop })}>
+                    <Crop size={14} aria-hidden="true" />
+                    Adjust crop
+                  </button>
+                </div>
+              ) : null}
             </FormSection>
 
             <FormSection title="Enable / Disable" description="Disabling a seva hides it from the public catalog. Existing bookings stay.">
@@ -190,6 +215,18 @@ export default function SevaEditorPage({ lang, role, isEdit, notFound, loading, 
           </div>
         ) : null}
       </form>
+
+      {cropping ? (
+        <ImageCropper
+          key={cropping.file.name + cropping.file.lastModified}
+          file={cropping.file}
+          initialCrop={cropping.crop}
+          title="Crop seva image"
+          hint="The seva page shows every image at 4 : 3. Move and zoom the photo until the frame holds the deity or the seva."
+          onCancel={() => setCropping(null)}
+          onApply={applyCrop}
+        />
+      ) : null}
     </Page>
   );
 }

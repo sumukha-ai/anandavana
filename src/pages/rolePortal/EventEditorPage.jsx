@@ -1,13 +1,15 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { ArrowRight, ExternalLink, FileQuestion, ImageOff, ImagePlus, Images, LoaderCircle, Plus, Save, Trash2 } from "lucide-react";
+import { ArrowRight, Crop, ExternalLink, FileQuestion, ImageOff, ImagePlus, Images, LoaderCircle, Plus, Save, Trash2 } from "lucide-react";
 import { apiRequest } from "../../api/client";
 import { EVENT_CATEGORY_LABELS as CATEGORY_LABELS, EVENT_IMAGE_LIMIT, eventImageUrl, formatEventRange } from "../events/eventUtils";
 import { PhotoMeter } from "./GalleryPage";
 import { sectionPath } from "./rolePortalConfig";
 import { Badge, EmptyState, Field, FormSection, Page, PageHeader, Panel, Segmented, Skeleton, Switch } from "./ui";
 import { cx } from "./cx";
+import ImageCropper from "./ImageCropper";
 import styles from "./Console.module.css";
+import { useObjectUrl } from "./useObjectUrl";
 import own from "./EventsConsole.module.css";
 
 const DETAIL_SUGGESTIONS = [
@@ -85,8 +87,7 @@ function snapshot(form) {
 }
 
 function usePreviewUrl(file, savedUrl) {
-  const objectUrl = useMemo(() => (file ? URL.createObjectURL(file) : null), [file]);
-  useEffect(() => () => objectUrl && URL.revokeObjectURL(objectUrl), [objectUrl]);
+  const objectUrl = useObjectUrl(file);
   return objectUrl || (savedUrl ? eventImageUrl(savedUrl) : null);
 }
 
@@ -124,6 +125,8 @@ export default function EventEditorPage({ lang, role, token, eventId, sevas, not
   const [saving, setSaving] = useState(false);
   const [previewLang, setPreviewLang] = useState("en");
   const [dragging, setDragging] = useState(false);
+  const [coverSource, setCoverSource] = useState(null); // { original, crop } behind the current cover
+  const [cropping, setCropping] = useState(null); // { file, crop } while the cropper is open
   const preview = usePreviewUrl(form.cover, form.cover_image_url);
   const listPath = sectionPath(lang, role, "events");
   const back = { to: listPath, label: "Events" };
@@ -176,6 +179,18 @@ export default function EventEditorPage({ lang, role, token, eventId, sevas, not
       if (name === "status") return { ...current, status: checked ? "published" : "draft" };
       return { ...current, [name]: type === "file" ? files?.[0] || null : value };
     });
+  };
+
+  const chooseCover = (event) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+    setCropping({ file });
+  };
+  const applyCover = ({ file, original, crop }) => {
+    setForm((current) => ({ ...current, cover: file }));
+    setCoverSource({ original, crop });
+    setCropping(null);
   };
 
   const setRow = (list, key, field, value) =>
@@ -395,7 +410,7 @@ export default function EventEditorPage({ lang, role, token, eventId, sevas, not
                   onDragLeave={() => setDragging(false)}
                   onDrop={() => setDragging(false)}
                 >
-                  <input type="file" name="cover" accept="image/*" onChange={onChange} aria-label="Upload cover image" />
+                  <input type="file" name="cover" accept="image/*" onChange={chooseCover} aria-label="Upload cover image" />
                   <span className={styles.dropzoneIcon}>
                     <ImagePlus size={17} aria-hidden="true" />
                   </span>
@@ -403,7 +418,13 @@ export default function EventEditorPage({ lang, role, token, eventId, sevas, not
                   <span>{form.cover ? `${Math.round(form.cover.size / 1024)} KB · will upload on save` : form.cover_image_url ? "Uploading a new image replaces the current one" : "JPG, PNG or WebP"}</span>
                 </div>
                 {form.cover || form.cover_image_url ? (
-                  <div className={styles.fieldWide}>
+                  <div className={cx(styles.fieldWide, styles.pageActions)}>
+                    {form.cover && coverSource ? (
+                      <button type="button" className={cx(styles.btn, styles.btnSecondary, styles.btnSm)} onClick={() => setCropping({ file: coverSource.original, crop: coverSource.crop })}>
+                        <Crop size={14} aria-hidden="true" />
+                        Adjust crop
+                      </button>
+                    ) : null}
                     <button type="button" className={cx(styles.btn, styles.btnGhost, styles.btnSm)} onClick={() => setForm((current) => ({ ...current, cover: null, cover_image_url: "" }))}>
                       <Trash2 size={14} aria-hidden="true" />
                       Remove cover image
@@ -499,6 +520,8 @@ export default function EventEditorPage({ lang, role, token, eventId, sevas, not
           </div>
         ) : null}
       </form>
+
+      {cropping ? <ImageCropper key={cropping.file.name + cropping.file.lastModified} file={cropping.file} initialCrop={cropping.crop} title="Crop cover image" onCancel={() => setCropping(null)} onApply={applyCover} /> : null}
     </Page>
   );
 }
